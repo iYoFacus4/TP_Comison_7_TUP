@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from '../store/authStore';
 import CerrarSesion from '../assets/cerrarsesion.png';
 
 const MainHeaderContainer = styled.header`
@@ -45,15 +46,19 @@ const LogoutButton = styled.button`
 `;
 
 const Header = ({ title, description }) => {
-  const navigate = useNavigate(); // ✅ inicializamos navigate
+  const navigate = useNavigate(); 
+  const logout = useAuthStore((state) => state.logout);
+  const user = useAuthStore((state) => state.user);
 
+    
   const handleLogout = () => {
-    // 🧹 Borrar datos del localStorage
-    localStorage.removeItem("auth");
+  
+  logout();
 
-    // 🔁 Redirigir al login
-    navigate("/");
-  };
+   
+   navigate("/");
+ };
+
 
   return (
     <MainHeaderContainer>
@@ -62,14 +67,14 @@ const Header = ({ title, description }) => {
         <p>{description}</p>
       </HeaderTitle>
       <UserInfo>
-        <span>
-          Hola, <strong>[Usuario]</strong>
-        </span>
+       <span>
+          
+         Hola, <strong>{user ? user.username : 'Usuario'}</strong>
+         </span>
 
-        {/* 🔘 Botón real de logout */}
-        <LogoutButton onClick={handleLogout}>
-           <img src={CerrarSesion} alt="Cerrar sesión" style={{ width: "42px", height: "42px" }} />
-        </LogoutButton>
+      <LogoutButton onClick={handleLogout}>
+              <img src={CerrarSesion} alt="Cerrar sesión" style={{ width: "42px", height: "42px" }} />
+    </LogoutButton>
       </UserInfo>
     </MainHeaderContainer>
   );

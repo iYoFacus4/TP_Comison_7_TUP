@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Input from '../components/common/input';
 import Button from '../components/common/button';
-import illustrationImage from '../assets/ilustration.png';
+//import illustrationImage from '../assets/ilustration.png';
 import FotoIndu from '../assets/fotoindu.png';
 import Fotologo from '../assets/gancho.png';
 

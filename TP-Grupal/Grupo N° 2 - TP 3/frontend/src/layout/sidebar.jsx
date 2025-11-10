@@ -75,7 +75,7 @@ const Sidebar = () => {
   return (
     <SidebarContainer>
       <SidebarHeader>
-        {/* <Logo src={logoImage} alt="Logo de la Tienda" /> */}
+      
         <AppTitle>Indumentaria</AppTitle>
       </SidebarHeader>
       <Nav>
