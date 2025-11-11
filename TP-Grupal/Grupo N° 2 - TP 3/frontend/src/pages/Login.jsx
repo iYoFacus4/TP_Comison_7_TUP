@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Input from '../components/common/input';
 import Button from '../components/common/button';
 //import illustrationImage from '../assets/ilustration.png';
+import api from '../services/api'; 
+import { useAuthStore } from '../store/authStore';
 import FotoIndu from '../assets/fotoindu.png';
 import Fotologo from '../assets/gancho.png';
 
@@ -74,32 +76,35 @@ const IllustrationSection = styled.div`
 
 const Login = () => {
   const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login); 
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => { 
     e.preventDefault();
     setError('');
 
-    const MOCK_EMAIL = 'admin@tienda.com';
-    const MOCK_PASSWORD = '123';
+    try {
+    
+      const response = await api.post('/auth/login', { 
+        email: email, 
+        password 
+      });
 
-    if (email === MOCK_EMAIL && password === MOCK_PASSWORD) {
-      localStorage.setItem('userLogged', 'true');
-
-      localStorage.setItem(
-        'auth',
-        JSON.stringify({
-          email,
-          role: 'admin',
-          loggedAt: new Date().toISOString(),
-        })
-      );
+    
+      login(response.data);
 
       navigate('/dashboard');
-    } else {
-      setError(`Credenciales inválidas.`);
+
+    } catch (err) {
+      
+      if (err.response) {
+        setError(err.response.data.message || 'Error al iniciar sesión');
+      } else {
+        setError('Error de conexión con el servidor');
+      }
     }
   };
 
@@ -111,20 +116,15 @@ const Login = () => {
           <h2>Bienvenido a Nuestra Tienda</h2>
           <p>Ingresa tus credenciales para acceder al sistema.</p>
 
-          <form
+         <form
             onSubmit={handleSubmit}
-            style={{
-              marginTop: '30px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '20px',
-            }}
+            style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', gap: '20px' }}
           >
             <Input
               label="Correo Electrónico"
               id="email"
-              type="email"
-              placeholder="tucorreo@ejemplo.com"
+              type="text" 
+              placeholder="admin@tienda.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -133,7 +133,6 @@ const Login = () => {
               label="Contraseña"
               id="password"
               type="password"
-              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -143,7 +142,7 @@ const Login = () => {
               <p style={{ color: 'red', margin: '0', fontWeight: '500' }}>{error}</p>
             )}
 
-            <Button type="submit" variant="primary" style={{ marginTop: '10px',fontFamily: 'Poppins, sans-serif' }}>
+            <Button type="submit" variant="primary" style={{ marginTop: '10px', fontFamily: 'Poppins, sans-serif' }}>
               Ingresar
             </Button>
           </form>
