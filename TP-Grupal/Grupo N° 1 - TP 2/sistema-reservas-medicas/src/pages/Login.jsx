@@ -74,7 +74,6 @@ const Login = () => {
       setShowAlert(true);
       return;
     }
-
     // Intentar login
     const result = await login(formData);
 

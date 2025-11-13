@@ -178,7 +178,6 @@ const Pacientes = () => {
                         <th>Edad</th>
                         <th>Teléfono</th>
                         <th>Email</th>
-                        <th>Obra Social</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
@@ -193,15 +192,13 @@ const Pacientes = () => {
                           <td>{patient.dni}</td>
                           <td>
                             {new Date(
-                              patient.fechaNacimiento
+                              patient.fecha_nacimiento
                             ).toLocaleDateString("es-AR")}
                           </td>
-                          <td>{calcularEdad(patient.fechaNacimiento)} años</td>
+                          <td>{calcularEdad(patient.fecha_nacimiento)} años</td>
                           <td>{patient.telefono}</td>
                           <td>{patient.email}</td>
-                          <td>
-                            <Badge bg="info">{patient.obraSocial}</Badge>
-                          </td>
+                  
                           <td>
                             <div className="d-flex gap-2">
                               <Button
