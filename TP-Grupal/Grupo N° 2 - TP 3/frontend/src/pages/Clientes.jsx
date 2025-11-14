@@ -259,7 +259,7 @@ if (loading) return <p style={{ padding: "20px" }}>Cargando clientes...</p>;
           <DataTable columns={columns} data={dataWithActions} />
         </ContentWrapper>
 
-        {/* --- MODAL --- */}
+      
         {showModal && (
           <ModalBackdrop onClick={() => setShowModal(false)}>
             <ModalContent onClick={(e) => e.stopPropagation()}>
