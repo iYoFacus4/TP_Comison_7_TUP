@@ -1,49 +1,22 @@
-const API_URL = "http://localhost:5000/productos";
+import api from './api';
 
 
-export const getProductos = async () => {
-  const res = await fetch(API_URL);
-  return await res.json();
-};
 
-export const addProducto = async (nuevoProducto) => {
-  try {
-    const res = await fetch(API_URL);
-    const productos = await res.json();
 
-    
-    const nextId =
-      productos.length > 0
-        ? Math.max(...productos.map((p) => Number(p.id) || 0)) + 1
-        : 1;
+export const getProductos = () => api.get('/products');
 
-      
-    const productoConId = { id: nextId, ...nuevoProducto };
+export const getProducto = (id) => api.get(`/products/${id}`);
 
-    const postRes = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(productoConId),
-    });
 
-    if (!postRes.ok) throw new Error("Error al agregar producto");
-    return await postRes.json();
-  } catch (error) {
-    console.error("❌ Error en addProducto:", error);
-    throw error;
-  }
-};
+export const addProducto = (nuevoProducto) => {
 
-export const deleteProducto = async (id) => {
-  await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+  return api.post('/products', nuevoProducto);
 };
 
 
-export const updateProducto = async (id, productoActualizado) => {
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(productoActualizado),
-  });
-  return await res.json();
+export const deleteProducto = (id) => api.delete(`/products/${id}`);
+
+
+export const updateProducto = (id, productoActualizado) => {
+  return api.put(`/products/${id}`, productoActualizado);
 };
