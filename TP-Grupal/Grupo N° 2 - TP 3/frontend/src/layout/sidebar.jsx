@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-// Asumiendo que tienes tu logo en una carpeta de assets
-// import logoImage from '../../assets/logo.png.jpg'; 
+import { useAuthStore } from '../store/authStore';
 
 const SidebarContainer = styled.aside`
   width: 260px;;
@@ -72,10 +71,15 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 const Sidebar = () => {
+
+  const user = useAuthStore((state) => state.user);
+  
+  
+  const isAdmin = user?.role === 'admin';
+
   return (
     <SidebarContainer>
       <SidebarHeader>
-      
         <AppTitle>Indumentaria</AppTitle>
       </SidebarHeader>
       <Nav>
@@ -84,7 +88,13 @@ const Sidebar = () => {
         <StyledNavLink to="/clientes"><i className="fa-solid fa-users"></i> Clientes</StyledNavLink>
         <StyledNavLink to="/ventas"><i className="fa-solid fa-cash-register"></i> Registrar Venta</StyledNavLink>
         <StyledNavLink to="/historial-ventas"><i className="fa-solid fa-receipt"></i> Historial</StyledNavLink>
-        <StyledNavLink to="/reportes"><i className="fa-solid fa-chart-pie"></i> Reportes</StyledNavLink>
+        
+        
+        {isAdmin && (
+          <StyledNavLink to="/reportes">
+            <i className="fa-solid fa-chart-pie"></i> Reportes
+          </StyledNavLink>
+        )}
       </Nav>
     </SidebarContainer>
   );

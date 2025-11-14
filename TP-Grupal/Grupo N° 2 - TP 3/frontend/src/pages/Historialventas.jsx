@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo,useEffect } from "react";
 import styled from "styled-components";
 import Sidebar from "../layout/sidebar";
 import MainContent from "../layout/maincontent";
-import { useFetch } from "../hooks/useFetch"; // ✅ Hook personalizado
-import { deleteVenta } from "../services/ventasService"; 
+import { getVentas, deleteVenta } from "../services/ventasService";
+import { getClientes } from "../services/clientesService";
 
 const PageContainer = styled.div`
   display: flex;
@@ -89,34 +89,71 @@ const Table = styled.table`
 `;
 
 const HistorialVentas = () => {
-  const { data: ventas, loading: loadingVentas, error: errorVentas,refetch, } = useFetch("http://localhost:5000/ventas");
-  const { data: clientes, loading: loadingClientes, error: errorClientes } = useFetch("http://localhost:5000/clientes");
+
+  const [ventas, setVentas] = useState([]);
+  const [clientes, setClientes] = useState([]); 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filtro, setFiltro] = useState("");
 
-  const ventasConCliente = useMemo(() => {
-    if (!ventas || !clientes) return [];
+  // 3. Cargar datos al montar
+  const cargarDatos = async () => {
+    setLoading(true);
+    try {
+      // Ejecutamos las peticiones en paralelo
+      const [ventasData, clientesData] = await Promise.all([
+        getVentas(),
+        getClientes()
+      ]);
+      
+      setVentas(ventasData);
+      setClientes(clientesData);
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError("Error al cargar el historial.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    cargarDatos();
+  }, []);
+
+  
+  const ventasProcesadas = useMemo(() => {
     return ventas.map((v) => {
-      const cliente = clientes.find((c) => c.id === v.clienteId);
+    
+      let nombreCliente = v.clienteNombre; 
+      if (!nombreCliente && clientes.length > 0) {
+        const c = clientes.find(cli => cli.id === v.clientId);
+        nombreCliente = c ? c.name : "Desconocido";
+      }
+
       return {
         ...v,
-        clienteNombre: cliente ? cliente.nombre : "Desconocido",
+        clienteNombre: nombreCliente || "Cliente Eliminado",
+      
+        fechaFormateada: new Date(v.sale_date || v.fecha).toLocaleDateString()
       };
     });
   }, [ventas, clientes]);
 
-  const ventasFiltradas = ventasConCliente.filter((v) => {
-  const nombreCliente = (v.clienteNombre || "").toString().trim().toLowerCase();
-  const textoFiltro = filtro.trim().toLowerCase();
+  // 5. Filtrado
+  const ventasFiltradas = ventasProcesadas.filter((v) => {
+    const nombreCliente = (v.clienteNombre || "").toString().trim().toLowerCase();
+    const textoFiltro = filtro.trim().toLowerCase();
+    return nombreCliente.includes(textoFiltro) || String(v.id).includes(filtro);
+  });
 
-  return nombreCliente.includes(textoFiltro) || String(v.id).includes(filtro);
-});
- 
   const handleDeleteVenta = async (id) => {
     if (!window.confirm("¿Seguro que deseas eliminar esta venta?")) return;
     try {
       await deleteVenta(id);
+     
+      setVentas(ventas.filter(v => v.id !== id));
       alert("✅ Venta eliminada exitosamente");
-      refetch(); // 🔄 recargar datos actualizados
     } catch (error) {
       console.error("Error al eliminar venta:", error);
       alert("Error al eliminar la venta.");
@@ -124,71 +161,41 @@ const HistorialVentas = () => {
   };
 
   const exportarCSV = () => {
-    if (ventasConCliente.length === 0) {
+    if (ventasFiltradas.length === 0) {
       alert("No hay ventas para exportar.");
       return;
     }
-
     const encabezados = ["ID Venta", "Fecha", "Cliente", "Total"];
-
-    const filas = ventasConCliente.map((v) => [
+    const filas = ventasFiltradas.map((v) => [
       v.id,
-      v.fecha,
+      v.fechaFormateada,
       v.clienteNombre,
       v.total,
     ]);
 
-    const totalMonto = ventasConCliente.reduce((acc, v) => acc + Number(v.total || 0), 0);
-    const totalVentas = ventasConCliente.length;
-    const ticketPromedio = totalMonto / totalVentas;
-
+    const totalMonto = ventasFiltradas.reduce((acc, v) => acc + Number(v.total || 0), 0);
     filas.push([]);
-    filas.push(["", "", "Total de Ventas", totalVentas]);
-    filas.push(["", "", "Monto Total Vendido", `$${totalMonto.toLocaleString()}`]);
-    filas.push(["", "", "Ticket Promedio", `$${ticketPromedio.toFixed(2)}`]);
+    filas.push(["", "", "Total:", `$${totalMonto.toLocaleString()}`]);
 
     const csvContent = [encabezados, ...filas].map((e) => e.join(",")).join("\n");
-
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute(
-      "download",
-      `reporte_ventas_${new Date().toISOString().slice(0, 10)}.csv`
-    );
+    link.setAttribute("download", `reporte_ventas.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  if (loadingVentas || loadingClientes) {
-    return <p style={{ padding: "20px" }}>Cargando historial de ventas...</p>;
-  }
-
-  if (errorVentas || errorClientes) {
-    return (
-      <p style={{ padding: "20px", color: "red" }}>
-        Error al cargar los datos del servidor.
-      </p>
-    );
-  }
+  if (loading) return <p style={{ padding: "20px" }}>Cargando historial...</p>;
+  if (error) return <p style={{ padding: "20px", color: "red" }}>{error}</p>;
 
   return (
-    <PageContainer>
+   <PageContainer>
       <Sidebar />
-      <MainContent
-        title="Historial de Ventas"
-        description="Consulta, filtra y exporta todas las transacciones realizadas."
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "20px",
-          }}
-        >
+      <MainContent title="Historial de Ventas" description="Consulta todas las transacciones.">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
           <SearchBar>
             <i className="fa-solid fa-magnifying-glass"></i>
             <input
@@ -209,28 +216,25 @@ const HistorialVentas = () => {
                 <th>Fecha</th>
                 <th>Cliente</th>
                 <th>Total</th>
-                <th>Acciones</th> 
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {ventasFiltradas.length === 0 ? (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: "center", color: "#888" }}>
-                    No hay ventas registradas aún.
+                  <td colSpan="5" style={{ textAlign: "center", color: "#888" }}>
+                    No hay ventas registradas.
                   </td>
                 </tr>
               ) : (
                 ventasFiltradas.map((v) => (
                   <tr key={v.id}>
                     <td>{v.id}</td>
-                    <td>{v.fecha}</td>
+                    <td>{v.fechaFormateada}</td>
                     <td>{v.clienteNombre}</td>
-                    <td>${v.total}</td>
+                    <td>${Number(v.total).toLocaleString()}</td>
                     <td>
-                      <ActionButton
-                        variant="delete"
-                        onClick={() => handleDeleteVenta(v.id)}
-                      >
+                      <ActionButton variant="delete" onClick={() => handleDeleteVenta(v.id)}>
                         <i className="fa-solid fa-trash"></i>
                       </ActionButton>
                     </td>

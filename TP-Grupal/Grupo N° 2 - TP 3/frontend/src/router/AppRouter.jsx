@@ -6,24 +6,32 @@ import Productos from "../pages/Productos";
 import Clientes from "../pages/Clientes";
 import Ventas from "../pages/Ventas";
 import Reportes from "../pages/Reportes";
-import HistorialVentas from "../pages/Historialventas";
+import HistorialVentas from "../pages/Historialventas"; 
 import RouterProtect from "./RouterProtect";
+import RequireAdmin from "./RequireAdmin";
 
 const AppRouter = () => {
   return (
     <Routes>
-      {/* RUTA PÚBLICA */}
-      <Route path="/" element={<Login />} />
-
-      {/* RUTAS PROTEGIDAS */}
-      <Route element={<RouterProtect />}>
+   <Route element={<RouterProtect />}>
+        
+       
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/productos" element={<Productos />} />
         <Route path="/clientes" element={<Clientes />} />
         <Route path="/ventas" element={<Ventas />} />
-        <Route path="/reportes" element={<Reportes />} />
         <Route path="/historial-ventas" element={<HistorialVentas />} />
+
+     
+    
+        <Route element={<RequireAdmin />}>
+           <Route path="/reportes" element={<Reportes />} />
+        
+        </Route>
+
       </Route>
+      
+      <Route path="*" element={<Login />} />
     </Routes>
   );
 };

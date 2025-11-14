@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; 
 import styled from "styled-components";
 import Sidebar from "../layout/sidebar";
 import MainContent from "../layout/maincontent";
 import DataTable from "../components/tables/datatable";
-import { addProducto, deleteProducto, updateProducto } from "../services/productosService";
-import { useFetch } from "../hooks/useFetch";
+import { getProductos, addProducto, deleteProducto, updateProducto } from "../services/productosService";
+
 
 
 const PageContainer = styled.div`
@@ -87,6 +87,37 @@ const ModalContent = styled.div`
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 `;
 
+
+const ModalInput = styled.input`
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+`;
+
+
+const ModalButton = styled.button`
+  padding: 10px;
+  border-radius: 6px;
+  background-color: var(--primary-blue);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+  &:hover {
+    background-color: var(--primary-blue-dark);
+  }
+`;
+
+const FormError = styled.p`
+  color: #DC2626;
+  font-size: 0.85rem;
+  margin: 0;
+`;
+
+
 const ActionButton = styled.button`
   border: none;
   background-color: ${(props) =>
@@ -103,19 +134,45 @@ const ActionButton = styled.button`
   }
 `;
 
+
 const Productos = () => {
-  const { data: productos, loading, error, refetch } = useFetch("http://localhost:5000/productos");
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-  const [nuevoProducto, setNuevoProducto] = useState({ nombre: "", precio: "" });
+  const [nuevoProducto, setNuevoProducto] = useState({ name: "", price: "", stock: 0, talle: "", color: "" });
   const [busqueda, setBusqueda] = useState("");
+  const [formError, setFormError] = useState("");
+
+
+ const loadProductos = async () => {
+    setLoading(true);
+    try {
+      const data = await getProductos();
+      setProductos(data); 
+      setError(null);
+  } catch (err) {
+      console.error(err); 
+      setError("Error al cargar productos");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadProductos();
+  }, []);
 
   const columns = [
     { header: "ID", accessor: "id", type: "text" },
-    { header: "Nombre", accessor: "nombre", type: "text" },
-    { header: "Precio ($)", accessor: "precio", type: "text" },
+    { header: "Nombre", accessor: "name", type: "text" },
+    { header: "Precio ($)", accessor: "price", type: "text" },
+    { header: "Stock", accessor: "stock", type: "text" },
+    { header: "Talle", accessor: "talle", type: "text" },
+    { header: "Color", accessor: "color", type: "text" },
     { header: "Acciones", accessor: "acciones", type: "actions" },
   ];
 
@@ -130,65 +187,84 @@ const Productos = () => {
     </>
   );
 
-  const handleAddProducto = async (e) => {
+ const handleAddProducto = async (e) => {
     e.preventDefault();
-    if (!nuevoProducto.nombre || !nuevoProducto.precio) {
-      alert("Por favor completa todos los campos");
+    if (!nuevoProducto.name || !nuevoProducto.price) {
+      setFormError("Nombre y Precio son obligatorios");
       return;
     }
 
     try {
-      await addProducto(nuevoProducto);
-      refetch();
+     
+      const createdProduct = await addProducto(nuevoProducto);
+      
+     
+      setProductos([...productos, createdProduct]);
+      
       setShowModal(false);
-      setNuevoProducto({ nombre: "", precio: "" });
+      setNuevoProducto({ name: "", price: "", stock: 0, talle: "", color: "" });
+      setFormError("");
     } catch (error) {
-      console.error("Error al agregar producto:", error);
+      console.error(error);
+      setFormError("Error al crear producto");
     }
   };
 
   const handleDeleteProducto = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este producto?")) return;
+    if (!window.confirm("¿Borrar producto?")) return;
     try {
       await deleteProducto(id);
-      refetch();
+      setProductos(productos.filter((p) => p.id !== id));
     } catch (error) {
-      console.error("Error al eliminar producto:", error);
+      console.error(error);
+      alert("Error al eliminar");
     }
   };
 
   const handleEditProducto = (producto) => {
     setIsEditing(true);
-    setProductoSeleccionado(producto);
+    setProductoSeleccionado({ ...producto });
     setShowModal(true);
+    setFormError("");
   };
 
   const handleUpdateProducto = async (e) => {
     e.preventDefault();
-    if (!productoSeleccionado.nombre || !productoSeleccionado.precio) {
-      alert("Por favor completa todos los campos");
+    if (!productoSeleccionado.name || !productoSeleccionado.price) {
+      setFormError("Nombre y Precio son obligatorios");
       return;
     }
 
     try {
-      await updateProducto(productoSeleccionado.id, productoSeleccionado);
-      refetch();
+      const updatedProduct = await updateProducto(productoSeleccionado.id, productoSeleccionado);
+      
+      setProductos(productos.map((p) => (p.id === productoSeleccionado.id ? updatedProduct : p)));
+      
       setShowModal(false);
       setIsEditing(false);
       setProductoSeleccionado(null);
+      setFormError("");
     } catch (error) {
-      console.error("Error al actualizar producto:", error);
+      console.error(error);
+      setFormError("Error al actualizar");
     }
   };
 
-  if (loading) return <p style={{ padding: "20px" }}>Cargando productos...</p>;
+  const handleModalChange = (e) => {
+    const { name, value } = e.target;
+    if (isEditing) {
+      setProductoSeleccionado({ ...productoSeleccionado, [name]: value });
+    } else {
+      setNuevoProducto({ ...nuevoProducto, [name]: value });
+    }
+  };
+
+  if (loading) return <p style={{ padding: "20px" }}>Cargando...</p>;
   if (error) return <p style={{ padding: "20px", color: "red" }}>Error: {error}</p>;
 
-  const productosFiltrados = productos
-    ? productos.filter((p) =>
-        p.nombre.toLowerCase().includes(busqueda.toLowerCase())
-      )
- : [];
+  const productosFiltrados = productos.filter((p) =>
+    p.name.toLowerCase().includes(busqueda.toLowerCase())
+  );
 
   const dataWithActions = productosFiltrados.map((p) => ({
     ...p,
@@ -213,7 +289,9 @@ const Productos = () => {
             onClick={() => {
               setShowModal(true);
               setIsEditing(false);
-              setNuevoProducto({ nombre: "", precio: "" });
+            
+              setNuevoProducto({ name: "", price: "", stock: 0, talle: "", color: "" });
+              setFormError("");
             }}
           >
             <i className="fa-solid fa-plus"></i>
@@ -234,63 +312,60 @@ const Productos = () => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "10px",
+                  gap: "15px", 
                   marginTop: "20px",
                 }}
               >
-                {isEditing && (
-                  <input
-                    type="text"
-                    value={productoSeleccionado.id}
-                    disabled
-                    style={{
-                      padding: "10px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                      backgroundColor: "#f3f4f6",
-                    }}
-                  />
-                )}
-                <input
+               
+                <ModalInput
                   type="text"
+                  name="name" 
                   placeholder="Nombre del producto"
-                  value={isEditing ? productoSeleccionado.nombre : nuevoProducto.nombre}
-                  onChange={(e) =>
-                    isEditing
-                      ? setProductoSeleccionado({
-                          ...productoSeleccionado,
-                          nombre: e.target.value,
-                        })
-                      : setNuevoProducto({ ...nuevoProducto, nombre: e.target.value })
-                  }
+                  value={isEditing ? productoSeleccionado.name : nuevoProducto.name}
+                  onChange={handleModalChange}
                 />
-                <input
+
+           
+                <ModalInput
                   type="number"
+                  name="price"
                   placeholder="Precio"
-                  value={isEditing ? productoSeleccionado.precio : nuevoProducto.precio}
-                  onChange={(e) =>
-                    isEditing
-                      ? setProductoSeleccionado({
-                          ...productoSeleccionado,
-                          precio: e.target.value,
-                        })
-                      : setNuevoProducto({ ...nuevoProducto, precio: e.target.value })
-                  }
+                  value={isEditing ? productoSeleccionado.price : nuevoProducto.price}
+                  onChange={handleModalChange}
                 />
-                <button
-                  type="submit"
-                  style={{
-                    padding: "10px",
-                    borderRadius: "6px",
-                    backgroundColor: "var(--primary-blue)",
-                    color: "white",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                    border: "none",
-                  }}
-                >
+
+              
+                <ModalInput
+                  type="number"
+                  name="stock"
+                  placeholder="Stock"
+                  value={isEditing ? productoSeleccionado.stock : nuevoProducto.stock}
+                  onChange={handleModalChange}
+                />
+
+                
+                <ModalInput
+                  type="text"
+                  name="talle"
+                  placeholder="Talle"
+                  value={isEditing ? productoSeleccionado.talle : nuevoProducto.talle}
+                  onChange={handleModalChange}
+                />
+
+              
+                <ModalInput
+                  type="text"
+                  name="color"
+                  placeholder="Color"
+                  value={isEditing ? productoSeleccionado.color : nuevoProducto.color}
+                  onChange={handleModalChange}
+                />
+                
+                {formError && <FormError>{formError}</FormError>}
+
+                <ModalButton type="submit">
                   {isEditing ? "Guardar Cambios" : "Guardar Producto"}
-                </button>
+                </ModalButton>
               </form>
             </ModalContent>
           </ModalBackdrop>
