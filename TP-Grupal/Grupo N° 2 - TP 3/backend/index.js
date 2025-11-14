@@ -8,7 +8,7 @@ import pool from './db/db.js';
 
 import authRoutes from './routes/authRoutes.js';
 
-//import clientRoutes from './routes/clientRoutes.js';
+import clientRoutes from './routes/clientRoutes.js';
 //import productRoutes from './routes/productRoutes.js';
 import saleRoutes from './routes/saleRoutes.js';
 
@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 
-//app.use('/api/clients', clientRoutes);
+app.use('/api/clients', clientRoutes);
 //app.use('/api/products', productRoutes);
 app.use('/api/sales', saleRoutes);
 

@@ -1,10 +1,10 @@
-import React, { useState, } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import Sidebar from "../layout/sidebar";
 import MainContent from "../layout/maincontent";
 import DataTable from "../components/tables/datatable";
-import { addCliente, deleteCliente } from "../services/clientesService";
-import { useFetch } from "../hooks/useFetch";
+import { getClientes, addCliente, updateCliente, deleteCliente } from "../services/clientesService";
+
 
 const PageContainer = styled.div`
   display: flex;
@@ -104,13 +104,34 @@ const ActionButton = styled.button`
 `;
 
 const Clientes = () => {
-  const { data: clientes, loading, error, refetch } = useFetch("http://localhost:5000/clientes");
+ const [clientes, setClientes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [nuevoCliente, setNuevoCliente] = useState({ nombre: "", telefono: "" });
   const [busqueda, setBusqueda] = useState("");
+
+
+ const loadClientes = async () => {
+    setLoading(true);
+    try {
+      const data = await getClientes();
+      setClientes(data);
+      setError(null);
+    } catch (err) {
+      console.error(err);
+      setError("Error al cargar clientes");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadClientes();
+  }, []);
 
   const columns = [
     { header: "ID", accessor: "id", type: "text" },
@@ -139,11 +160,12 @@ const Clientes = () => {
 
     try {
       await addCliente(nuevoCliente);
-      refetch();
+      loadClientes(); // Recargar lista
       setShowModal(false);
       setNuevoCliente({ nombre: "", telefono: "" });
     } catch (error) {
       console.error("Error al agregar cliente:", error);
+      alert("Error al crear el cliente");
     }
   };
 
@@ -151,9 +173,10 @@ const Clientes = () => {
     if (!window.confirm("¿Seguro que deseas eliminar este cliente?")) return;
     try {
       await deleteCliente(id);
-      refetch();
+      loadClientes(); // Recargar lista
     } catch (error) {
       console.error("Error al eliminar cliente:", error);
+      alert("Error al eliminar");
     }
   };
 
@@ -170,20 +193,20 @@ const Clientes = () => {
       return;
     }
 
-    await fetch(`http://localhost:5000/clientes/${clienteSeleccionado.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(clienteSeleccionado),
-    });
-
-    refetch();
-    setShowModal(false);
-    setIsEditing(false);
-    setClienteSeleccionado(null);
+    try {
+    
+      await updateCliente(clienteSeleccionado.id, clienteSeleccionado);
+      loadClientes();
+      setShowModal(false);
+      setIsEditing(false);
+      setClienteSeleccionado(null);
+    } catch (error) {
+      console.error("Error al actualizar:", error);
+      alert("Error al actualizar el cliente");
+    }
   };
-
-  if (loading) return <p style={{ padding: "20px" }}>Cargando clientes...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
+if (loading) return <p style={{ padding: "20px" }}>Cargando clientes...</p>;
+  if (error) return <p style={{ padding: "20px", color: "red" }}>Error: {error}</p>;
 
   const clientesFiltrados = clientes.filter((c) =>
     c.nombre.toLowerCase().includes(busqueda.toLowerCase())
@@ -227,6 +250,7 @@ const Clientes = () => {
           <DataTable columns={columns} data={dataWithActions} />
         </ContentWrapper>
 
+        {/* --- MODAL --- */}
         {showModal && (
           <ModalBackdrop onClick={() => setShowModal(false)}>
             <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -245,13 +269,7 @@ const Clientes = () => {
                     type="text"
                     value={clienteSeleccionado.id}
                     disabled
-                    style={{
-                      padding: "10px",
-                      borderRadius: "6px",
-                      border: "1px solid #ccc",
-                      backgroundColor: "#f3f4f6",
-                      color: "#555",
-                    }}
+                    style={{ padding: "10px", borderRadius: "6px", border: "1px solid #ccc", backgroundColor: "#f3f4f6", color: "#555" }}
                   />
                 )}
                 <input
@@ -260,17 +278,10 @@ const Clientes = () => {
                   value={isEditing ? clienteSeleccionado.nombre : nuevoCliente.nombre}
                   onChange={(e) =>
                     isEditing
-                      ? setClienteSeleccionado({
-                          ...clienteSeleccionado,
-                          nombre: e.target.value,
-                        })
+                      ? setClienteSeleccionado({ ...clienteSeleccionado, nombre: e.target.value })
                       : setNuevoCliente({ ...nuevoCliente, nombre: e.target.value })
                   }
-                  style={{
-                    padding: "10px",
-                    borderRadius: "6px",
-                    border: "1px solid #ccc",
-                  }}
+                  style={{ padding: "10px", borderRadius: "6px", border: "1px solid #ccc" }}
                 />
                 <input
                   type="text"
@@ -278,29 +289,14 @@ const Clientes = () => {
                   value={isEditing ? clienteSeleccionado.telefono : nuevoCliente.telefono}
                   onChange={(e) =>
                     isEditing
-                      ? setClienteSeleccionado({
-                          ...clienteSeleccionado,
-                          telefono: e.target.value,
-                        })
+                      ? setClienteSeleccionado({ ...clienteSeleccionado, telefono: e.target.value })
                       : setNuevoCliente({ ...nuevoCliente, telefono: e.target.value })
                   }
-                  style={{
-                    padding: "10px",
-                    borderRadius: "6px",
-                    border: "1px solid #ccc",
-                  }}
+                  style={{ padding: "10px", borderRadius: "6px", border: "1px solid #ccc" }}
                 />
                 <button
                   type="submit"
-                  style={{
-                    padding: "10px",
-                    borderRadius: "6px",
-                    backgroundColor: "var(--primary-blue)",
-                    color: "white",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                    border: "none",
-                  }}
+                  style={{ padding: "10px", borderRadius: "6px", backgroundColor: "var(--primary-blue)", color: "white", fontWeight: "bold", cursor: "pointer", border: "none" }}
                 >
                   {isEditing ? "Guardar Cambios" : "Guardar Cliente"}
                 </button>
