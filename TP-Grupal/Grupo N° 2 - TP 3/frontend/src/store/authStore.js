@@ -1,49 +1,36 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-
 export const useAuthStore = create(
   persist(
-    (set) => ({
-     
-      token: null, 
-      user: null,  
-
-      
-      
-      /**
-     
-       * @param {object} userData 
-       */
-      login: (userData) => set({
-        token: userData.token,
-        user: {
-          username: userData.username,
-          role: userData.role
-        }
-      }),
+    (set, get) => ({
+      token: null,
+      user: null,
 
      
-      logout: () => set({ 
-        token: null, 
-        user: null 
-      }),
-
-      /**
-      
-       * @returns {boolean}
-       */
-      isLogged: () => {
-    
-        const state = useAuthStore.getState();
+      login: (apiResponse) => {
         
-        return !!state.token;
+        
+        set({
+          token: apiResponse.token,
+          user: apiResponse.user 
+        });
+        
+        console.log("Login exitoso. Usuario guardado:", apiResponse.user); 
+      },
+
+      logout: () => {
+        set({ token: null, user: null });
+        localStorage.removeItem('auth-storage'); 
+      },
+
+      isLogged: () => {
+        return !!get().token;
       }
     }),
     {
-
-      name: 'auth-storage', 
-      storage: createJSONStorage(() => localStorage), 
+      name: 'auth-storage',
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

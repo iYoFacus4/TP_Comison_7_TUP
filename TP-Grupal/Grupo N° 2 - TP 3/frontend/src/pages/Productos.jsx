@@ -87,7 +87,7 @@ const ModalContent = styled.div`
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 `;
 
-// Input simple para el modal
+
 const ModalInput = styled.input`
   padding: 10px;
   border-radius: 6px;
@@ -96,7 +96,7 @@ const ModalInput = styled.input`
   box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
 `;
 
-// Botón simple para el modal
+
 const ModalButton = styled.button`
   padding: 10px;
   border-radius: 6px;
@@ -133,10 +133,9 @@ const ActionButton = styled.button`
     opacity: 0.85;
   }
 `;
-// ... Fin de styled-components
+
 
 const Productos = () => {
-
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -144,30 +143,28 @@ const Productos = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-  
-  const [nuevoProducto, setNuevoProducto] = useState({
-    name: "",
-    price: "",
-    stock: 0,
-    talle: "",
-    color: "",
-  });
+  const [nuevoProducto, setNuevoProducto] = useState({ name: "", price: "", stock: 0, talle: "", color: "" });
   const [busqueda, setBusqueda] = useState("");
-  const [formError, setFormError] = useState(""); // Para reemplazar 'alert'
+  const [formError, setFormError] = useState("");
+
+
+ const loadProductos = async () => {
+    setLoading(true);
+    try {
+      const data = await getProductos();
+      setProductos(data); 
+      setError(null);
+  } catch (err) {
+      console.error(err); 
+      setError("Error al cargar productos");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadProductos = async () => {
-      try {
-        const res = await getProductos();
-        setProductos(res.data);
-      } catch (err) {
-        setError(err.message || "Error al cargar productos");
-      }
-      setLoading(false);
-    };
-
     loadProductos();
-  }, []); // El array vacío asegura que se ejecute solo 1 vez
+  }, []);
 
   const columns = [
     { header: "ID", accessor: "id", type: "text" },
@@ -190,31 +187,37 @@ const Productos = () => {
     </>
   );
 
-  const handleAddProducto = async (e) => {
+ const handleAddProducto = async (e) => {
     e.preventDefault();
     if (!nuevoProducto.name || !nuevoProducto.price) {
-      setFormError("Nombre y Precio son campos obligatorios");
+      setFormError("Nombre y Precio son obligatorios");
       return;
     }
 
     try {
-      const res = await addProducto(nuevoProducto); // El servicio nos devuelve el producto creado
-      setProductos([...productos, res.data]); 
+     
+      const createdProduct = await addProducto(nuevoProducto);
+      
+     
+      setProductos([...productos, createdProduct]);
+      
       setShowModal(false);
-      setNuevoProducto({ name: "", price: "", stock: 0, talle: "", color: "" }); // Reseteamos form
+      setNuevoProducto({ name: "", price: "", stock: 0, talle: "", color: "" });
       setFormError("");
     } catch (error) {
-      console.error("Error al agregar producto:", error);
-      setFormError("Error al agregar el producto");
+      console.error(error);
+      setFormError("Error al crear producto");
     }
   };
 
   const handleDeleteProducto = async (id) => {
+    if (!window.confirm("¿Borrar producto?")) return;
     try {
       await deleteProducto(id);
-      setProductos(productos.filter((p) => p.id !== id)); 
+      setProductos(productos.filter((p) => p.id !== id));
     } catch (error) {
-      console.error("Error al eliminar producto:", error);
+      console.error(error);
+      alert("Error al eliminar");
     }
   };
 
@@ -228,41 +231,25 @@ const Productos = () => {
   const handleUpdateProducto = async (e) => {
     e.preventDefault();
     if (!productoSeleccionado.name || !productoSeleccionado.price) {
-      setFormError("Nombre y Precio son campos obligatorios");
+      setFormError("Nombre y Precio son obligatorios");
       return;
     }
 
     try {
-      const res = await updateProducto(productoSeleccionado.id, productoSeleccionado);
-      setProductos(
-        productos.map((p) => (p.id === productoSeleccionado.id ? res.data : p))
-      );
+      const updatedProduct = await updateProducto(productoSeleccionado.id, productoSeleccionado);
+      
+      setProductos(productos.map((p) => (p.id === productoSeleccionado.id ? updatedProduct : p)));
+      
       setShowModal(false);
       setIsEditing(false);
       setProductoSeleccionado(null);
       setFormError("");
-    } catch (error) {<img src="https://i.imgur.com/8GqG0bF.png" alt="error al actualizar" />} {
-      console.error("Error al actualizar producto:", error);
-      setFormError("Error al actualizar el producto");
+    } catch (error) {
+      console.error(error);
+      setFormError("Error al actualizar");
     }
   };
 
-
-  if (loading) return <p style={{ padding: "20px" }}>Cargando productos...</p>;
-  if (error) return <p style={{ padding: "20px", color: "red" }}>Error: {error}</p>;
-
-  const productosFiltrados = productos
-    ? productos.filter((p) =>
-        p.name.toLowerCase().includes(busqueda.toLowerCase())
-      )
-    : [];
-
-  const dataWithActions = productosFiltrados.map((p) => ({
-    ...p,
-    acciones: renderActions(p),
-  }));
-
-  // Función para manejar cambios en los inputs del modal
   const handleModalChange = (e) => {
     const { name, value } = e.target;
     if (isEditing) {
@@ -271,6 +258,18 @@ const Productos = () => {
       setNuevoProducto({ ...nuevoProducto, [name]: value });
     }
   };
+
+  if (loading) return <p style={{ padding: "20px" }}>Cargando...</p>;
+  if (error) return <p style={{ padding: "20px", color: "red" }}>Error: {error}</p>;
+
+  const productosFiltrados = productos.filter((p) =>
+    p.name.toLowerCase().includes(busqueda.toLowerCase())
+  );
+
+  const dataWithActions = productosFiltrados.map((p) => ({
+    ...p,
+    acciones: renderActions(p),
+  }));
 
   return (
     <PageContainer>
@@ -290,7 +289,7 @@ const Productos = () => {
             onClick={() => {
               setShowModal(true);
               setIsEditing(false);
-              // Reseteamos el form completo
+            
               setNuevoProducto({ name: "", price: "", stock: 0, talle: "", color: "" });
               setFormError("");
             }}
@@ -313,20 +312,20 @@ const Productos = () => {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  gap: "15px", // Aumentamos el espacio
+                  gap: "15px", 
                   marginTop: "20px",
                 }}
               >
-                {/* CAMPO: Nombre (name) */}
+               
                 <ModalInput
                   type="text"
-                  name="name" // <-- CAMBIO
+                  name="name" 
                   placeholder="Nombre del producto"
                   value={isEditing ? productoSeleccionado.name : nuevoProducto.name}
                   onChange={handleModalChange}
                 />
 
-                {/* CAMPO: Precio (price) */}
+           
                 <ModalInput
                   type="number"
                   name="price"
@@ -335,7 +334,7 @@ const Productos = () => {
                   onChange={handleModalChange}
                 />
 
-                {/* CAMPO: Stock - NUEVO */}
+              
                 <ModalInput
                   type="number"
                   name="stock"
@@ -344,7 +343,7 @@ const Productos = () => {
                   onChange={handleModalChange}
                 />
 
-                {/* CAMPO: Talle - NUEVO */}
+                
                 <ModalInput
                   type="text"
                   name="talle"
@@ -353,7 +352,7 @@ const Productos = () => {
                   onChange={handleModalChange}
                 />
 
-                {/* CAMPO: Color - NUEVO */}
+              
                 <ModalInput
                   type="text"
                   name="color"

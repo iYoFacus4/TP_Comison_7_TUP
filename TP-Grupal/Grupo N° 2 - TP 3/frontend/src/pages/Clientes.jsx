@@ -4,6 +4,7 @@ import Sidebar from "../layout/sidebar";
 import MainContent from "../layout/maincontent";
 import DataTable from "../components/tables/datatable";
 import { getClientes, addCliente, updateCliente, deleteCliente } from "../services/clientesService";
+import { useAuthStore } from "../store/authStore";
 
 
 const PageContainer = styled.div`
@@ -114,6 +115,9 @@ const Clientes = () => {
   const [nuevoCliente, setNuevoCliente] = useState({ nombre: "", telefono: "" });
   const [busqueda, setBusqueda] = useState("");
 
+  const user = useAuthStore((state) => state.user);
+  const isAdmin = user?.role === 'admin';
+
 
  const loadClientes = async () => {
     setLoading(true);
@@ -142,12 +146,17 @@ const Clientes = () => {
 
   const renderActions = (cliente) => (
     <>
+    
       <ActionButton variant="edit" onClick={() => handleEditCliente(cliente)}>
         <i className="fa-solid fa-pencil"></i>
       </ActionButton>
-      <ActionButton variant="delete" onClick={() => handleDeleteCliente(cliente.id)}>
-        <i className="fa-solid fa-xmark"></i>
-      </ActionButton>
+
+     
+      {isAdmin && (
+        <ActionButton variant="delete" onClick={() => handleDeleteCliente(cliente.id)}>
+          <i className="fa-solid fa-xmark"></i>
+        </ActionButton>
+      )}
     </>
   );
 

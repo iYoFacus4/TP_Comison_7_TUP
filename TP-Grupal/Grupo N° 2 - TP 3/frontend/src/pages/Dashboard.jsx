@@ -4,7 +4,8 @@ import Sidebar from "../layout/sidebar";
 import MainContent from "../layout/maincontent";
 import ActionCard from "../dashboard/actioncard";
 import KpiCard from "../dashboard/kpicard";
-import { fakeDashboardData } from "../utils";
+import { getVentas } from "../services/ventasService";
+import { getClientes } from "../services/clientesService";
 
 const PageContainer = styled.div`display:flex;`;
 
@@ -21,30 +22,93 @@ const KpiGrid = styled.div`
 `;
 
 export function Dashboard() {
-  const [kpis, setKpis] = useState(null);
+
+  const [kpis, setKpis] = useState({
+    ventasHoy: 0,
+    ingresosHoy: 0,
+    ticketsPromedio: 0,
+    totalClientes: 0
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => {
-      setKpis(fakeDashboardData);
-      setLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
+    const cargarDatosReales = async () => {
+      setLoading(true);
+      try {
+       
+        const [ventasData, clientesData] = await Promise.all([
+          getVentas(),
+          getClientes()
+        ]);
+
+       
+        const hoy = new Date().toISOString().split('T')[0];
+
+     
+        const ventasDeHoy = ventasData.filter(v => {
+          
+            const fechaVenta = v.fecha || v.sale_date; 
+            return fechaVenta && fechaVenta.toString().startsWith(hoy);
+        });
+
+        const totalIngresosHoy = ventasDeHoy.reduce((acc, v) => acc + Number(v.total), 0);
+
+       
+        const totalHistorico = ventasData.reduce((acc, v) => acc + Number(v.total), 0);
+        const promedio = ventasData.length > 0 ? totalHistorico / ventasData.length : 0;
+
+       
+        setKpis({
+          ventasHoy: ventasDeHoy.length,
+          ingresosHoy: totalIngresosHoy,
+          ticketsPromedio: promedio,
+          totalClientes: clientesData.length
+        });
+
+      } catch (error) {
+        console.error("Error cargando dashboard:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    cargarDatosReales();
   }, []);
 
   return (
     <PageContainer>
       <Sidebar />
-      <MainContent title="Dashboard" description="Resumen de indicadores del día.">
-        {loading && <p>Cargando KPIs...</p>}
-        {!loading && kpis && (
+      <MainContent title="Dashboard" description="Resumen de indicadores del día (Datos en Tiempo Real).">
+        {loading && <p style={{padding: "20px"}}>Cargando indicadores...</p>}
+        
+        {!loading && (
           <>
             <KpiGrid>
-              <KpiCard icon="cart"    title="Ventas (hoy)"     value={kpis.ventasHoy}       comparison="+8% vs ayer" />
-              <KpiCard icon="dollar"  title="Ingresos (hoy)"   value={`$ ${kpis.ingresosHoy.toLocaleString('es-AR')}`} comparison="+5% vs ayer" />
-              <KpiCard icon="ticket"  title="Ticket Promedio"  value={`$ ${kpis.ticketsPromedio ? kpis.ticketsPromedio.toLocaleString('es-AR') : 'N/A'}`} comparison="+2% vs ayer" />
-              <KpiCard icon="truck"   title="Pend. de Entrega" value={kpis.pendientesEntrega ?? 0} comparison="-1 vs ayer" />
+              <KpiCard 
+                icon="cart" 
+                title="Ventas (hoy)" 
+                value={kpis.ventasHoy} 
+                comparison="Registradas hoy" 
+              />
+              <KpiCard 
+                icon="dollar" 
+                title="Ingresos (hoy)" 
+                value={`$ ${kpis.ingresosHoy.toLocaleString('es-AR')}`} 
+                comparison="Facturación diaria" 
+              />
+              <KpiCard 
+                icon="ticket" 
+                title="Ticket Promedio" 
+                value={`$ ${kpis.ticketsPromedio.toLocaleString('es-AR', { maximumFractionDigits: 0 })}`} 
+                comparison="Histórico global" 
+              />
+             
+              <KpiCard 
+                icon="users" 
+                title="Total Clientes" 
+                value={kpis.totalClientes} 
+                comparison="Base de datos activa" 
+              />
             </KpiGrid>
 
             <QuickActionsGrid>
