@@ -1,22 +1,16 @@
-const API_URL = "http://localhost:5000/ventas";
-
+import api from './api'; 
 
 export const getVentas = async () => {
-  const res = await fetch(API_URL);
-  return await res.json();
+  const res = await api.get('/sales');
+  return res.data;
 };
-
 
 export const addVenta = async (nuevaVenta) => {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(nuevaVenta),
-  });
-  return await res.json();
+ 
+  const res = await api.post('/sales', nuevaVenta);
+  return res.data;
 };
 
-
 export const deleteVenta = async (id) => {
-  await fetch(`http://localhost:5000/ventas/${id}`, { method: "DELETE" });
+  await api.delete(`/sales/${id}`);
 };

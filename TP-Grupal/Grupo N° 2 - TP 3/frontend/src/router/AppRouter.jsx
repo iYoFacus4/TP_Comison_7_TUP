@@ -12,10 +12,10 @@ import RouterProtect from "./RouterProtect";
 const AppRouter = () => {
   return (
     <Routes>
-      {/* RUTA PÚBLICA */}
+      
       <Route path="/" element={<Login />} />
 
-      {/* RUTAS PROTEGIDAS */}
+      
       <Route element={<RouterProtect />}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/productos" element={<Productos />} />

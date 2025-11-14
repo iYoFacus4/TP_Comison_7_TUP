@@ -57,13 +57,13 @@ const ProductosTable = styled.table`
     padding: 10px;
     border-bottom: 1px solid var(--border-color);
   }
-`;
+`;  
 
 const Ventas = () => {
-  const { data: clientes, loading: loadingClientes, error: errorClientes } = useFetch("http://localhost:5000/clientes");
-  const { data: productos, loading: loadingProductos, error: errorProductos } = useFetch("http://localhost:5000/productos");
+ 
+  const { data: clientes, loading: loadingClientes, error: errorClientes } = useFetch("http://localhost:3001/api/clients");
+  const { data: productos, loading: loadingProductos, error: errorProductos } = useFetch("http://localhost:3001/api/products");
 
-  // Estados locales
   const [clienteSeleccionado, setClienteSeleccionado] = useState("");
   const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
   const [detalle, setDetalle] = useState([]);
@@ -72,7 +72,14 @@ const Ventas = () => {
   const handleAgregarProducto = () => {
     const producto = productos.find((p) => String(p.id) === productoSeleccionado);
     if (!producto) return;
-    setDetalle([...detalle, producto]);
+    
+    // Validar stock antes de agregar (Bonus visual)
+    if (producto.stock <= 0) {
+      alert("No hay stock disponible");
+      return;
+    }
+    
+    setDetalle([...detalle, { ...producto, cantidad: 1 }]); 
   };
 
   const handleEliminarProducto = (id) => {
@@ -85,30 +92,33 @@ const Ventas = () => {
       return;
     }
 
-    const nuevaVenta = {
-      clienteId: Number(clienteSeleccionado),
-      fecha,
+   
+    const ventaPayload = {
+      clientId: Number(clienteSeleccionado),
       productos: detalle.map((p) => ({
-        productoId: p.id,
-        nombre: p.nombre,
-        precio: p.precio,
-      })),
-      total: detalle.reduce((sum, p) => sum + Number(p.precio), 0),
+        productId: p.id,
+        cantidad: 1, 
+        precio: p.price || p.precio 
+      }))
     };
 
     try {
-      await addVenta(nuevaVenta);
+      await addVenta(ventaPayload);
       alert("✅ Venta registrada exitosamente");
+      
+      
       setClienteSeleccionado("");
       setProductoSeleccionado("");
       setDetalle([]);
     } catch (error) {
       console.error("Error al registrar la venta:", error);
-      alert("❌ Error al registrar la venta");
+      
+      const msg = error.response?.data?.message || "Error al registrar la venta";
+      alert("❌ " + msg);
     }
   };
 
-  // Mensajes de carga o error
+  
   if (loadingClientes || loadingProductos) {
     return <p style={{ padding: "20px" }}>Cargando datos...</p>;
   }

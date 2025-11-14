@@ -5,11 +5,12 @@ import morgan from 'morgan';
 import 'dotenv/config';
 import pool from './db/db.js';
 
-// Importación de Rutas 
-//import authRoutes from './routes/authRoutes.js';
-//import clientRoutes from './routes/clientRoutes.js';
-import productRoutes from './routes/productRoutes.js';
-//import saleRoutes from './routes/saleRoutes.js';
+
+import authRoutes from './routes/authRoutes.js';
+
+import clientRoutes from './routes/clientRoutes.js';
+//import productRoutes from './routes/productRoutes.js';
+import saleRoutes from './routes/saleRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -22,11 +23,13 @@ app.use(express.json());
 
 
 
-//  Rutas del API 
-//app.use('/api/auth', authRoutes);
-//app.use('/api/clients', clientRoutes);
-app.use('/api/products', productRoutes);
-//app.use('/api/sales', saleRoutes);
+
+app.use('/api/auth', authRoutes);
+
+app.use('/api/clients', clientRoutes);
+//app.use('/api/products', productRoutes);
+app.use('/api/sales', saleRoutes);
+
 
 
 app.listen(PORT, async () => {
