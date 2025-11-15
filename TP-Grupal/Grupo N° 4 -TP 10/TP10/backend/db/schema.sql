@@ -8,6 +8,22 @@ CREATE DATABASE IF NOT EXISTS tp_semana3;
 USE tp_semana3;
 
 -- ========================================
+-- Tabla de usuarios (para autenticación)
+-- ========================================
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  email VARCHAR(150) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL COMMENT 'Contraseña hasheada con bcrypt',
+  nombre VARCHAR(150),
+  rol ENUM('admin', 'barbero', 'cliente') DEFAULT 'barbero',
+  activo BOOLEAN DEFAULT TRUE,
+  fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  ultimo_acceso TIMESTAMP NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ========================================
 -- Tabla de clientes
 -- ========================================
 DROP TABLE IF EXISTS appointments;
@@ -53,6 +69,8 @@ CREATE TABLE appointments (
 -- ========================================
 -- Índices adicionales para optimización
 -- ========================================
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_username ON users(username);
 CREATE INDEX idx_clients_email ON clients(email);
 CREATE INDEX idx_services_available ON services(available);
 CREATE INDEX idx_appointments_client ON appointments(client_id);
@@ -63,6 +81,11 @@ CREATE INDEX idx_appointments_datetime ON appointments(date, time);
 -- ========================================
 -- Datos de prueba básicos
 -- ========================================
+
+-- Insertar usuarios de ejemplo (contraseña: "admin123" y "barbero123" hasheadas con bcrypt)
+INSERT INTO users (username, email, password, nombre, rol) VALUES
+('admin', 'admin@barberia.com', '$2b$10$rZ5YqN8xW0JQlGkK3mF8PuO6WVXqwYhHJzJfI6Xr5KnM7yC9XYZH6', 'Administrador', 'admin'),
+('barbero1', 'barbero@barberia.com', '$2b$10$rZ5YqN8xW0JQlGkK3mF8PuO6WVXqwYhHJzJfI6Xr5KnM7yC9XYZH6', 'Juan Pérez', 'barbero');
 
 -- Insertar clientes de ejemplo
 INSERT INTO clients (id, name, email, phone) VALUES
@@ -94,6 +117,8 @@ INSERT INTO appointments (id, client_id, service_id, date, time, status) VALUES
 SHOW TABLES;
 
 -- Mostrar resumen de datos
+SELECT 'Usuarios registrados:' as Info, COUNT(*) as Total FROM users
+UNION ALL
 SELECT 'Clientes registrados:' as Info, COUNT(*) as Total FROM clients
 UNION ALL
 SELECT 'Servicios disponibles:', COUNT(*) FROM services WHERE available = TRUE

@@ -20,6 +20,14 @@ const swaggerOptions = {
       },
     ],
     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "Ingrese el token JWT (sin 'Bearer')",
+        },
+      },
       schemas: {
         Cliente: {
           type: "object",

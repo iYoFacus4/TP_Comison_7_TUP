@@ -8,6 +8,7 @@ import swaggerSpec from "./config/swagger.js";
 import { testConnection } from "./db/db.js";
 
 // Importar rutas
+import authRoutes from "./routes/auth.routes.js";
 import clientRoutes from "./routes/clientRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 import appointmentRoutes from "./routes/appointmentRoutes.js";
@@ -57,6 +58,7 @@ app.get("/api/ping", (req, res) => {
 });
 
 // Rutas de la API
+app.use("/api/auth", authRoutes);
 app.use("/api/clients", clientRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/appointments", appointmentRoutes);

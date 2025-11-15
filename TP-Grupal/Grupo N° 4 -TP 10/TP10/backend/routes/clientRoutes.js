@@ -6,6 +6,7 @@ import {
   updateClient,
   deleteClient,
 } from "../controllers/clientController.js";
+import { authenticateToken } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -100,6 +101,8 @@ router.get("/:id", getClientById);
  *   post:
  *     summary: Crear un nuevo cliente
  *     tags: [Clientes]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -142,7 +145,7 @@ router.get("/:id", getClientById);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.post("/", createClient);
+router.post("/", authenticateToken, createClient);
 
 /**
  * @swagger
@@ -150,6 +153,8 @@ router.post("/", createClient);
  *   put:
  *     summary: Actualizar un cliente existente
  *     tags: [Clientes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -186,7 +191,7 @@ router.post("/", createClient);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.put("/:id", updateClient);
+router.put("/:id", authenticateToken, updateClient);
 
 /**
  * @swagger
@@ -194,6 +199,8 @@ router.put("/:id", updateClient);
  *   delete:
  *     summary: Eliminar un cliente
  *     tags: [Clientes]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -211,6 +218,6 @@ router.put("/:id", updateClient);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.delete("/:id", deleteClient);
+router.delete("/:id", authenticateToken, deleteClient);
 
 export default router;
