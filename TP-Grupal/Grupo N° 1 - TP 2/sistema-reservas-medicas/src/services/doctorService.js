@@ -81,7 +81,7 @@ class DoctorService {
 
 async getAll() {
   try {
-    const response = await fetch("http://localhost:3001/doctores");
+    const response = await fetch("http://localhost:3000/doctores");
     const data = await response.json();
 
     console.log("Doctores:", data);
@@ -98,7 +98,7 @@ async getAll() {
 
   async getById(id) {
   try {
-    const response = await fetch(`http://localhost:3001/doctores/${id}`);
+    const response = await fetch(`http://localhost:3000/doctores/${id}`);
     const data = await response.json();
 
     console.log("Doctores:", data);
@@ -114,7 +114,7 @@ async getAll() {
 
   async getByEspecialidad(especialidad) {
       try {
-    const response = await fetch(`http://localhost:3001/doctores/${especialidad}`);
+    const response = await fetch(`http://localhost:3000/doctores/${especialidad}`);
     const data = await response.json();
 
     console.log("Doctores:", data);
@@ -147,7 +147,7 @@ async getAll() {
 
 async getEspecialidades() {
       try {
-    const response = await fetch("http://localhost:3001/especialidades");
+    const response = await fetch("http://localhost:3000/especialidades");
     const data = await response.json();
     const nombres = data.data.map(e => e.nombre);
     console.log(nombres);

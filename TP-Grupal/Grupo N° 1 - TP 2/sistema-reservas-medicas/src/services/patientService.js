@@ -72,7 +72,7 @@ class PatientService {
 
   async getAll() {
     try {
-      const response = await fetch("http://localhost:3001/pacientes");
+      const response = await fetch("http://localhost:3000/pacientes");
     const data = await response.json();
       if (data.success) {
         return {
@@ -120,7 +120,7 @@ class PatientService {
   async create(patientData) {
     try {
       
-      const response = await fetch(`http://localhost:3001/pacientes`,
+      const response = await fetch(`http://localhost:3000/pacientes`,
       {
         method: "POST", // o "PUT" si tu backend lo espera así
         headers: {
@@ -160,7 +160,7 @@ console.log(data)
 
   async update(id, patientData) {
     try {
-      const response = await fetch(`http://localhost:3001/pacientes/${id}`,
+      const response = await fetch(`http://localhost:3000/pacientes/${id}`,
       {
         method: "PUT", 
         headers: {
@@ -200,7 +200,7 @@ console.log(data)
 
   async delete(id) {
     try {
-      const response = await fetch(`http://localhost:3001/pacientes/${id}`, {
+      const response = await fetch(`http://localhost:3000/pacientes/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
