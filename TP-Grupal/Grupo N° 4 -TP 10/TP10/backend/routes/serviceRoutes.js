@@ -6,6 +6,7 @@ import {
   updateService,
   deleteService,
 } from "../controllers/serviceController.js";
+import { authenticateToken } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -123,7 +124,7 @@ router.get("/:id", getServiceById);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.post("/", createService);
+router.post("/", authenticateToken, createService);
 
 /**
  * @swagger
@@ -169,7 +170,7 @@ router.post("/", createService);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.put("/:id", updateService);
+router.put("/:id", authenticateToken, updateService);
 
 /**
  * @swagger
@@ -194,6 +195,6 @@ router.put("/:id", updateService);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.delete("/:id", deleteService);
+router.delete("/:id", authenticateToken, deleteService);
 
 export default router;

@@ -7,6 +7,7 @@ import {
   deleteAppointment,
   updateAppointmentStatus,
 } from "../controllers/appointmentController.js";
+import { authenticateToken } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -132,7 +133,7 @@ router.get("/:id", getAppointmentById);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.post("/", createAppointment);
+router.post("/", authenticateToken, createAppointment);
 
 /**
  * @swagger
@@ -184,7 +185,7 @@ router.post("/", createAppointment);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.put("/:id", updateAppointment);
+router.put("/:id", authenticateToken, updateAppointment);
 
 /**
  * @swagger
@@ -222,7 +223,7 @@ router.put("/:id", updateAppointment);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.patch("/:id/status", updateAppointmentStatus);
+router.patch("/:id/status", authenticateToken, updateAppointmentStatus);
 
 /**
  * @swagger
@@ -245,6 +246,6 @@ router.patch("/:id/status", updateAppointmentStatus);
  *       500:
  *         $ref: '#/components/responses/InternalError'
  */
-router.delete("/:id", deleteAppointment);
+router.delete("/:id", authenticateToken, deleteAppointment);
 
 export default router;
