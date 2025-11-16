@@ -63,7 +63,9 @@ export const useDoctors = () => {
     setError(null);
 
     try {
+      console.log(especialidad)
       const result = await doctorService.getByEspecialidad(especialidad);
+      
 
       if (result.success) {
         setDoctors(result.data);
@@ -77,13 +79,12 @@ export const useDoctors = () => {
     }
   }, []);
 
-  const searchDoctors = useCallback(async (query) => {
+  const searchDoctors = useCallback(async (query, doctores) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const result = await doctorService.search(query);
-
+      const result = await doctorService.search(query, doctores);
       if (result.success) {
         setDoctors(result.data);
       } else {
