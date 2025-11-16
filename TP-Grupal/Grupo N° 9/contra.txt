@@ -1,0 +1,6 @@
+USE mysql;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'asd123@A_Aasd123@A_A';
+FLUSH PRIVELEGES;
+
+Nombre del sv: SEMANA3
+Clave Host: asd123@A_Aasd123@A_A
