@@ -1,13 +1,12 @@
 
-import API_URL from './apiConfig';
+import apiClient from './apiConfig';
 import  {SERVICES_API} from '../endpoints/apiEndoints';
 
 
 export const getServices = async () => {
   try {
-    const response = await fetch(`${API_URL}${SERVICES_API}`);
-    if (!response.ok) throw new Error('Error al obtener los servicios');
-    return await response.json();
+    const response = await apiClient.get(SERVICES_API);
+    return response.data.data;
   } catch (error) {
     console.error('Error en getServices:', error);
     throw error;
@@ -16,13 +15,8 @@ export const getServices = async () => {
 
 export const addService = async (newService) => {
   try {
-    const response = await fetch(`${API_URL}${SERVICES_API}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newService),
-    });
-    if (!response.ok) throw new Error('Error al crear el servicio');
-    return await response.json();
+    const response = await apiClient.post(SERVICES_API, newService);
+    return response.data.data;
   } catch (error) {
     console.error('Error en addService:', error);
     throw error;
@@ -32,13 +26,8 @@ export const addService = async (newService) => {
 
 export const updateService = async (id, updatedService) => {
   try {
-    const response = await fetch(`${API_URL}${SERVICES_API}/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedService),
-    });
-    if (!response.ok) throw new Error('Error al actualizar el servicio');
-    return await response.json();
+    const response = await apiClient.put(`${SERVICES_API}/${id}`, updatedService);
+    return response.data.data;
   } catch (error) {
     console.error('Error en updateService:', error);
     throw error;
@@ -47,10 +36,7 @@ export const updateService = async (id, updatedService) => {
 
 export const deleteService = async (id) => {
   try {
-    const response = await fetch(`${API_URL}${SERVICES_API}/${id}`, {
-      method: 'DELETE',
-    });
-    if (!response.ok) throw new Error('Error al eliminar el servicio');
+    await apiClient.delete(`${SERVICES_API}/${id}`);
     return true;
   } catch (error) {
     console.error('Error en deleteService:', error);

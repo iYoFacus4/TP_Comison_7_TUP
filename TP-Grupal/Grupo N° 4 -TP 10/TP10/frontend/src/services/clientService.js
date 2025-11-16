@@ -1,77 +1,105 @@
+/**
+ * ============================================================================
+ * SERVICIO DE CLIENTES - INTEGRACIÓN CON BACKEND (TAREA 5)
+ * ============================================================================
+ * Este servicio maneja todas las operaciones CRUD de clientes.
+ * 
+ * CAMBIOS PRINCIPALES respecto a la versión anterior:
+ * 
+ * ANTES (con fetch y json-server):
+ * - fetch(`${API_URL}${CLIENTS_API}`)
+ * - Validación manual de response.ok
+ * - JSON.stringify manual en POST/PUT
+ * - Sin autenticación (no enviaba tokens)
+ * 
+ * AHORA (con apiClient y backend real):
+ * - apiClient.get/post/put/delete (más limpio)
+ * - JWT automático en headers (gracias al interceptor)
+ * - response.data.data (estructura del backend: {ok, data})
+ * - Validaciones en el backend (email único, etc.)
+ * 
+ * NOTA IMPORTANTE:
+ * apiClient ya tiene configurado:
+ * - baseURL: http://localhost:3001/api
+ * - Authorization: Bearer <token> (interceptor)
+ * - Content-Type: application/json
+ * 
+ * Por eso NO necesitamos agregar headers manualmente aquí.
+ * ============================================================================
+ */
 
-import API_URL from './apiConfig';
-import  {CLIENTS_API} from '../endpoints/apiEndoints';
+import apiClient from './apiConfig'; // Cliente axios con JWT
+import  {CLIENTS_API} from '../endpoints/apiEndoints'; // '/clients'
 
+/**
+ * getClients: Obtiene todos los clientes de la base de datos
+ * @returns {Promise<Array>} Array de clientes
+ */
 export const getClients = async () => {
   try {
-    const response = await fetch(`${API_URL}${CLIENTS_API}`); 
+    // GET /api/clients
+    const response = await apiClient.get(CLIENTS_API);
     
-    if (!response.ok) {
-      throw new Error('Error al obtener los clientes desde la API');
-    }
-    return await response.json();
-
+    // El backend devuelve: {ok: true, data: [...clientes], total: X}
+    // Extraemos solo el array de clientes
+    return response.data.data;
   } catch (error) {
     console.error('Error en getClients:', error);
     throw error; 
   }
 };
 
+/**
+ * addClient: Crea un nuevo cliente en la base de datos
+ * @param {Object} newClient - Datos del cliente {name, email, phone}
+ * @returns {Promise<Object>} Cliente creado con su ID
+ */
 export const addClient = async (newClient) => {
   try {
-    const response = await fetch(`${API_URL}${CLIENTS_API}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newClient),
-    });
-
-    if (!response.ok) {
-      throw new Error('Error al crear el cliente');
-    }
-    return await response.json();
-
+    // POST /api/clients
+    // El backend valida: email único, formato válido, campos obligatorios
+    const response = await apiClient.post(CLIENTS_API, newClient);
+    
+    // Backend devuelve: {ok: true, data: {id, name, email, phone}}
+    return response.data.data;
   } catch (error) {
     console.error('Error en addClient:', error);
     throw error;
   }
 };
 
-
+/**
+ * deleteClient: Elimina un cliente de la base de datos
+ * @param {Number} id - ID del cliente a eliminar
+ * @returns {Promise<Boolean>} true si se eliminó correctamente
+ */
 export const deleteClient = async (id) => {
   try {
-    const response = await fetch(`${API_URL}${CLIENTS_API}/${id}`, {
-      method: 'DELETE',
-    });
-
-    if (!response.ok) {
-      throw new Error('Error al eliminar el cliente');
-    }
+    // DELETE /api/clients/:id
+    // El backend verifica que no tenga citas asociadas antes de eliminar
+    await apiClient.delete(`${CLIENTS_API}/${id}`);
     
     return true; 
-
   } catch (error) {
     console.error('Error en deleteClient:', error);
     throw error;
   }
 };
 
+/**
+ * updateClient: Actualiza los datos de un cliente existente
+ * @param {Number} id - ID del cliente a actualizar
+ * @param {Object} updatedClient - Nuevos datos {name, email, phone}
+ * @returns {Promise<Object>} Cliente actualizado
+ */
 export const updateClient = async (id, updatedClient) => {
   try {
-    const response = await fetch(`${API_URL}${CLIENTS_API}/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedClient), 
-    });
-
-    if (!response.ok) {
-      throw new Error('Error al actualizar el cliente');
-    }
-    return await response.json();
-
+    // PUT /api/clients/:id
+    // El backend valida: email único (excepto el propio), formato válido
+    const response = await apiClient.put(`${CLIENTS_API}/${id}`, updatedClient);
+    
+    // Backend devuelve: {ok: true, data: {id, name, email, phone}}
+    return response.data.data;
   } catch (error) {
     console.error('Error en updateClient:', error);
     throw error;

@@ -1,39 +1,45 @@
-import API_URL from "./apiConfig"; 
+import apiClient from "./apiConfig"; 
 
 
 export const getAllAppointments = async () => {
-  const respuesta = await fetch(`${API_URL}/appointments`);
-  if (!respuesta.ok) throw new Error("Error al cargar los turnos.");
-  return respuesta.json();
+  try {
+    const response = await apiClient.get('/appointments');
+    return response.data.data;
+  } catch (error) {
+    console.error('Error al cargar los turnos:', error);
+    throw new Error("Error al cargar los turnos.");
+  }
 };
 
 export const createAppointment = async (appointmentData) => {
-  const respuesta = await fetch(`${API_URL}/appointments`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(appointmentData),
-  });
-  if (!respuesta.ok) throw new Error("Error al crear el turno.");
-  return respuesta.json();
+  try {
+    const response = await apiClient.post('/appointments', appointmentData);
+    return response.data.data;
+  } catch (error) {
+    console.error('Error al crear el turno:', error);
+    throw new Error("Error al crear el turno.");
+  }
 };
 
 export const deleteAppointment = async (id) => {
-  const respuesta = await fetch(`${API_URL}/appointments/${id}`, {
-    method: "DELETE",
-  });
-  if (!respuesta.ok) throw new Error("Error al eliminar el turno.");
-  return true;
+  try {
+    await apiClient.delete(`/appointments/${id}`);
+    return true;
+  } catch (error) {
+    console.error('Error al eliminar el turno:', error);
+    throw new Error("Error al eliminar el turno.");
+  }
 };
 
 
 export const updateAppointment = async (id, appointmentData) => {
-  const response = await fetch(`${API_URL}/appointments/${id}`, {
-    method: "PUT", 
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(appointmentData),
-  });
-  if (!response.ok) throw new Error("Error al actualizar el turno.");
-  return response.json();
+  try {
+    const response = await apiClient.put(`/appointments/${id}`, appointmentData);
+    return response.data.data;
+  } catch (error) {
+    console.error('Error al actualizar el turno:', error);
+    throw new Error("Error al actualizar el turno.");
+  }
 };
 
 
@@ -41,13 +47,21 @@ export const updateAppointment = async (id, appointmentData) => {
 
 
 export const getAllClients = async () => {
-  const respuesta = await fetch(`${API_URL}/clients`);
-  if (!respuesta.ok) throw new Error("Error al cargar los clientes.");
-  return respuesta.json();
+  try {
+    const response = await apiClient.get('/clients');
+    return response.data.data;
+  } catch (error) {
+    console.error('Error al cargar los clientes:', error);
+    throw new Error("Error al cargar los clientes.");
+  }
 };
 
 export const getAllServices = async () => {
-  const respuesta = await fetch(`${API_URL}/services`);
-  if (!respuesta.ok) throw new Error("Error al cargar los servicios.");
-  return respuesta.json();
+  try {
+    const response = await apiClient.get('/services');
+    return response.data.data;
+  } catch (error) {
+    console.error('Error al cargar los servicios:', error);
+    throw new Error("Error al cargar los servicios.");
+  }
 };
