@@ -1,0 +1,30 @@
+.footer-container
+{
+   margin: 170px 0 20px 0;
+   text-align: center;
+}
+.footer-container .contacto
+{
+  font-family: 'Lucida Sans';
+  font-size: 20px;
+}
+.social-icons {
+  margin-top: 15px; /* Espacio arriba */
+  display: flex;
+  justify-content: center; /* Centra los íconos */
+  gap: 20px; /* Espacio entre los íconos */
+}
+
+.social-icons a {
+  color: #333; /* Color inicial de los íconos, puedes cambiarlo */
+  transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #0077b5; /* Color para LinkedIn al pasar el mouse */
+}
+
+/* Si quieres un color diferente para GitHub */
+.social-icons a:nth-child(1):hover {
+    color: #6e5494; /* Un color morado para GitHub */
+}

@@ -1,0 +1,13 @@
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.7);
+  display:flex; align-items:center; justify-content:center; z-index:100;
+}
+.modal{
+  max-width:min(1000px, 92vw); max-height:90vh; background:var(--card);
+  border:1px solid var(--border); border-radius:16px; padding:10px; position:relative;
+}
+.modal img{max-height:80vh; border-radius:10px}
+.modal-close{
+  position:absolute; top:8px; right:8px; background:transparent; border:1px solid var(--border);
+  color:var(--text); border-radius:10px; padding:8px 12px; cursor:pointer;
+}

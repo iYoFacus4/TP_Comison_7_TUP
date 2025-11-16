@@ -1,0 +1,76 @@
+
+:root {
+  --primary-color: #0d6efd;
+  --secondary-color: #6c757d;
+  --success-color: #198754;
+  --danger-color: #dc3545;
+}
+
+body {
+  background-color: #ffffff;
+}
+
+
+.login-bg {
+  background-color: #13191d !important; 
+}
+
+.card {
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 1rem 3rem rgba(0,0,0,.175);
+}
+
+.form-control {
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid #00a2ff;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+}
+
+.btn {
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #000000;
+  transform: translateY(-2px);
+}
+
+.alert {
+  border-radius: 0.75rem;
+  border: none;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card {
+  animation: fadeIn 0.5s ease-out;
+}

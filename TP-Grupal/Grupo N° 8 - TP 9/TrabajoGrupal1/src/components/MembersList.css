@@ -1,0 +1,131 @@
+.members-list-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+/* Barra de búsqueda */
+.search-section {
+  margin-bottom: 16px;
+}
+
+.search-input-wrapper {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  font-size: 16px;
+}
+
+.search-input-members {
+  padding-left: 40px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.search-input-members:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Botón agregar miembro */
+.add-member-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  background-color: #0d6efd;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-member-btn:hover {
+  background-color: #0b5ed7;
+}
+
+/* Lista de miembros */
+.members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.member-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.member-item:hover {
+  background-color: #e9ecef;
+}
+
+.member-item.active {
+  background-color: #cfe2ff;
+  border: 1px solid #0d6efd;
+}
+
+.member-item-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.member-name {
+  font-weight: 500;
+  color: #212529;
+  font-size: 15px;
+}
+
+.arrow-icon {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.no-members {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+}
+
+.no-members p {
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .members-list-container {
+    padding: 16px;
+  }
+
+  .member-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .member-name {
+    font-size: 14px;
+  }
+}

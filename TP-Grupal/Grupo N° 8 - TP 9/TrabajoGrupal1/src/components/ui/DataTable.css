@@ -1,0 +1,152 @@
+.data-table-container {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Controles de búsqueda y filtros */
+.table-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  min-width: 250px;
+}
+
+.search-input {
+  padding-left: 12px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  width: 100%;
+}
+
+.search-input:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+.filter-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  min-width: 150px;
+  border-radius: 8px;
+}
+
+/* Tabla */
+.table-responsive {
+  margin-bottom: 0;
+}
+
+.data-table {
+  margin-bottom: 0;
+}
+
+.data-table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  color: #495057;
+  padding: 12px 16px;
+  white-space: nowrap;
+}
+
+.data-table tbody td {
+  padding: 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.data-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.data-table tbody tr.selected-row {
+  background-color: #e7f3ff;
+}
+
+/* Acciones en lote */
+.bulk-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 16px;
+  border: 1px solid #dee2e6;
+}
+
+.selected-count {
+  font-weight: 500;
+  color: #495057;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.action-buttons .btn {
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-weight: 500;
+}
+
+.cancel-btn {
+  color: #6c757d;
+  font-size: 24px;
+  padding: 0 8px;
+  line-height: 1;
+}
+
+.cancel-btn:hover {
+  color: #495057;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-wrapper {
+    max-width: 100%;
+  }
+
+  .filter-controls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .filter-select {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .bulk-actions {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .action-buttons {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,110 @@
+/* =========================
+   LAYOUT: contenedores, secciones, header, footer
+   Mobile-first + media queries puntuales
+   ========================= */
+
+/* Contenedor central con padding lateral */
+.container {
+  max-width: 1100px;     /* límite de ancho */
+  margin: 0 auto;        /* centrar */
+  padding: 0 16px;       /* respiro lateral */
+}
+
+/* Main: espacio entre secciones */
+main {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 72px 16px;    /* margen superior general */
+  display: grid;
+  gap: 48px;             /* separación entre secciones */
+}
+
+/* Sección “card” sutil */
+.section {
+  background: linear-gradient(180deg, rgba(255,255,255,.02), transparent);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 32px;
+}
+
+/* Títulos consistentes + tamaño fluido */
+.title {
+  font-size: clamp(22px, 3vw, 28px);
+  margin-bottom: 12px;
+}
+
+/* Texto secundario */
+.muted { color: var(--muted); }
+
+/* =========================
+   HEADER (sticky)
+   ========================= */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: blur(8px);
+  background: rgba(17, 24, 39, .8);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Barra principal */
+.nav {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Marca personal */
+.brand { font-weight: 700; letter-spacing: .3px; }
+.brand span { color: var(--accent); }
+
+/* Navegación (mobile-first: puede “wrapear”) */
+.nav-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;    /* si no entra, salta a otra línea en móvil */
+}
+
+/* Botones tipo enlace del header */
+.nav-links a {
+  color: var(--text);
+  opacity: .85;
+}
+.nav-links a:hover { opacity: 1; }
+
+/* =========================
+   FOOTER
+   ========================= */
+.footer {
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+.footer-row {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;  /* en móvil se reacomoda */
+  color: var(--muted);
+}
+.footer .links { display: flex; gap: 14px; align-items: center; }
+.footer .dot { opacity: .35; margin: 0 6px; }
+
+/* =========================
+   BREAKPOINTS (mobile-first)
+   Solo toco lo necesario por tamaño
+   ========================= */
+
+/* Tablets en adelante (≥768px) */
+@media (min-width: 768px) {
+  .nav-links { gap: 16px; }
+}
+
+/* Desktop chico (≥1024px) */
+@media (min-width: 1024px) {
+  main { gap: 56px; }
+}

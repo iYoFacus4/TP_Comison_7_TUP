@@ -1,0 +1,157 @@
+body {
+  font-family: sans-serif;
+  background-color: #262b26af;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 40px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.foto-perfil {
+  width: 200px;
+  height: 240px;
+  border-radius: 15%;
+  border: 4px solid #f4f4f4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+
+  object-fit: cover;
+}
+
+
+/* Main Content */
+.main-content nav {
+  display: flex;
+  gap: 60px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.main-content nav a {
+  text-decoration: none;
+  background-color: #000000;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.seccion {
+  background-color: rgb(0, 0, 0);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(34, 34, 34, 0.1);
+}
+
+/* Proyectos */
+.proyectos-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 50px;
+}
+
+.proyecto-card {
+  border: 1px solid #762424;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.footer {
+  text-align: center;
+  padding: 10px 0;
+  border: 3px solid #000000;
+  margin-top: 40px;
+  background-color: #00ff3c18;
+}
+
+.footer a {
+  margin: 0 10px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.App {
+  width: 100%;
+  max-width: 1200px;  /* Límite de ancho */
+  margin: 0 auto;     /* Centrado */
+  padding: 20px;      /* Espacio interior */
+}
+
+
+
+/* tratemos de hacerlo responsive */
+
+.proyectos-lista,
+.estudios-contenedor,
+.experiencia-contenedor,
+.idiomas-contenedor {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Tarjetas individuales */
+.proyecto-card,
+.estudio-card,
+.experiencia-card,
+.idioma-card {
+  flex-basis: 300px;
+  flex-grow: 1;
+  
+  min-width: 280px; 
+}
+
+@media (max-width: 768px) 
+{
+    .profile-pic {
+    width: 140px;
+    height: 140px;
+  }
+ 
+    h1 {
+    font-size: 2.2rem;
+  }
+}
+@media (max-width: 480px) 
+{
+    /* Para la foto de perfil */
+    .foto-perfil {
+      width: 120px;
+      height: 120px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+    }
+    .seccion h2 {
+      font-size: 1.5rem;
+    }
+    .main-content nav {
+      display: block; /* Anula el display:flex */
+    }
+
+    .main-content nav a {
+      display: block;     /* Un botón por línea */
+      margin: 10px auto;  /* 10px de espacio y centrado */
+      width: 80%;         /* Que ocupe el 80% del ancho */
+      text-align: center;
+    }
+    .proyecto-card,
+    .estudio-card,
+    .experiencia-card {
+       flex-basis: 100%;
+    }
+}
+}

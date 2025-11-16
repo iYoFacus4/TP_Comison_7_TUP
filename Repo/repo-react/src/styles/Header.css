@@ -14,3 +14,17 @@
 .boton:hover {
   background-color: #45a049;
 }
+
+.contenedorIMG {
+  display: flex; /*esto centra la imagen */
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.imagen {
+  width: 200px;
+  height: 230px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}

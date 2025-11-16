@@ -1,0 +1,23 @@
+.App {
+  min-height: 100vh;
+}
+
+.portfolio-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio-wrapper main {
+  flex: 1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}

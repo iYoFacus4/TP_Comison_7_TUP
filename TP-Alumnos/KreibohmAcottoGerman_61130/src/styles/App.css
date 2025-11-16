@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+*{
+    box-sizing: border-box;
+}
+
+body{
+background-image: 
+    radial-gradient(at 60% 20%, #0a0a0a 0%, transparent 100%), /* black */
+    radial-gradient(at 80% 50%, #1a0033 0%, transparent 100%), /* deep violet */
+    radial-gradient(at 70% 60%, #001f4d 0%, transparent 100%), /* dark blue */
+    radial-gradient(at 30% 70%, #7b1f1f 0%, transparent 100%), /* dark red */
+    radial-gradient(at 20% 40%, #3d0066 0%, transparent 100%), /* violet */
+    radial-gradient(at 40% 5%, #003366 0%, transparent 100%),  /* blue */
+    radial-gradient(at 55% 95%, #330000 0%, transparent 100%); /* deep red */
+    color: white;
+}
+
+section{
+    padding-bottom: 2rem;
+}
+
+.nav-link:hover{
+    scale: 1.1;
+}

@@ -1,0 +1,180 @@
+/* =======================
+   ESTILOS GENERALES
+======================= */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa; /* Gris claro */
+  color: #212529;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+}
+
+.fw-bold {
+  font-weight: 700 !important;
+}
+
+.text-primary {
+  color: #0d6efd !important;
+}
+
+/* =======================
+   NAVBAR
+======================= */
+.navbar {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+/* =======================
+   CARDS GENERALES
+======================= */
+.card {
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* =======================
+   LOGIN PAGE
+======================= */
+.login-card {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.login-card .form-control {
+  border-radius: 8px;
+  box-shadow: none;
+  transition: all 0.2s;
+}
+
+.login-card .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+}
+
+.login-card .btn {
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.login-card .btn:hover {
+  transform: scale(1.05);
+}
+
+/* =======================
+   SECCION DONACIONES
+======================= */
+.donacion-card {
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.donacion-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* =======================
+   DONANTES TABLE
+======================= */
+.donantes-table {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.donantes-table th {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.donantes-table th, .donantes-table td {
+  vertical-align: middle;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f1f3f5;
+}
+
+/* =======================
+   ENTREGAS
+======================= */
+.entrega-card {
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.entrega-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* =======================
+   BADGES
+======================= */
+.badge {
+  font-size: 0.9rem;
+  padding: 0.5em 0.75em;
+}
+
+/* =======================
+   BOTONES GENERALES
+======================= */
+button, .btn {
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+button:hover, .btn:hover {
+  transform: scale(1.05);
+}
+
+/* =======================
+   FORMULARIOS
+======================= */
+.form-control {
+  border-radius: 8px;
+  box-shadow: none;
+  transition: all 0.2s;
+}
+
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+}
+
+/* =======================
+   CONTAINERS
+======================= */
+.container {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* =======================
+   RESPONSIVE ADJUSTMENTS
+======================= */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+  .donacion-card, .entrega-card {
+    margin-bottom: 1rem;
+  }
+}

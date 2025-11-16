@@ -1,0 +1,81 @@
+.estudios-section {
+  width: 100%;
+  scroll-margin-top: 5rem;
+}
+
+.estudios-title {
+  margin-bottom: 2rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  text-align: left;
+}
+
+.estudios-card {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(17, 17, 27, 0.5);
+  padding: 2rem;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s;
+  margin-top: 3%;
+}
+
+.estudios-card:hover {
+  border-color: #6B46C1;
+  box-shadow: 0 0 20px 5px rgba(107, 70, 193, 0.3);
+}
+
+.estudios-degree {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.estudios-university {
+  font-size: 1.125rem;
+  color: #6B46C1;
+  margin: 0;
+}
+
+.estudios-period {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+  .estudios-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .estudios-card {
+    padding: 1.5rem;
+  }
+  
+  .estudios-degree {
+    font-size: 1.25rem;
+  }
+  
+  .estudios-university {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .estudios-title {
+    font-size: 1.75rem;
+  }
+  
+  .estudios-card {
+    padding: 1rem;
+  }
+  
+  .estudios-degree {
+    font-size: 1.125rem;
+  }
+}

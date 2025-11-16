@@ -1,0 +1,39 @@
+/* Ring (ProgressRing) */
+.ring{
+  --angle: 0deg;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  position: relative;
+  background: conic-gradient(var(--bs-primary) var(--angle), #e6e8ec 0deg);
+  box-shadow: var(--shadow);
+}
+.ring::before{
+  content: "";
+  position: absolute;
+  inset: 12px;
+  background: var(--color-surface);
+  border-radius: 50%;
+}
+
+/* Barras (BarChart) */
+.bar-chart{
+  --gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: var(--gap);
+  align-items: end;
+  height: 220px;
+  padding: 12px 6px 4px;
+}
+.bar-col{ display: grid; gap: 6px; align-items: end; }
+.bar{
+  height: 0%;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--bs-primary), color-mix(in srgb, var(--bs-primary) 40%, #ffb94b));
+  box-shadow: var(--shadow);
+  transition: height .8s cubic-bezier(.2,.7,.2,1);
+}
+.bar.fill{ height: var(--h); }
+.bar-label{ text-align: center; font-size: .75rem; }

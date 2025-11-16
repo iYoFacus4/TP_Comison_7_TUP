@@ -1,0 +1,107 @@
+[
+  {
+    "name": "JavaScript",
+    "category": "Lenguajes",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+  },
+  {
+    "name": "C#",
+    "category": "Lenguajes",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg"
+  },
+  {
+    "name": "HTML",
+    "category": "Frontend",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"
+  },
+  {
+    "name": "CSS",
+    "category": "Frontend",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+  },
+  {
+    "name": "Sass",
+    "category": "Frontend",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg"
+  },
+  {
+    "name": "React",
+    "category": "Frontend",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+  },
+  {
+    "name": "Astro",
+    "category": "Frontend",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/astro/astro-original.svg"
+  },
+  {
+    "name": "Node.js",
+    "category": "Backend",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+  },
+  {
+    "name": "Express",
+    "category": "Backend",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg"
+  },
+  {
+    "name": ".NET",
+    "category": "Backend",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dot-net/dot-net-original.svg"
+  },
+  {
+    "name": "MongoDB",
+    "category": "Database",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg"
+  },
+  {
+    "name": "MYSQL",
+    "category": "Database",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+  },
+  {
+    "name": "WordPress",
+    "category": "CMS",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-original.svg"
+  },
+  {
+    "name": "Shopify",
+    "category": "CMS",
+    "icon": "https://img.icons8.com/?size=100&id=uSHYbs6PJfMT&format=png&color=000000"
+  },
+  {
+    "name": "TiendaNube",
+    "category": "CMS",
+    "icon": "https://app-insti-cdn.nuvemshop.com.br/site/dist/images/favicon.ico?v=d87c6fc"
+  },
+  {
+    "name": "Visual Studio",
+    "category": "Herramientas",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visualstudio/visualstudio-plain.svg"
+  },
+  {
+    "name": "VS Code",
+    "category": "Herramientas",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg"
+  },
+  {
+    "name": "Postman",
+    "category": "Herramientas",
+    "icon": "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg"
+  },
+  {
+    "name": "Trello",
+    "category": "Herramientas",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/trello/trello-plain.svg"
+  },
+  {
+    "name": "Git",
+    "category": "Herramientas",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"
+  },
+  {
+    "name": "GitHub",
+    "category": "Herramientas",
+    "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+  }
+]

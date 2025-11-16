@@ -1,0 +1,50 @@
+[
+  {
+    "role": "Tecnicatura Universitaria en Programación",
+    "company": "Universidad Tecnológica Nacional (UTN)",
+    "period": "2024 - 2026",
+    "description": "Actualmente cursando Tecnicatura Universitaria en Programación. Formación integral en desarrollo de software, estructuras de datos y metodologías de programación."
+  },
+  {
+    "role": "Programador Freelance",
+    "company": "Radix Web Argentina",
+    "period": "2024 - Presente",
+    "description": "Desarrollo de aplicaciones web utilizando WordPress, React, Shopify y TiendaNube. Creación de sitios e-commerce y landing pages personalizadas para diversos clientes."
+  },
+  {
+    "role": "Programador Freelance",
+    "company": "Thalú",
+    "period": "2024",
+    "description": "Desarrollo de sitios web utilizando WordPress, HTML, CSS y JavaScript. Creación de landing pages y sitios corporativos con enfoque en responsive design y optimización SEO."
+  },
+  {
+    "role": "Desarrollador Web FullStack MERN",
+    "company": "RollingCode",
+    "period": "2023 - 2024",
+    "description": "Completé el bootcamp intensivo de desarrollo web full stack especializado en tecnologías MERN (MongoDB, Express, React, Node.js). Proyecto final: e-commerce completo con panel de administrador."
+  },
+  {
+    "role": "Full Stack Desarrollo Web (Javascript - Node.JS - SQL)",
+    "company": "Codo a Codo 4.0",
+    "period": "2022",
+    "description": "Curso intensivo de desarrollo web full stack con JavaScript, Node.js y SQL. Aprendizaje de tecnologías front-end y back-end para crear aplicaciones web completas."
+  },
+  {
+    "role": "Desarrollo Web",
+    "company": "CoderHouse",
+    "period": "2022",
+    "description": "Certificación en desarrollo web con HTML, CSS, JavaScript y frameworks modernos. Enfoque en responsive design y experiencia de usuario."
+  },
+  {
+    "role": "Programación Web",
+    "company": "Universidad Tecnológica Nacional (UTN)",
+    "period": "2022",
+    "description": "Curso de programación web enfocado en fundamentos de desarrollo front-end. Aprendizaje de metodologías de desarrollo y mejores prácticas."
+  },
+  {
+    "role": "Educación Secundaria",
+    "company": "Colegio San Javier - Yerba Buena, Tucumán",
+    "period": "2021",
+    "description": "Completé mis estudios secundarios con orientación que me permitió desarrollar bases sólidas para mi carrera en tecnología."
+  }
+]

@@ -1,0 +1,61 @@
+.seccion-softskills {
+  padding: 100px 5vw;
+  background-color: white; 
+  color: black;
+}
+
+
+.h2-softskills {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 50px;
+}
+
+
+.softskills-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px; 
+}
+
+
+.softskill-card {
+  background-color: #1E293B; 
+  border: 1px solid #444;
+  border-radius: 10px; 
+  padding: 30px 25px;
+  flex-basis: 300px; 
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  
+  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.softskill-card:hover {
+  transform: translateY(-10px); 
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+
+.softskill-card h3 {
+  color: white; 
+  font-size: 1.4rem;
+  margin-bottom: 15px; 
+}
+
+
+.softskill-card p {
+  color: #c4c4c4; 
+  font-size: 0.95rem;
+  line-height: 1.6; 
+}
+
+
+@media (max-width: 768px) {
+  .softskill-card {
+    flex-basis: 100%; 
+  }
+}

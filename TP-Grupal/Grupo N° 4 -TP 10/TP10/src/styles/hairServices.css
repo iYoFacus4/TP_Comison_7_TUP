@@ -1,0 +1,76 @@
+.service-card {
+  transition: all 0.2s ease-in-out;
+  height: 100%;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.service-card .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card .btn-group {
+  margin-top: auto;
+}
+
+.service-price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #3b82f6;
+  margin: 10px 0;
+}
+
+.service-duration {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.service-description {
+  color: #475569;
+  margin-bottom: 15px;
+}
+
+
+.modal-content {
+  border-radius: 12px;
+}
+
+.modal-header {
+  border-bottom: 2px solid #e2e8f0;
+  padding: 1rem 1.5rem;
+}
+
+.modal-footer {
+  border-top: 2px solid #e2e8f0;
+  padding: 1rem 1.5rem;
+}
+
+.form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+
+.btn-primary {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.btn-outline-primary {
+  color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.btn-outline-primary:hover {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}

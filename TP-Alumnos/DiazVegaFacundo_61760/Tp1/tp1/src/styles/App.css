@@ -1,0 +1,155 @@
+
+
+html, body {
+ 
+  height: 100%; 
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+#root {
+
+  min-height: 100%; 
+}
+
+
+
+
+:root {
+  --primary-color: #c72b2b; 
+  --text-color: #000000;
+  --bg-color: #ffffff;
+  --card-bg: #9b99999f;
+}
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+
+.portfolio-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.portfolio-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid white;
+  margin-bottom: 15px;
+}
+
+h1 {
+  margin: 5px 0 0;
+  font-size: 2.5em;
+}
+
+.subtitle {
+  font-weight: 300;
+  font-size: 1.1em;
+}
+
+
+.portfolio-main {
+  padding: 20px;
+  flex-grow: 1; 
+}
+
+.section-padding {
+  padding: 40px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.section-title {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  font-size: 1.8em;
+}
+
+
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.card {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+
+.proyectos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.proyecto-card {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.badge {
+  display: inline-block;
+  background-color: #e9ecef;
+  color: #495057;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  margin-right: 5px;
+  margin-top: 10px;
+}
+
+.repo-link {
+  display: inline-block;
+  margin-top: 15px;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+.portfolio-footer {
+  text-align: center;
+  padding: 20px;
+  background-color: var(--text-color);
+  color: white;
+  font-size: 0.9em;
+  margin-top: auto; 
+}
+
+.social-links a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+    color: var(--primary-color);
+}

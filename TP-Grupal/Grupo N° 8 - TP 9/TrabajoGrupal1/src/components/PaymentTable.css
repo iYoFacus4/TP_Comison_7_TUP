@@ -1,0 +1,46 @@
+/* Estilos específicos para la tabla de pagos */
+
+.member-name {
+  font-weight: 500;
+  color: #212529;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.action-link {
+  color: #0d6efd;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0;
+}
+
+.action-link:hover {
+  text-decoration: underline;
+}
+
+.paid-text {
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.register-payment-btn {
+  background-color: #0d6efd;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-weight: 500;
+}
+
+.register-payment-btn:hover {
+  background-color: #0b5ed7;
+}
+
+.send-reminder-btn {
+  border-radius: 8px;
+  padding: 8px 20px;
+}

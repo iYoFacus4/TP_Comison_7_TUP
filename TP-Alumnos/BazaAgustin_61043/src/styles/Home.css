@@ -1,0 +1,33 @@
+.home-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.main-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 64rem;
+  flex: 1;
+  padding: 5rem 2rem;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5rem;
+}
+
+.sections-grid {
+  display: grid;
+  width: 100%;
+  gap: 5rem;
+}
+
+@media (max-width: 640px) {
+  .main-container {
+    padding: 5rem 1rem;
+  }
+}

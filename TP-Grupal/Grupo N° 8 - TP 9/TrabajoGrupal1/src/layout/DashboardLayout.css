@@ -1,0 +1,21 @@
+.dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  background-color: #f5f5f5;
+  overflow-x: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-wrapper {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,126 @@
+.idioma-container {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.idioma-title {
+  font-size: 2.5rem;
+  color: #cad3f5;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.idioma-title:hover {
+  color: #8aadf4;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: #a5adcb;
+  font-weight: 400;
+}
+
+.idioma-list {
+  list-style: none;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.idioma-card {
+  background-color: #181926;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-height: 320px;
+  width: 300px;
+  border-radius: 20px;
+  border: 2px solid #363a4f;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.idioma-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #a6da95;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.idioma-card:hover::before {
+  transform: scaleX(1);
+}
+
+.idioma-card:hover {
+  background-color: #1e2030;
+  border-color: #a6da95;
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(166, 218, 149, 0.2);
+}
+
+.idioma-card:focus {
+  outline: 2px solid #8aadf4;
+  outline-offset: 4px;
+  border-color: #8aadf4;
+}
+
+.idioma-info {
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.idioma-nombre {
+  font-size: 1.8rem;
+  color: #cad3f5;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.idioma-card:hover .idioma-nombre {
+  color: #a6da95;
+}
+
+.idioma-nivel {
+  background-color: #363a4f;
+  color: #a6da95;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.idioma-card:hover .idioma-nivel {
+  background-color: #a6da95;
+  color: #181926;
+  transform: scale(1.05);
+}
+
+.idioma-descripcion {
+  color: #a5adcb;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}

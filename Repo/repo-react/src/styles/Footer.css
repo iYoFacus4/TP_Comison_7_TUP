@@ -1,0 +1,7 @@
+.formularios {
+    display: flex;
+   flex-direction: column;
+   /* gap:16px; */
+   overflow-x: auto;
+   border: 1px solid #f0f0f0;
+}

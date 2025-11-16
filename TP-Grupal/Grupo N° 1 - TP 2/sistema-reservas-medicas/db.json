@@ -1,0 +1,81 @@
+{
+  "pacientes": [
+    { "id": 1, "nombre": "Martín", "apellido": "García", "dni": "30123456", "fecha_nacimiento": "1985-04-12", "telefono": "11-4231-0001", "email": "martin.garcia@example.com", "direccion": "Calle Falsa 123" },
+    { "id": 2, "nombre": "Lucía", "apellido": "Pérez", "dni": "30123457", "fecha_nacimiento": "1990-09-05", "telefono": "11-4231-0002", "email": "lucia.perez@example.com", "direccion": "Av. Siempre Viva 742" },
+    { "id": 3, "nombre": "Diego", "apellido": "Ramírez", "dni": "30123458", "fecha_nacimiento": "1978-02-20", "telefono": "11-4231-0003", "email": "diego.ramirez@example.com", "direccion": "Calle 9 456" },
+    { "id": 4, "nombre": "Sofía", "apellido": "López", "dni": "30123459", "fecha_nacimiento": "2000-11-15", "telefono": "11-4231-0004", "email": "sofia.lopez@example.com", "direccion": "Bv. San Martín 100" },
+    { "id": 5, "nombre": "Javier", "apellido": "Fernández", "dni": "30123460", "fecha_nacimiento": "1969-07-08", "telefono": "11-4231-0005", "email": "javier.fernandez@example.com", "direccion": "Pasaje 3 22" },
+    { "id": 6, "nombre": "María", "apellido": "Gómez", "dni": "30123461", "fecha_nacimiento": "1995-03-30", "telefono": "11-4231-0006", "email": "maria.gomez@example.com", "direccion": "Calle 1 77" },
+    { "id": 7, "nombre": "Andrés", "apellido": "Ruiz", "dni": "30123462", "fecha_nacimiento": "1982-12-02", "telefono": "11-4231-0007", "email": "andres.ruiz@example.com", "direccion": "Av. Belgrano 12" },
+    { "id": 8, "nombre": "Valentina", "apellido": "Torres", "dni": "30123463", "fecha_nacimiento": "1998-06-18", "telefono": "11-4231-0008", "email": "valentina.torres@example.com", "direccion": "Calle Olmos 45" },
+    { "id": 9, "nombre": "Gonzalo", "apellido": "Vega", "dni": "30123464", "fecha_nacimiento": "1975-01-25", "telefono": "11-4231-0009", "email": "gonzalo.vega@example.com", "direccion": "Calle Real 9" },
+    { "id": 10, "nombre": "Carolina", "apellido": "Ríos", "dni": "30123465", "fecha_nacimiento": "1988-08-09", "telefono": "11-4231-0010", "email": "carolina.rios@example.com", "direccion": "Av. Rivadavia 200" },
+    { "id": 11, "nombre": "Federico", "apellido": "Molina", "dni": "30123466", "fecha_nacimiento": "1992-10-03", "telefono": "11-4231-0011", "email": "federico.molina@example.com", "direccion": "Calle Luna 6" },
+    { "id": 12, "nombre": "Alicia", "apellido": "Santos", "dni": "30123467", "fecha_nacimiento": "1955-05-20", "telefono": "11-4231-0012", "email": "alicia.santos@example.com", "direccion": "Bv. Libertador 300" },
+    { "id": 13, "nombre": "Bruno", "apellido": "Castro", "dni": "30123468", "fecha_nacimiento": "1980-04-01", "telefono": "11-4231-0013", "email": "bruno.castro@example.com", "direccion": "Pasaje Verde 8" },
+    { "id": 14, "nombre": "Marta", "apellido": "Quinteros", "dni": "30123469", "fecha_nacimiento": "1970-09-29", "telefono": "11-4231-0014", "email": "marta.quinteros@example.com", "direccion": "Calle Azul 33" },
+    { "id": 15, "nombre": "Lucas", "apellido": "Ortega", "dni": "30123470", "fecha_nacimiento": "2002-02-14", "telefono": "11-4231-0015", "email": "lucas.ortega@example.com", "direccion": "Av. Córdoba 110" }
+  ]
+  ,
+  "doctores": [
+    { "id": 1, "titulo": "Dr.", "nombre": "Rafael", "apellido": "Santana", "especialidad": "Clínica general", "telefono": "11-5555-0001", "email": "rafael.santana@clinica.com" },
+    { "id": 2, "titulo": "Dra.", "nombre": "Laura", "apellido": "Benítez", "especialidad": "Pediatría", "telefono": "11-5555-0002", "email": "laura.benitez@clinica.com" },
+    { "id": 3, "titulo": "Dr.", "nombre": "Pablo", "apellido": "Herrera", "especialidad": "Cardiología", "telefono": "11-5555-0003", "email": "pablo.herrera@clinica.com" },
+    { "id": 4, "titulo": "Dra.", "nombre": "Ana", "apellido": "Sosa", "especialidad": "Dermatología", "telefono": "11-5555-0004", "email": "ana.sosa@clinica.com" },
+    { "id": 5, "titulo": "Dr.", "nombre": "Martín", "apellido": "Ibarra", "especialidad": "Ginecología", "telefono": "11-5555-0005", "email": "martin.ibarra@clinica.com" },
+    { "id": 6, "titulo": "Dra.", "nombre": "Cecilia", "apellido": "Romero", "especialidad": "Traumatología", "telefono": "11-5555-0006", "email": "cecilia.romero@clinica.com" },
+    { "id": 7, "titulo": "Dr.", "nombre": "Hugo", "apellido": "Flores", "especialidad": "Oftalmología", "telefono": "11-5555-0007", "email": "hugo.flores@clinica.com" },
+    { "id": 8, "titulo": "Dra.", "nombre": "Isabel", "apellido": "Muñoz", "especialidad": "Neurología", "telefono": "11-5555-0008", "email": "isabel.munoz@clinica.com" },
+    { "id": 9, "titulo": "Dr.", "nombre": "Esteban", "apellido": "Córdoba", "especialidad": "Psiquiatría", "telefono": "11-5555-0009", "email": "esteban.cordoba@clinica.com" },
+    { "id": 10, "titulo": "Dra.", "nombre": "Natalia", "apellido": "Paz", "especialidad": "Endocrinología", "telefono": "11-5555-0010", "email": "natalia.paz@clinica.com" }
+  ],
+  "citas": [
+    { "id": 1, "pacienteId": 1, "doctorId": 1, "fecha": "2025-11-10", "hora": "09:00", "motivo": "Consulta general", "estado": "confirmada" },
+    { "id": 2, "pacienteId": 2, "doctorId": 2, "fecha": "2025-11-11", "hora": "10:00", "motivo": "Control pediátrico", "estado": "confirmada" },
+    { "id": 3, "pacienteId": 3, "doctorId": 3, "fecha": "2025-11-12", "hora": "11:00", "motivo": "Dolor de pecho", "estado": "pendiente" },
+    { "id": 4, "pacienteId": 4, "doctorId": 4, "fecha": "2025-11-13", "hora": "12:00", "motivo": "Consulta dermatológica", "estado": "confirmada" },
+    { "id": 5, "pacienteId": 5, "doctorId": 5, "fecha": "2025-11-14", "hora": "09:30", "motivo": "Control ginecológico", "estado": "confirmada" },
+    { "id": 6, "pacienteId": 6, "doctorId": 6, "fecha": "2025-11-15", "hora": "10:30", "motivo": "Seguimiento fractura", "estado": "cancelada" },
+    { "id": 7, "pacienteId": 7, "doctorId": 7, "fecha": "2025-11-16", "hora": "11:30", "motivo": "Revisión de la vista", "estado": "confirmada" },
+    { "id": 8, "pacienteId": 8, "doctorId": 8, "fecha": "2025-11-17", "hora": "12:30", "motivo": "Cefalea recurrente", "estado": "pendiente" },
+    { "id": 9, "pacienteId": 9, "doctorId": 9, "fecha": "2025-11-18", "hora": "09:15", "motivo": "Consulta psiquiátrica", "estado": "confirmada" },
+    { "id": 10, "pacienteId": 10, "doctorId": 10, "fecha": "2025-11-19", "hora": "10:15", "motivo": "Diabetes - control", "estado": "confirmada" },
+    { "id": 11, "pacienteId": 11, "doctorId": 1, "fecha": "2025-11-20", "hora": "11:15", "motivo": "Chequeo general", "estado": "pendiente" },
+    { "id": 12, "pacienteId": 12, "doctorId": 2, "fecha": "2025-11-21", "hora": "12:15", "motivo": "Control pediátrico", "estado": "confirmada" },
+    { "id": 13, "pacienteId": 13, "doctorId": 3, "fecha": "2025-11-22", "hora": "09:45", "motivo": "Ecocardiograma", "estado": "pendiente" },
+    { "id": 14, "pacienteId": 14, "doctorId": 4, "fecha": "2025-11-23", "hora": "10:45", "motivo": "Dermatología - seguimiento", "estado": "confirmada" },
+    { "id": 15, "pacienteId": 15, "doctorId": 5, "fecha": "2025-11-24", "hora": "11:45", "motivo": "Ginecología - control", "estado": "confirmada" },
+    { "id": 16, "pacienteId": 1, "doctorId": 6, "fecha": "2025-11-25", "hora": "09:50", "motivo": "Traumatología - seguimiento", "estado": "confirmada" },
+    { "id": 17, "pacienteId": 2, "doctorId": 7, "fecha": "2025-11-26", "hora": "10:50", "motivo": "Oftalmología - consulta", "estado": "pendiente" },
+    { "id": 18, "pacienteId": 3, "doctorId": 8, "fecha": "2025-11-27", "hora": "11:50", "motivo": "Neurología - evaluación", "estado": "confirmada" },
+    { "id": 19, "pacienteId": 4, "doctorId": 9, "fecha": "2025-11-28", "hora": "12:50", "motivo": "Psiquiatría - sesión", "estado": "confirmada" },
+    { "id": 20, "pacienteId": 5, "doctorId": 10, "fecha": "2025-11-29", "hora": "09:05", "motivo": "Endocrinología - control", "estado": "pendiente" }
+  ]
+  ,
+  "especialidades": [
+    { "id": 1, "nombre": "Clínica general" },
+    { "id": 2, "nombre": "Pediatría" },
+    { "id": 3, "nombre": "Cardiología" },
+    { "id": 4, "nombre": "Dermatología" },
+    { "id": 5, "nombre": "Ginecología" },
+    { "id": 6, "nombre": "Traumatología" },
+    { "id": 7, "nombre": "Oftalmología" },
+    { "id": 8, "nombre": "Neurología" },
+    { "id": 9, "nombre": "Psiquiatría" },
+    { "id": 10, "nombre": "Endocrinología" }
+  ],
+  "horarios": [
+    { "id": 1, "doctorId": 1, "dia": "Lunes", "inicio": "08:00", "fin": "12:00" },
+    { "id": 2, "doctorId": 1, "dia": "Miércoles", "inicio": "14:00", "fin": "18:00" },
+    { "id": 3, "doctorId": 2, "dia": "Martes", "inicio": "09:00", "fin": "13:00" },
+    { "id": 4, "doctorId": 2, "dia": "Jueves", "inicio": "15:00", "fin": "19:00" },
+    { "id": 5, "doctorId": 3, "dia": "Lunes", "inicio": "10:00", "fin": "14:00" },
+    { "id": 6, "doctorId": 4, "dia": "Viernes", "inicio": "08:00", "fin": "12:00" },
+    { "id": 7, "doctorId": 5, "dia": "Miércoles", "inicio": "09:00", "fin": "13:00" },
+    { "id": 8, "doctorId": 6, "dia": "Martes", "inicio": "14:00", "fin": "18:00" },
+    { "id": 9, "doctorId": 7, "dia": "Jueves", "inicio": "08:00", "fin": "12:00" },
+    { "id": 10, "doctorId": 8, "dia": "Lunes", "inicio": "15:00", "fin": "19:00" },
+    { "id": 11, "doctorId": 9, "dia": "Miércoles", "inicio": "08:30", "fin": "12:30" },
+    { "id": 12, "doctorId": 10, "dia": "Viernes", "inicio": "09:00", "fin": "13:00" }
+  ]
+}

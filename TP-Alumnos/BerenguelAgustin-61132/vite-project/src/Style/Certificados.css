@@ -1,0 +1,62 @@
+
+.carrusel-container {
+  position: relative;
+  width: 90%; 
+  max-width: 700px;
+  margin: 200px auto auto auto;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+.carrusel-viewport {
+  overflow: hidden; 
+  width: 100%;
+}
+.carrusel-track {
+  display: flex; 
+  transition: transform 0.5s ease-in-out;
+}
+.carrusel-slide {
+  flex: 0 0 100%; 
+  min-width: 100%; 
+  box-sizing: border-box;
+  padding: 20px 60px; 
+  text-align: center;
+}
+.proyecto-enlace {
+  display: block;
+  margin: 0 auto 15px auto; 
+  border-radius: 8px;
+  overflow: hidden; 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 100%;
+}
+
+.proyecto-video {
+  width: 100%;
+  display: block;
+  aspect-ratio: 16 / 9; 
+  object-fit: cover; 
+  background-color: #000;
+}
+
+.proyecto-descripcion {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+}
+.carrusel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  cursor: pointer;
+}
+.carrusel-button.prev { left: 10px; }
+.carrusel-button.next { right: 10px; }

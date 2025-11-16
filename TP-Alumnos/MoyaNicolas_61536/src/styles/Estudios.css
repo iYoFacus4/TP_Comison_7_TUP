@@ -1,0 +1,57 @@
+.estudios-container {
+  padding: 2rem 0;
+}
+
+.estudios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.estudio-card {
+  background: #1a1a2e;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 4px solid #7c3aed;
+  border: 1px solid rgba(124, 58, 237, 0.3);
+}
+
+.estudio-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+  border-color: #a78bfa;
+}
+
+.estudio-card h3 {
+  color: #e0e0e0;
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.institucion {
+  color: #a78bfa;
+  font-weight: 600;
+  margin: 0.5rem 0;
+}
+
+.anio {
+  color: #c4b5fd;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.descripcion {
+  margin-top: 1rem;
+  color: #b0b0b0;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .estudios-grid {
+    grid-template-columns: 1fr;
+  }
+}

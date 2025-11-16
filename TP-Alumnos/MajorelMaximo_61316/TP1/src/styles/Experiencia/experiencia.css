@@ -1,0 +1,132 @@
+.experiencia-container {
+  margin-top: 3rem;
+  transition: all 0.3s ease;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.experiencia-title {
+  font-size: 2.5rem;
+  color: #cad3f5;
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.experiencia-title:hover {
+  color: #8aadf4;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: #a5adcb;
+  font-weight: 400;
+}
+
+.experiencia-intro {
+  background-color: #1e2030;
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+  border: 2px solid #363a4f;
+  transition: all 0.3s ease;
+}
+
+.experiencia-intro:hover {
+  border-color: #494d64;
+  box-shadow: 0 4px 12px rgba(138, 173, 244, 0.1);
+}
+
+.experiencia-intro p {
+  font-size: 1.1rem;
+  color: #cad3f5;
+  line-height: 1.8;
+  transition: color 0.3s ease;
+}
+
+.destacado {
+  font-weight: bold;
+  color: #ed8796;
+  transition: all 0.3s ease;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.destacado:hover {
+  color: #f5bde6;
+  background-color: #494d64;
+}
+
+.experiencia-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.experiencia-card {
+  background-color: #363a4f;
+  padding: 2rem;
+  border-radius: 16px;
+  border: 2px solid #5b6078;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.experiencia-card:hover {
+  background-color: #494d64;
+  border-color: #8aadf4;
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(138, 173, 244, 0.2);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-empresa {
+  font-size: 1.5rem;
+  color: #eed49f;
+  transition: color 0.3s ease;
+}
+
+.experiencia-card:hover .card-empresa {
+  color: #f5e0b0;
+}
+
+.card-tipo {
+  background-color: #5b6078;
+  color: #cad3f5;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.experiencia-card:hover .card-tipo {
+  background-color: #6e738d;
+}
+
+.card-cargo {
+  font-size: 1.1rem;
+  color: #8aadf4;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.card-descripcion {
+  color: #a5adcb;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}

@@ -1,0 +1,10 @@
+.contenedorLogin{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    border: 15px solid #000000;
+    border-radius: 25px;
+    background-color: #f2f2f2;
+}

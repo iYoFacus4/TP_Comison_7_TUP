@@ -1,0 +1,188 @@
+/* --- src/styles/Portfolio.css (Versión Actualizada) --- */
+
+/* ------------------------------------------- */
+/* --- 1. VARIABLES Y ESTILOS GLOBALES (Nuevo Tema) --- */
+/* ------------------------------------------- */
+:root {
+  --primary-color: #e50914; /* Un rojo intenso (como el de Netflix) */
+  --background-dark: #141414; /* Negro casi puro para el fondo */
+  --background-medium: #222222; /* Gris oscuro para las secciones */
+  --background-light: #333333; /* Gris para las tarjetas y elementos */
+  --text-primary: #ffffff; /* Texto principal blanco */
+  --text-secondary: #a0a0a0; /* Texto secundario gris claro */
+  --card-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  --border-radius: 8px;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-dark); /* Fondo principal oscuro */
+  color: var(--text-secondary); /* Color de texto por defecto */
+  line-height: 1.6;
+  
+  /* --- IMPORTANTE: CORRECCIÓN PARA CENTRAR --- */
+  display: block; /* Anula el 'flex' de index.css */
+}
+
+.App {
+  max-width: 1000px;
+  margin: 0 auto; /* Esto ahora centrará tu contenido */
+}
+
+h1, h2, h3 {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  filter: brightness(1.2); /* Hace el rojo un poco más brillante al pasar el mouse */
+  text-decoration: underline;
+}
+
+/* ------------------------------------------- */
+/* --- 2. HEADER --- */
+/* ------------------------------------------- */
+.header-portfolio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: var(--background-medium);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.header-portfolio h1 {
+  color: var(--text-primary);
+  margin-top: 1rem;
+  font-size: 2.5rem;
+}
+
+.foto-personal {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid var(--primary-color);
+  object-fit: cover;
+}
+
+/* ------------------------------------------- */
+/* --- 3. SECCIONES PRINCIPALES --- */
+/* ------------------------------------------- */
+.seccion {
+  padding: 3rem 2rem;
+  border-bottom: 1px solid var(--background-light);
+  background-color: var(--background-dark);
+}
+
+.seccion:nth-child(even) {
+  background-color: var(--background-medium); /* Alterna colores de fondo */
+}
+
+.seccion h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  position: relative;
+  display: inline-block;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.seccion h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 0.5rem auto 0;
+}
+
+/* ------------------------------------------- */
+/* --- 4. SECCIÓN DE PROYECTOS (TARJETAS) --- */
+/* ------------------------------------------- */
+.lista-proyectos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.proyecto-item {
+  background-color: var(--background-light);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-left: 5px solid var(--primary-color);
+}
+
+.proyecto-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+}
+
+.proyecto-item h3 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.proyecto-item a {
+  font-weight: bold;
+}
+
+/* ------------------------------------------- */
+/* --- 5. FOOTER --- */
+/* ------------------------------------------- */
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: var(--background-medium);
+  color: var(--text-secondary);
+  text-align: center;
+  gap: 1rem;
+  border-top: 2px solid var(--primary-color);
+}
+
+footer a {
+  color: var(--text-primary);
+  margin: 0 10px;
+  font-weight: 500;
+}
+
+footer a:hover {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+/* ------------------------------------------- */
+/* --- 6. RESPONSIVE (PARA MÓVILES) --- */
+/* ------------------------------------------- */
+@media (max-width: 768px) {
+  .header-portfolio {
+    padding: 3rem 1rem;
+  }
+  
+  .header-portfolio h1 {
+    font-size: 2rem;
+  }
+
+  .seccion {
+    padding: 2rem 1rem;
+  }
+  
+  .seccion h2 {
+    font-size: 1.8rem;
+  }
+}

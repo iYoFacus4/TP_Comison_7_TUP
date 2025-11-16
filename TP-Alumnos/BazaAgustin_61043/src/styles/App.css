@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?display=swap&family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600;700');
+
+:root{
+  --primary: #6B46C1;
+  --background-light: #f6f6f8;
+  --background-dark: #0A0A14;
+  --card-dark: #11111B;
+}
+
+html,body,#root{
+  height:100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body{
+  margin:0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  background: var(--background-dark);
+  color: rgba(255,255,255,0.9);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.liquid-grass-effect{
+  position: fixed;
+  top: 0; left:0; right:0; bottom:0;
+  background-image: radial-gradient(circle at 15% 20%, #6B46C130 0%, #0A0A14 35%), radial-gradient(circle at 85% 75%, #6B46C120 0%, #0A0A14 40%);
+  animation: liquid-flow 30s infinite linear;
+  opacity: 0.6;
+  z-index: -1;
+}
+
+@keyframes liquid-flow{
+  0%{background-position:0% 0%;}
+  25%{background-position:50% 100%;}
+  50%{background-position:100% 0%;}
+  75%{background-position:50% -100%;}
+  100%{background-position:0% 0%;}
+}
+
+.content-wrapper{position:relative;z-index:1;}
+
+.font-display{font-family:'Space Grotesk', sans-serif;}
+
+/* Minimal responsive container tweaks so page resembles original layout */
+.max-w-5xl{max-width:64rem;margin-left:auto;margin-right:auto}
+
+/* Utility placeholders (not exhaustive) */
+.text-primary{color:var(--primary)}
+.bg-card-dark{background-color:rgba(17,17,27,0.5)}
+
+

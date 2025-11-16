@@ -1,0 +1,35 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignorar otros grupos
+TP-Grupal/Grupo N° 4/
+TP-Grupal/Grupo N° 5/
+TP-Grupal/Grupo N° 6/
+TP-Grupal/Grupo N° 7/
+TP-Grupal/Grupo N° 8/
+TP-Grupal/Grupo N° 9/
+TP-Grupal/Grupo N° 10/
+TP-Grupal/Grupo N° 11/
+

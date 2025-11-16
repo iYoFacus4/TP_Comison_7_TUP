@@ -1,0 +1,44 @@
+[
+  {
+    "title": "Ampere",
+    "description": "Landing page para Ampere, empresa de materiales eléctricos e iluminación en Argentina.",
+    "tech": ["WordPress", "HTML5", "CSS3", "JavaScript", "PHP"],
+    "url": "https://www.ampere.com.ar/",
+    "image": "/projects/ampere.webp"
+  },
+  {
+    "title": "ViaScooter",
+    "description": "E-commerce para ViaScooter, venta online de motos y accesorios en España.",
+    "tech": ["WordPress", "Elementor", "WooCommerce", "SEO"],
+    "url": "https://viascooter.es/",
+    "image": "/projects/viascooter.webp"
+  },
+  {
+    "title": "Voge Barcelona",
+    "description": "Sitio web para Voge Barcelona, concesionario especializado en venta de motos nuevas.",
+    "tech": ["WordPress", "Elementor", "SEO"],
+    "url": "https://vogebarcelona.com/",
+    "image": "/projects/voge-barcelona.webp"
+  },
+  {
+    "title": "Esencia Del Tiempo",
+    "description": "Tienda online de ropa Esencia Del Tiempo, desarrollada en la plataforma Tienda Nube.",
+    "tech": ["Tienda nube", "HTML", "CSS", "JavaScript"],
+    "url": "https://esenciadeltiempo.com.ar/",
+    "image": "/projects/esencia-del-tiempo.webp"
+  },
+  {
+    "title": "GeroArias366",
+    "description": "Tienda de remeras personalizadas del tiktoker Gero Arias, creada en Tienda Nube.",
+    "tech": ["Tienda nube", "HTML", "CSS", "JavaScript"],
+    "url": "https://www.geroarias366.com/",
+    "image": "/projects/geroarias.webp"
+  },
+  {
+    "title": "Comercial ERMA",
+    "description": "Sitio web para Comercial ERMA, distribuidora de azúcar, desarrollado con React.js.",
+    "tech": ["React.js", "Node.js", "Git", "JavaScript", "HTML5", "CSS3"],
+    "url": "https://www.comercialermasrl.com/",
+    "image": "/projects/comercial-erma.webp"
+  }
+]

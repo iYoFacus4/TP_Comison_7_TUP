@@ -1,0 +1,84 @@
+.experiencia-section {
+  width: 100%;
+}
+
+.experiencia-title {
+  margin-bottom: 2rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  text-align: left;
+}
+
+.experiencia-card {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(17, 17, 27, 0.5);
+  padding: 2rem;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s;
+}
+
+.experiencia-card:hover {
+  border-color: #6B46C1;
+  box-shadow: 0 0 20px 5px rgba(107, 70, 193, 0.3);
+}
+
+.experiencia-job-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.5rem 0;
+}
+
+.experiencia-period {
+  font-size: 1.125rem;
+  color: #6B46C1;
+  margin: 0;
+}
+
+.experiencia-description {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .experiencia-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .experiencia-card {
+    padding: 1.5rem;
+  }
+  
+  .experiencia-job-title {
+    font-size: 1.25rem;
+  }
+  
+  .experiencia-period {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .experiencia-title {
+    font-size: 1.75rem;
+  }
+  
+  .experiencia-card {
+    padding: 1rem;
+  }
+  
+  .experiencia-job-title {
+    font-size: 1.125rem;
+  }
+  
+  .experiencia-description {
+    font-size: 0.875rem;
+  }
+}

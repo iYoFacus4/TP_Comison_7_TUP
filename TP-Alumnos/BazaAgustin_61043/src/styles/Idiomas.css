@@ -1,0 +1,80 @@
+.idiomas-section {
+  width: 100%;
+}
+
+.idiomas-title {
+  margin-bottom: 2rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: white;
+  font-family: 'Space Grotesk', sans-serif;
+  text-align: left;
+}
+
+.idiomas-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.idioma-card {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(17, 17, 27, 0.5);
+  padding: 1.5rem;
+  backdrop-filter: blur(8px);
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.idioma-card:hover {
+  border-color: #6B46C1;
+  transform: scale(1.05);
+}
+
+.idioma-text {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: white;
+  margin: 0;
+}
+
+.idioma-level {
+  color: #6B46C1;
+}
+
+@media (min-width: 640px) {
+  .idiomas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .idiomas-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .idioma-card {
+    padding: 1.25rem;
+  }
+  
+  .idioma-text {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .idiomas-title {
+    font-size: 1.75rem;
+  }
+  
+  .idioma-card {
+    padding: 1rem;
+  }
+  
+  .idioma-text {
+    font-size: 1rem;
+  }
+}

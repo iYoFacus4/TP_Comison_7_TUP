@@ -1,0 +1,485 @@
+/* =========================
+    ESTILOS GENERALES Y RESET
+========================= */
+
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding-top: 60px; 
+}
+
+/* =========================
+    NAVEGACIÓN PRINCIPAL (NAVBAR)
+========================= */
+
+.main-navbar {
+    width: 100%;
+    background-color: #1a1a1a;
+    color: #f0f0f0;
+    padding: 15px 30px; 
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar-logo a {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #f7a31b;
+    text-decoration: none;
+    margin-right: 50px; 
+}
+
+.navbar-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-links li {
+    margin-left: 20px; 
+    white-space: nowrap; 
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: #f0f0f0;
+    font-weight: 500;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.navbar-links a:hover {
+    color: #ffc674;
+}
+
+/* =========================
+    HEADER (PORTADA)
+========================= */
+
+.portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px 30px;
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+    flex-wrap: wrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    min-height: 60vh; 
+    position: relative; 
+    margin-bottom: 0; 
+}
+
+/* --- COLUMNA IZQUIERDA (Texto) --- */
+.header-content {
+    flex: 1 1 400px;
+    margin-right: 40px; 
+}
+
+.header-content h3 {
+    color: #b0b0b0;
+    font-weight: 300;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.header-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.header-content p {
+    color: #f7a31b;
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+/* Contenedor del botón y sub-menú para facilitar la alineación */
+.cta-menu-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start; 
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #f7a31b;
+    color: #1a1a1a;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 8px rgba(247, 163, 27, 0.4);
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px; 
+}
+
+.cta-button:hover {
+    background-color: #ffc674;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(247, 163, 27, 0.5);
+}
+
+/* --- ESTILOS PARA EL SUB-MENÚ INTERACTIVO --- */
+.sub-menu-buttons {
+    display: flex;
+    gap: 15px; 
+    flex-wrap: wrap;
+    justify-content: flex-start; 
+}
+
+.sub-menu-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #363636; 
+    color: #f0f0f0;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border: 1px solid #4f4f4f; 
+    white-space: nowrap; 
+}
+
+.sub-menu-button:hover {
+    background-color: #f7a31b;
+    color: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(247, 163, 27, 0.4);
+}
+
+
+/* --- COLUMNA DERECHA (Imagen) --- */
+.header-image-container {
+    flex: 0 0 auto; 
+    max-width: 300px; 
+    width: 280px; 
+    height: 280px; 
+    text-align: center;
+    overflow: hidden; 
+    margin-left: auto;
+}
+
+.profile-img {
+    display: block; 
+    width: 100%; 
+    height: 100%; 
+    border-radius: 50%;
+    border: 5px solid #f7a31b;
+    object-fit: cover;
+    object-position: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(247, 163, 27, 0.6);
+}
+
+/* =========================
+    NAVEGACIÓN INTERNA (ELIMINADA)
+========================= */
+
+/* =========================
+    ESTILOS PARA LAS SECCIONES DE MAIN
+========================= */
+.main-content {
+    margin-top: 40px; 
+}
+
+.main-content section {
+    padding: 40px 30px;
+    margin-bottom: 30px; 
+    background-color: #2c2c2c;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.main-content section:last-child {
+    margin-bottom: 0;
+}
+
+.main-content h2 {
+    color: #f7a31b;
+    font-size: 2rem;
+    margin-bottom: 25px;
+    border-bottom: 2px solid rgba(247, 163, 27, 0.3);
+    padding-bottom: 10px;
+}
+
+.main-content p, .main-content ul {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #e0e0e0;
+}
+
+.main-content ul {
+    list-style: disc; 
+    padding-left: 20px;
+}
+
+.main-content a {
+    color: #f7a31b;
+    text-decoration: underline;
+}
+.main-content a:hover {
+    color: #ffc674;
+}
+
+/* Estilos específicos para los ítems de estudios y proyectos */
+.item-estudio, .item-proyecto {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-left: 4px solid #f7a31b;
+    background-color: #363636;
+    border-radius: 4px;
+}
+.item-estudio h3, .item-proyecto h3 {
+    color: #ffffff;
+    font-size: 1.3rem;
+    margin-top: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+
+/* =========================
+    ESTILOS DEL FORMULARIO DE CONTACTO (NUEVOS)
+========================= */
+
+.section-contacto {
+    /* Centra el formulario dentro de su sección */
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 50px; 
+}
+
+.contacto-intro {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 1.2rem;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #f7a31b;
+    font-size: 1rem;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+    padding: 12px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #1e1e1e; /* Fondo oscuro para los campos */
+    color: #f0f0f0; /* Color de texto blanco */
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: #f7a31b; /* Borde de color de acento al enfocar */
+    outline: none;
+    box-shadow: 0 0 5px rgba(247, 163, 27, 0.5);
+}
+
+.contact-form textarea {
+    resize: vertical; /* Permite redimensionar verticalmente */
+}
+
+.form-submit-button {
+    /* Hereda estilos de .cta-button, pero le damos margen superior */
+    margin-top: 10px;
+    align-self: flex-start; /* Alinea el botón a la izquierda */
+    border: none;
+    cursor: pointer;
+}
+
+.contacto-social-links {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9rem;
+}
+
+.contacto-social-links a {
+    color: #f7a31b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contacto-social-links a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+    FOOTER
+========================= */
+.portfolio-footer {
+    padding: 30px 10%;
+    background-color: #1a1a1a;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.footer-links a {
+    color: #f0f0f0;
+    text-decoration: none;
+    margin: 0 15px;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #f7a31b;
+}
+
+.footer-copyright {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #b0b0b0;
+}
+
+/* =========================
+    RESPONSIVE DESIGN 
+========================= */
+@media (max-width: 1024px) {
+    .portfolio-header {
+        padding: 80px 20px;
+    }
+    .header-content h1 {
+        font-size: 2.8rem;
+    }
+    .main-navbar {
+        padding: 15px 20px;
+        justify-content: flex-start; 
+    }
+    .navbar-logo a {
+        margin-right: 30px; 
+    }
+    .main-content section {
+        padding: 40px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Header en columna y centrado */
+    .portfolio-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 50px 20px;
+        min-height: auto; 
+    }
+    .header-content {
+        margin-right: auto; 
+        margin-left: auto;
+    }
+    .header-image-container {
+        margin-top: 40px;
+        width: 220px;
+        height: 220px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .profile-img {
+        width: 100%; 
+        height: 100%;
+    }
+    .cta-menu-container {
+        align-items: center; 
+    }
+
+    /* Navbar en móvil (apila los enlaces) */
+    .main-navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+        justify-content: flex-start;
+    }
+    .navbar-logo {
+        margin-bottom: 10px;
+    }
+    .navbar-links {
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+        margin-left: 0; 
+    }
+    .navbar-links li {
+        margin-left: 0;
+        margin-bottom: 8px;
+    }
+    .navbar-logo a {
+        margin-right: 0; 
+    }
+
+    /* Sub-menú en móvil */
+    .sub-menu-buttons {
+        gap: 10px;
+        width: 100%;
+        justify-content: center; 
+    }
+    .sub-menu-button {
+        width: 100%; 
+        text-align: center;
+    }
+    
+    body {
+        padding-top: 150px; 
+    }
+    
+    /* Centrar el botón del formulario en móvil */
+    .form-submit-button {
+        align-self: center; 
+    }
+}
+
+@media (max-width: 480px) {
+    .header-content h1 {
+        font-size: 2.2rem;
+    }
+    .header-content p {
+        font-size: 1rem;
+    }
+    .cta-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    .header-image-container {
+        width: 180px;
+        height: 180px;
+    }
+}

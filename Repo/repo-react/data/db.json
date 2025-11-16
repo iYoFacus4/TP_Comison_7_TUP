@@ -1,0 +1,44 @@
+{
+  "Usuarios": [
+    {
+      "id": "1",
+      "nombre": "Matias",
+      "apellido": "Gonzalez",
+      "email": "matias.gonzalez@example.com",
+      "password": "1234",
+      "Rol": "admin"
+    },
+    {
+      "id": "2",
+      "nombre": "Lucia",
+      "apellido": "Fernandez",
+      "email": "lucia.fernandez@example.com",
+      "password": "1234",
+      "Rol": "user"
+    }
+  ],
+  "Productos": [
+    {
+      "id": "1",
+      "nombre": "Producto A",
+      "descripcion": "Descripcion del Producto A",
+      "precio": 100,
+      "stock": 50
+    },
+    {
+      "id": "2",
+      "nombre": "Producto B",
+      "descripcion": "Descripcion del Producto B",
+      "precio": 150,
+      "stock": 30
+    }
+  ],
+  "Estudios": [
+    {
+      "id": "2",
+      "titulo": "Estudio B",
+      "descripcion": "Descripcion del Estudio B",
+      "fecha": "2023-02-01"
+    }
+  ]
+}

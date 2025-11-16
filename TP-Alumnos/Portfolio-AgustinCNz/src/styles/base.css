@@ -1,0 +1,40 @@
+/* =========================
+   BASE: variables + reset
+   ========================= */
+
+/* Paleta (ajusto acá y se propaga a todo) */
+:root {
+  --bg: #0f172a;         /* fondo principal */
+  --card: #111827;       /* tarjetas/oscuros */
+  --muted: #94a3b8;      /* texto secundario */
+  --text: #e5e7eb;       /* texto principal */
+  --accent: #22d3ee;     /* cian */
+  --accent-2: #34d399;   /* verde */
+  --border: rgba(255,255,255,.08);
+}
+
+/* Reset mínimo y tipografía por defecto */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: Inter, Roboto, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Links coherentes en todo el sitio */
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-2); }
+
+/* Imágenes fluidas */
+img { display: block; max-width: 100%; }
+
+/* Titulación sin márgenes sorpresa */
+h1, h2, h3 { margin: 0; }
+
+/* Foco visible para navegación con teclado (accesibilidad) */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}

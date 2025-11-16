@@ -1,119 +1,185 @@
-📌 TP — Semana 1
+📌 TP — Semana 3
 
 Tecnicatura Universitaria en Programación — Comisión 7
 Profesor: Chocobar Matías
-Fecha límite: Viernes 24 — 23:59 hs
+📅 Fecha límite: Viernes 14 — 18:00 hs
 
-🎯 Objetivo de la Semana 1
+🎯 Objetivo Semana 3
 
-Iniciar la construcción del proyecto React dejando:
+Migrar el proyecto de la Semana 2 hacia un entorno Full Stack real, reemplazando el uso de json-server y localStorage por un backend Node.js conectado a una base de datos MySQL.
 
-Arquitectura de carpetas completa y creada en /src
+⚙️ Requerimientos Generales
 
-Componentes base iniciados (NO vacíos)
+Crear una carpeta /backend dentro de la carpeta del grupo (paralela al /frontend).
 
-Login SIMULADO con localStorage
+Configurar un servidor Node.js + Express + MySQL.
 
-Dashboard inicial con datos simulados usando useState + useEffect
+Reemplazar el endpoint del json-server por el del backend local (localhost).
 
-React Bootstrap instalado y aplicado en tablas/forms/cards
+Conectar el backend a una base de datos MySQL (crear y adjuntar el script .sql dentro del backend).
 
-Router preparado (sin proteger aún)
+Implementar Zustand en el frontend para manejar el login real (capturar nombre y rol del usuario).
 
-Flujo GIT colaborativo aplicado correctamente
+Eliminar totalmente el uso de localStorage y json-server.
 
-📂 Estructura mínima obligatoria
-src/
-  components/
-  pages/
-  dashboard/
-  layout/
-  router/
-    RouterProtect.jsx      // archivo creado, sin lógica aún
-  store/
-  utils/
-  constants/
-  endpoints/
+🧱 Estructura básica del backend
+
+Dentro de la carpeta del grupo:
+
+ 
+
+![Estructura del proyecto](./carpeta%20back.jpg)
+
+ 🔐 Ejemplo de .env
+
+PORT=3001
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=tu_password
+DB_NAME=nombre_de_tu_db
+JWT_SECRET=clave_secreta_segura
 
 
-Ninguna carpeta debe estar vacía — todas deben contener al menos 1 archivo real.
+💻 Instalación y configuración del backend
 
-🧩 Requerimientos técnicos de la semana
+1️⃣ Inicializar el proyecto
 
-Proyecto creado con Vite + React
+npm init -y
 
-React Bootstrap instalado y utilizado
+2️⃣ Instalar dependencias necesarias
 
-Login simulado (sin backend) persistiendo sesión en localStorage
+npm install express mysql2 dotenv cors helmet morgan jsonwebtoken
 
-Dashboard inicial con datos fake utilizando useState + useEffect
+3️⃣ Instalar nodemon (modo desarrollo)
 
-Router configurado e instalado (react-router-dom)
+npm install --save-dev nodemon
 
-Comienzo de maquetación real de formularios/tablas (no placeholders vacíos)
+4️⃣ Agregar script en package.json
 
-🧑‍💻 Flujo GIT — Reglas obligatorias
+"scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+}
+
+5️⃣ Levantar el servidor
+
+npm run dev
+
+
+Si todo está correcto, verás en consola:
+Servidor corriendo en http://localhost:3001
+Base de datos conectada exitosamente
+
+🧠 Diferencia entre CommonJS y ES6 Modules
+
+Concepto	            CommonJS	                            ES6 Modules
+
+Sintaxis	            require() y module.exports	          import y export
+
+Soporte	              Nativo en Node.js (por defecto	      Estándar moderno de JavaScript
+                       en versiones previas)
+
+Carga de módulos	    Dinámica (en tiempo de ejecución)	    Estática (analizada antes de ejecutar)
+
+Archivo principal	    No necesita "type": "module"	         Debe incluir "type": "module" en package.json
+
+🔎 Ejemplo rápido:
+CommonJS:
+
+const express = require('express');
+module.exports = router;
+
+
+ES6:
+
+import express from 'express';
+export default router;
+
+
+🔁 Sincronización del repositorio
+
+No crear un nuevo fork.
+
+El líder debe ir a su GitHub y presionar “Sync Fork”
+para obtener los nuevos cambios del profesor.
+
+Luego, en su clon local:
+---
+git pull origin main
+
+🧩 Requerimientos técnicos específicos
+
+Backend en Node.js + Express.
+
+Conexión estable a MySQL mediante archivo db.js.
+
+CRUD funcional.
+
+Implementar Zustand en el frontend para el manejo del usuario logueado.
+
+Sustituir completamente json-server y localStorage.
+
+Backend operativo con npm run dev.
+
+📋 Archivo obligatorio de auditoría
+
+Cada grupo debe incluir dentro de su carpeta:
+
+Auditoria_Semana_3.md (OBLIGATORIO)
+
+Secciones:
+
+1️⃣ ANTES DE TRABAJAR:
+
+Qué encontraron del TP anterior (errores, faltantes, bugs).
+
+2️⃣ DESPUÉS DE TRABAJAR:
+
+Qué corrigieron y qué agregaron (Zustand, backend, conexión DB, etc.).
+
+Este documento demuestra la capacidad de revisión, diagnóstico y mejora continua del equipo.
+
+🧮 Flujo GIT — Semana 3
 
 LÍDER
 
-Hace FORK del repo del profesor
+Sincroniza el fork con el repo del profesor.
 
-Crea rama dev (desarrollo)
+Integra ramas de los integrantes en dev.
 
-Integra las ramas de los integrantes en dev
+Hace merge dev → main.
 
-Merge final dev → main
-
-Solo el líder realiza Pull Request al profesor
+Envía el Pull Request final.
 
 INTEGRANTES
 
-Clonan EL FORK del líder (no el repo del profesor)
+Trabajan en su rama Nombre_Legajo.
 
-Crean su propia rama Nombre_Legajo
+Hacen push de sus cambios.
 
-Trabajan solo en su rama
+Avisan al líder para integrar.
 
-Push a su rama y avisan al líder
+🚀 Entrega
 
-Integrante sin aportes → desaprobado individual, aunque el grupo apruebe.
+Solo el líder del grupo realiza el Pull Request.
 
-📘 Contenido obligatorio en README del grupo
+Título del PR:
+TP Semana 3 — Grupo X — Comisión 7
 
-Integrantes y roles
-
-Justificación de cantidad de pages planificadas
-
-Lista de componentes reutilizables previstos
-
-Roadmap de desarrollo
-
-Explicación del flujo GIT aplicado
-
-Guía para actualizar el fork del líder (si ya existía)
-
-📬 Entrega
-
-Solo el líder realiza Pull Request al repo del profesor
-
-Título del PR: TP Semana 1 — Grupo X — Comisión 7
-
-Fecha límite: Viernes 24 — 23:59 hs
+Fecha límite: Domingo 09 — 18:00 hs
 
 ✅ Checklist antes de enviar
 
- Estructura de carpetas creada y con contenido
+ Backend creado y funcional
 
- Login simulado funcionando con localStorage
+ Base de datos MySQL conectada
 
- Dashboard con useState + useEffect y datos simulados
+ Frontend conectado al backend
 
- React Bootstrap aplicado
+ Zustand implementado
 
- Router configurado y RouterProtect creado
+ Auditoria_Semana_3.md completada
 
- README del grupo completado dentro del repo
+ Merge dev → main sin conflictos
 
- dev mergeado a main sin errores
-
- PR enviado solo por el líder
+ PR enviado por el líder

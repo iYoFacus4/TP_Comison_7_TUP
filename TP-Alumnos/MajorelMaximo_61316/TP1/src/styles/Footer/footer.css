@@ -1,0 +1,144 @@
+.footer-wrapper {
+  margin-top: 4rem;
+  background-color: #1e2030;
+  border-radius: 24px 24px 0 0;
+  overflow: hidden;
+}
+
+.footer-container {
+  background-color: #c6a0f6;
+  padding: 3rem 2rem;
+  transition: all 0.3s ease;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-info {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-title {
+  font-size: 2rem;
+  color: #181926;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.footer-tagline {
+  color: #24273a;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.footer-location {
+  color: #363a4f;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.footer-social {
+  flex: 1;
+  min-width: 250px;
+}
+
+.social-title {
+  font-size: 1.3rem;
+  color: #181926;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.social-link {
+  text-decoration: none;
+  color: #181926;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.icon-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 12px 16px;
+  background-color: rgba(24, 25, 38, 0.1);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover .icon-container {
+  background-color: rgba(24, 25, 38, 0.2);
+  border-color: #181926;
+  transform: translateX(8px);
+}
+
+.social-link:focus {
+  outline: 2px solid #181926;
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+.icon-container svg {
+  font-size: 1.8rem;
+  transition: transform 0.3s ease;
+}
+
+.social-link:hover .icon-container svg {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.link-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.link-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.link-username {
+  font-size: 0.85rem;
+  color: #363a4f;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}

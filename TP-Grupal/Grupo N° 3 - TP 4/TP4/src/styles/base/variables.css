@@ -1,0 +1,24 @@
+:root{
+  /* Paleta */
+  --color-bg:#f6f8fb;
+  --color-surface:#ffffff;
+  --color-text:#0f172a;
+  --color-muted:#6b7280;
+  --color-primary:#2563eb;
+  --color-success:#16a34a;
+  --color-warning:#f59e0b;
+  --color-danger:#ef4444;
+
+  /* Tokens */
+  --radius:12px;
+  --shadow:0 6px 18px rgba(0,0,0,.08);
+  --shadow-lg:0 20px 40px rgba(0,0,0,.12);
+
+  /* Mapear a Bootstrap */
+  --bs-body-bg: var(--color-bg);
+  --bs-body-color: var(--color-text);
+  --bs-primary: var(--color-primary);
+  --bs-success: var(--color-success);
+  --bs-warning: var(--color-warning);
+  --bs-danger: var(--color-danger);
+}

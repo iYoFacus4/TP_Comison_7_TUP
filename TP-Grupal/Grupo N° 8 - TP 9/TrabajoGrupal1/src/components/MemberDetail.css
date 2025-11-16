@@ -1,0 +1,350 @@
+.member-detail-container {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Header del miembro */
+.member-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 24px;
+}
+
+.member-header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar-wrapper {
+  position: relative;
+}
+
+.member-detail-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #e9ecef;
+}
+
+.change-avatar-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #0d6efd;
+  border: 2px solid white;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.change-avatar-btn:hover {
+  background-color: #0b5ed7;
+}
+
+.change-avatar-btn i {
+  font-size: 12px;
+}
+
+.member-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.member-detail-name {
+  font-size: 28px;
+  font-weight: 600;
+  color: #212529;
+  margin: 0;
+}
+
+.member-since {
+  color: #6c757d;
+  font-size: 14px;
+  margin: 0;
+}
+
+.member-header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.edit-btn {
+  border-color: #0d6efd;
+  color: #0d6efd;
+}
+
+.edit-btn:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.delete-btn {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+
+.delete-btn:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Tabs de navegación */
+.member-tabs {
+  border-bottom: 2px solid #dee2e6;
+  margin-bottom: 32px;
+}
+
+.member-tabs .nav-link {
+  color: #6c757d;
+  font-weight: 500;
+  padding: 12px 24px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: none;
+}
+
+.member-tabs .nav-link:hover {
+  border-color: transparent;
+  color: #0d6efd;
+}
+
+.member-tabs .nav-link.active {
+  color: #0d6efd;
+  border-bottom-color: #0d6efd;
+  background: none;
+}
+
+/* Contenido de las tabs */
+.tab-content {
+  min-height: 400px;
+}
+
+.personal-details-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.form-group-member {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group-member label {
+  font-weight: 500;
+  color: #495057;
+  font-size: 14px;
+  margin: 0;
+}
+
+.member-input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  font-size: 15px;
+}
+
+.member-input:disabled {
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.member-input:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Sports Section */
+.sports-section {
+  margin-top: 8px;
+}
+
+.sports-label {
+  font-weight: 500;
+  color: #495057;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.sports-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.sport-checkbox-card {
+  padding: 16px 20px;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.sport-checkbox-card:hover {
+  border-color: #adb5bd;
+}
+
+.sport-checkbox-card.checked {
+  border-color: #0d6efd;
+  background-color: #e7f3ff;
+}
+
+.sport-checkbox {
+  margin: 0;
+}
+
+.sport-checkbox .form-check-input {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+}
+
+.sport-checkbox .form-check-input:disabled {
+  cursor: not-allowed;
+}
+
+.sport-checkbox label {
+  cursor: pointer;
+  font-weight: 500;
+  color: #495057;
+  margin: 0;
+}
+
+/* Tabs vacías */
+.sports-tab,
+.payment-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.coming-soon {
+  color: #6c757d;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Botones de acción del formulario */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #dee2e6;
+}
+
+.cancel-btn,
+.save-btn {
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  border: none;
+}
+
+.cancel-btn:hover {
+  background-color: #5c636a;
+}
+
+.save-btn {
+  background-color: #0d6efd;
+  border: none;
+}
+
+.save-btn:hover {
+  background-color: #0b5ed7;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .sports-checkboxes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .member-detail-container {
+    padding: 20px;
+  }
+
+  .member-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .member-header-left {
+    width: 100%;
+  }
+
+  .member-header-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .member-detail-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .member-detail-name {
+    font-size: 22px;
+  }
+
+  .member-tabs .nav-link {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .sports-checkboxes {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+  }
+}
