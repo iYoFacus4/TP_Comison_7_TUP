@@ -1,127 +1,137 @@
-import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
-import { Badge, Button, Modal, Form } from "react-bootstrap";
-import DataTable from "./ui/DataTable";
-import "./SportsTable.css";
+// /FrontEnd/src/components/SportsTable/SportsTable.jsx (VERSION FINAL API)
+
+import { useState, useEffect, forwardRef } from 'react';
+import { Badge, Button, Modal, Form } from 'react-bootstrap';
+// Asegúrate de que la ruta sea correcta
+import apiService from '../../apiService'; 
+import DataTable from './ui/DataTable';
+import './SportsTable.css';
 
 const SportsTable = forwardRef((props, ref) => {
   const [sports, setSports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  // Estados para modales y formularios
   const [showEditModal, setShowEditModal] = useState(false);
-  const [showViewModal, setShowViewModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedSport, setSelectedSport] = useState(null);
   const [editForm, setEditForm] = useState({
-    nombre: "",
+    nombre: '',
     miembros: 0,
-    estado: "Activo",
+    estado: 'Activo',
   });
   const [addForm, setAddForm] = useState({
-    nombre: "",
+    nombre: '',
     miembros: 0,
-    estado: "Activo",
+    estado: 'Activo',
   });
 
-  // Pre carga los datos en la tabla con el useEffect
-  useEffect(() => {
-    const storedSports = localStorage.getItem("sports");
+  // =========================================================
+  // FUNCIONES DE API (CRUD)
+  // =========================================================
 
-    const initialSports = [
-      {
-        id: 1,
-        nombre: "Tenis",
-        miembros: 32,
-        estado: "Activo",
-      },
-      {
-        id: 2,
-        nombre: "Natación",
-        miembros: 45,
-        estado: "Activo",
-      },
-      {
-        id: 3,
-        nombre: "Básquet",
-        miembros: 28,
-        estado: "Activo",
-      },
-      {
-        id: 4,
-        nombre: "Yoga",
-        miembros: 15,
-        estado: "Inactivo",
-      },
-      {
-        id: 5,
-        nombre: "Karate",
-        miembros: 22,
-        estado: "Activo",
-      },
-      {
-        id: 6,
-        nombre: "Fútbol",
-        miembros: 50,
-        estado: "Activo",
-      },
-      {
-        id: 7,
-        nombre: "Voleibol",
-        miembros: 18,
-        estado: "Activo",
-      },
-      {
-        id: 8,
-        nombre: "Gimnasia",
-        miembros: 25,
-        estado: "Inactivo",
-      },
-    ];
-
-    if (!storedSports) {
-      // Cuando no hay datos en localStorage, precarga los datos iniciales
-      localStorage.setItem("sports", JSON.stringify(initialSports));
-      setSports(initialSports);
-    } else {
-      // Si existen datos, usarlos tal cual
-      setSports(JSON.parse(storedSports));
+  // 1. LECTURA (GET)
+  const fetchSports = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await apiService.getAll('sports');
+      setSports(data);
+    } catch (err) {
+      console.error('Error al cargar deportes:', err);
+      setError('No se pudieron cargar los deportes.');
+      setSports([]); 
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchSports();
   }, []);
 
-  // Exponer función para abrir modal desde el componente padre
-  useImperativeHandle(ref, () => ({
-    openAddModal: handleOpenAddModal
-  }));
-
-  // Actualizar deportes en estado y localStorage
-  const updateSports = (updatedSports) => {
-    setSports(updatedSports);
-    localStorage.setItem("sports", JSON.stringify(updatedSports));
+  // 2. CREACIÓN (POST)
+  const handleSaveAdd = async () => {
+    if (!addForm.nombre || addForm.miembros < 0) {
+      alert('Por favor, complete todos los campos correctamente.');
+      return;
+    }
+    try {
+      // Llama a la API para crear el nuevo deporte
+      await apiService.createItem('sports', addForm);
+      await fetchSports(); // Recargar la lista para mostrar el nuevo deporte
+      handleCloseAddModal();
+      alert(`Deporte "${addForm.nombre}" agregado con éxito.`);
+    } catch (err) {
+      alert('Error al agregar el deporte.');
+      console.error('Error al crear deporte:', err);
+    }
   };
 
-  // Activar deporte
-  const handleActivate = (id) => {
-    const updatedSports = sports.map((sport) =>
-      sport.id === id ? { ...sport, estado: "Activo" } : sport
-    );
-    updateSports(updatedSports);
+  // 3. ACTUALIZACIÓN (PATCH)
+  const handleSaveEdit = async () => {
+    if (!selectedSport) return;
+    if (!editForm.nombre || editForm.miembros < 0) {
+      alert('Por favor, complete todos los campos correctamente.');
+      return;
+    }
+    try {
+      // Llama a la API para actualizar el deporte
+      await apiService.updateItem('sports', selectedSport.id, editForm);
+      await fetchSports(); // Recargar la lista
+      handleCloseEditModal();
+      alert(`Deporte "${editForm.nombre}" actualizado con éxito.`);
+    } catch (err) {
+      alert('Error al actualizar el deporte.');
+      console.error('Error al actualizar deporte:', err);
+    }
+  };
+  
+  // 4. ELIMINACIÓN (DELETE)
+  const handleDeleteSport = async (id, nombre) => {
+    if (!window.confirm(`¿Está seguro de eliminar el deporte: ${nombre}? Esta acción es irreversible.`)) {
+      return;
+    }
+    try {
+      // Llama a la API para eliminar el deporte
+      await apiService.deleteItem('sports', id);
+      await fetchSports(); // Recargar la lista
+      alert(`Deporte "${nombre}" eliminado con éxito.`);
+    } catch (err) {
+      alert('Error al eliminar el deporte.');
+      console.error('Error al eliminar deporte:', err);
+    }
   };
 
-  // Desactivar deporte
-  const handleDeactivate = (id) => {
-    const updatedSports = sports.map((sport) =>
-      sport.id === id ? { ...sport, estado: "Inactivo" } : sport
-    );
-    updateSports(updatedSports);
+  // 5. CAMBIAR ESTADO (PATCH específico)
+  const handleToggleStatus = async (id, currentStatus) => {
+    const newStatus = currentStatus === 'Activo' ? 'Inactivo' : 'Activo';
+    try {
+      // Llama a la API para actualizar solo el campo 'estado'
+      await apiService.updateItem('sports', id, { estado: newStatus });
+      await fetchSports(); // Recargar la lista
+      alert(`Estado cambiado a ${newStatus} con éxito.`);
+    } catch (err) {
+      alert('Error al cambiar el estado del deporte.');
+      console.error('Error al cambiar estado:', err);
+    }
   };
 
-  // Ver detalles del deporte
-  const handleView = (id) => {
-    const sport = sports.find((s) => s.id === id);
-    setSelectedSport(sport);
-    setShowViewModal(true);
+  // =========================================================
+  // FUNCIONES DE UI
+  // =========================================================
+
+  const handleShowAddModal = () => {
+    setAddForm({ nombre: '', miembros: 0, estado: 'Activo' });
+    setShowAddModal(true);
   };
 
-  // Editar deporte
-  const handleEdit = (id) => {
-    const sport = sports.find((s) => s.id === id);
+  const handleCloseAddModal = () => {
+    setShowAddModal(false);
+  };
+  
+  const handleShowEditModal = (sport) => {
     setSelectedSport(sport);
     setEditForm({
       nombre: sport.nombre,
@@ -131,272 +141,100 @@ const SportsTable = forwardRef((props, ref) => {
     setShowEditModal(true);
   };
 
-  // Guardar cambios de edición
-  const handleSaveEdit = () => {
-    if (!editForm.nombre.trim()) {
-      alert("El nombre del deporte es requerido");
-      return;
-    }
-    
-    const updatedSports = sports.map((sport) =>
-      sport.id === selectedSport.id
-        ? { ...sport, ...editForm, miembros: parseInt(editForm.miembros) || 0 }
-        : sport
-    );
-    updateSports(updatedSports);
-    setShowEditModal(false);
-    setSelectedSport(null);
-  };
-
-  // Cerrar modales
   const handleCloseEditModal = () => {
+    setSelectedSport(null);
     setShowEditModal(false);
-    setSelectedSport(null);
   };
 
-  const handleCloseViewModal = () => {
-    setShowViewModal(false);
-    setSelectedSport(null);
-  };
-
-  // Abrir modal de agregar
-  const handleOpenAddModal = () => {
-    setAddForm({
-      nombre: "",
-      miembros: 0,
-      estado: "Activo",
-    });
-    setShowAddModal(true);
-  };
-
-  // Cerrar modal de agregar
-  const handleCloseAddModal = () => {
-    setShowAddModal(false);
-  };
-
-  // Guardar nuevo deporte
-  const handleSaveAdd = () => {
-    if (!addForm.nombre.trim()) {
-      alert("El nombre del deporte es requerido");
-      return;
-    }
-    
-    // Generar nuevo ID (máximo ID actual + 1)
-    const newId = sports.length > 0 ? Math.max(...sports.map(s => s.id)) + 1 : 1;
-    
-    const newSport = {
-      id: newId,
-      nombre: addForm.nombre,
-      miembros: parseInt(addForm.miembros) || 0,
-      estado: addForm.estado,
-    };
-    
-    const updatedSports = [...sports, newSport];
-    updateSports(updatedSports);
-    setShowAddModal(false);
-  };
-
-  // Badge de estado
   const getStatusBadge = (estado) => {
-    switch (estado) {
-      case "Activo":
-        return (
-          <Badge bg="success" className="status-badge">
-            Activo
-          </Badge>
-        );
-      case "Inactivo":
-        return (
-          <Badge bg="danger" className="status-badge">
-            Inactivo
-          </Badge>
-        );
-      default:
-        return (
-          <Badge bg="secondary" className="status-badge">
-            {estado}
-          </Badge>
-        );
-    }
+    const variant = estado === 'Activo' ? 'success' : 'danger';
+    return (
+      <Badge bg={variant} className="status-badge">
+        {estado}
+      </Badge>
+    );
   };
-
-  // Definir columnas de la tabla
+  
+  // Definición de columnas para DataTable
   const columns = [
     {
-      key: "nombre",
-      label: "Nombre del Deporte",
+      key: 'nombre',
+      label: 'Deporte',
       render: (item) => <span className="sport-name">{item.nombre}</span>,
     },
     {
-      key: "miembros",
-      label: "Miembros",
-      render: (item) => {
-        const miembros = item.miembros || 0;
-        return <span className="member-count">{miembros}</span>;
-      },
+      key: 'miembros',
+      label: 'Miembros',
+      render: (item) => <span className="member-count">{item.miembros}</span>,
     },
     {
-      key: "estado",
-      label: "Estado",
+      key: 'estado',
+      label: 'Estado',
       render: (item) => getStatusBadge(item.estado),
     },
     {
-      key: "acciones",
-      label: "Acciones",
+      key: 'acciones',
+      label: 'Acciones',
       render: (item) => (
         <div className="action-buttons-inline">
           <Button
             variant="link"
             className="action-btn edit-btn"
-            onClick={() => handleEdit(item.id)}
-            title="Editar"
+            onClick={() => handleShowEditModal(item)}
           >
-            Editar
+            <i className="bi bi-pencil-square"></i> Editar
           </Button>
           <Button
             variant="link"
-            className="action-btn view-btn"
-            onClick={() => handleView(item.id)}
-            title="Ver"
+            className={`action-btn ${
+              item.estado === 'Activo' ? 'deactivate-btn' : 'activate-btn'
+            }`}
+            onClick={() => handleToggleStatus(item.id, item.estado)}
           >
-            Ver
+            {item.estado === 'Activo' ? 'Desactivar' : 'Activar'}
           </Button>
-          {item.estado === "Activo" ? (
-            <Button
-              variant="link"
-              className="action-btn deactivate-btn"
-              onClick={() => handleDeactivate(item.id)}
-              title="Desactivar"
-            >
-              Desactivar
-            </Button>
-          ) : (
-            <Button
-              variant="link"
-              className="action-btn activate-btn"
-              onClick={() => handleActivate(item.id)}
-              title="Activar"
-            >
-              Activar
-            </Button>
-          )}
+          <Button
+            variant="link"
+            className="action-btn delete-btn"
+            onClick={() => handleDeleteSport(item.id, item.nombre)}
+          >
+            <i className="bi bi-trash"></i> Eliminar
+          </Button>
         </div>
       ),
     },
   ];
 
-  // Filtros de estado
-  const filters = [
-    {
-      key: "estado",
-      label: "Estado",
-      options: [
-        { value: "Activo", label: "Activo" },
-        { value: "Inactivo", label: "Inactivo" },
-      ],
-    },
-  ];
+  if (loading) {
+    return <p>Cargando deportes...</p>;
+  }
+
+  if (error) {
+    return <p className="text-danger">{error}</p>;
+  }
 
   return (
     <div className="sports-table-container">
       <div className="table-wrapper">
+        <Button 
+          variant="success" 
+          onClick={handleShowAddModal} 
+          className="mb-3"
+        >
+          <i className="bi bi-plus-lg me-2"></i>
+          Agregar Nuevo Deporte
+        </Button>
+
         <DataTable
           data={sports}
           columns={columns}
           searchable={true}
-          searchPlaceholder="Buscar por nombre de deporte"
-          filters={filters}
-          selectable={false}
+          searchPlaceholder="Buscar por nombre de deporte..."
         />
       </div>
 
-      {/* Modal de Edición */}
-      <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Deporte</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3">
-              <Form.Label>Nombre del Deporte</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ingrese el nombre"
-                value={editForm.nombre}
-                onChange={(e) =>
-                  setEditForm({ ...editForm, nombre: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Cantidad de Miembros</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Ingrese la cantidad"
-                value={editForm.miembros}
-                onChange={(e) =>
-                  setEditForm({ ...editForm, miembros: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Estado</Form.Label>
-              <Form.Select
-                value={editForm.estado}
-                onChange={(e) =>
-                  setEditForm({ ...editForm, estado: e.target.value })
-                }
-              >
-                <option value="Activo">Activo</option>
-                <option value="Inactivo">Inactivo</option>
-              </Form.Select>
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEditModal}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleSaveEdit}>
-            Guardar Cambios
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Modal de Vista */}
-      <Modal show={showViewModal} onHide={handleCloseViewModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Detalles del Deporte</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedSport && (
-            <div className="sport-details">
-              <div className="detail-row">
-                <strong>Nombre:</strong>
-                <span>{selectedSport.nombre}</span>
-              </div>
-              <div className="detail-row">
-                <strong>Cantidad de Miembros:</strong>
-                <span>{selectedSport.miembros}</span>
-              </div>
-              <div className="detail-row">
-                <strong>Estado:</strong>
-                <span>{getStatusBadge(selectedSport.estado)}</span>
-              </div>
-            </div>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseViewModal}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Modal de Agregar Nuevo Deporte */}
-      <Modal show={showAddModal} onHide={handleCloseAddModal} centered>
+      {/* Modal para Agregar Deporte */}
+      <Modal show={showAddModal} onHide={handleCloseAddModal}>
         <Modal.Header closeButton>
           <Modal.Title>Agregar Nuevo Deporte</Modal.Title>
         </Modal.Header>
@@ -406,7 +244,7 @@ const SportsTable = forwardRef((props, ref) => {
               <Form.Label>Nombre del Deporte</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Ingrese el nombre"
+                placeholder="Ej: Fútbol"
                 value={addForm.nombre}
                 onChange={(e) =>
                   setAddForm({ ...addForm, nombre: e.target.value })
@@ -421,7 +259,7 @@ const SportsTable = forwardRef((props, ref) => {
                 placeholder="Ingrese la cantidad"
                 value={addForm.miembros}
                 onChange={(e) =>
-                  setAddForm({ ...addForm, miembros: e.target.value })
+                  setAddForm({ ...addForm, miembros: parseInt(e.target.value) || 0 })
                 }
               />
             </Form.Group>
@@ -449,10 +287,61 @@ const SportsTable = forwardRef((props, ref) => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      {/* Modal para Editar Deporte */}
+      <Modal show={showEditModal} onHide={handleCloseEditModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editar Deporte: {selectedSport?.nombre}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Nombre del Deporte</Form.Label>
+              <Form.Control
+                type="text"
+                value={editForm.nombre}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, nombre: e.target.value })
+                }
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Cantidad de Miembros</Form.Label>
+              <Form.Control
+                type="number"
+                value={editForm.miembros}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, miembros: parseInt(e.target.value) || 0 })
+                }
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Estado</Form.Label>
+              <Form.Select
+                value={editForm.estado}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, estado: e.target.value })
+                }
+              >
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </Form.Select>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseEditModal}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleSaveEdit}>
+            Guardar Cambios
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 });
-
-SportsTable.displayName = "SportsTable";
 
 export default SportsTable;

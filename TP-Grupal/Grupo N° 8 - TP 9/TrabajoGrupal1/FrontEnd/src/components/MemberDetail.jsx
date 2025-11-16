@@ -1,18 +1,45 @@
+// /FrontEnd/src/components/MemberDetail/MemberDetail.jsx (VERSIÓN API)
+
 import { useState, useEffect } from "react";
-import { Form, Button, Nav } from "react-bootstrap";
+import { Form, Button, Nav, Row, Col } from "react-bootstrap";
+import apiService from "../../apiService"; // <-- Importamos la API
 import "./MemberDetail.css";
 
-const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
+// Estado inicial para un miembro nuevo
+const getInitialFormData = () => ({
+  id: null, // Si es null, es un nuevo registro
+  fullName: "",
+  email: "",
+  phone: "",
+  dateOfBirth: "",
+  // Fecha actual formateada (ej: '15 Nov 2025')
+  memberSince: new Date().toLocaleDateString('es-AR', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/\./g, ''), 
+  avatar: "https://randomuser.me/api/portraits/lego/7.jpg", // Avatar por defecto
+  associatedSports: [],
+  status: "Activo",
+});
+
+// Lista de deportes disponible (tomada de db.json para los checkboxes)
+const availableSports = [
+  "Tenis", "Natación", "Básquetbol", "Yoga", "Karate", 
+  "Fútbol", "Voleibol", "Gimnasia"
+];
+
+const MemberDetail = ({ initialMember, onActionCompleted, onCancelEdit }) => {
   const [activeTab, setActiveTab] = useState("personal");
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({ ...member });
+  const [formData, setFormData] = useState(
+    initialMember?.id ? { ...initialMember } : getInitialFormData()
+  );
+  const isNewMember = !initialMember?.id;
+  const [loading, setLoading] = useState(false);
 
-  // Actualizar formData cuando cambie el miembro seleccionado
+  // 1. Efecto para resetear el formulario si cambia el miembro (o si se selecciona "nuevo")
   useEffect(() => {
-    setFormData({ ...member });
-    setIsEditing(false);
+    setFormData(initialMember?.id ? { ...initialMember } : getInitialFormData());
+    setIsEditing(isNewMember); // Empezar editando si es un miembro nuevo
     setActiveTab("personal");
-  }, [member]);
+  }, [initialMember, isNewMember]);
 
   // Manejar cambios en el formulario
   const handleInputChange = (e) => {
@@ -25,6 +52,7 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
 
   // Manejar cambios en deportes
   const handleSportChange = (sport) => {
+    if (!isEditing) return;
     const currentSports = formData.associatedSports || [];
     const newSports = currentSports.includes(sport)
       ? currentSports.filter((s) => s !== sport)
@@ -35,38 +63,100 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
       associatedSports: newSports,
     }));
   };
+  
+  // =========================================================
+  // FUNCIONES DE API (CRUD)
+  // =========================================================
 
-  // Guardar cambios
-  const handleSaveChanges = () => {
-    onUpdateMember(formData);
-    setIsEditing(false);
+  // Manejar Guardar (Creación o Edición)
+  const handleSaveChanges = async () => {
+    if (!formData.fullName || !formData.email) {
+      alert("El nombre completo y el correo electrónico son obligatorios.");
+      return;
+    }
+    setLoading(true);
+
+    try {
+      if (isNewMember) {
+        // CREACIÓN (POST)
+        const { id, ...dataToCreate } = formData;
+        await apiService.createItem("members", dataToCreate);
+        alert(`Socio "${formData.fullName}" agregado con éxito.`);
+      } else {
+        // ACTUALIZACIÓN (PATCH)
+        await apiService.updateItem("members", formData.id, formData);
+        alert(`Socio "${formData.fullName}" actualizado con éxito.`);
+      }
+
+      setIsEditing(false);
+      onActionCompleted(); // <-- Notificar al padre para recargar la lista
+      
+    } catch (error) {
+      console.error("Error al guardar socio:", error);
+      alert(`Error al ${isNewMember ? 'crear' : 'actualizar'} el socio.`);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Cancelar edición
+  // Manejar Eliminación
+  const handleDeleteMember = async () => {
+    if (isNewMember) return;
+    const confirmDelete = window.confirm(
+      `¿Está seguro de eliminar al socio: ${formData.fullName}? Esta acción es irreversible.`
+    );
+    if (!confirmDelete) return;
+    setLoading(true);
+
+    try {
+      // ELIMINACIÓN (DELETE)
+      await apiService.deleteItem("members", formData.id);
+      alert(`Socio "${formData.fullName}" eliminado con éxito.`);
+      onActionCompleted(); // <-- Notificar al padre para recargar la lista
+    } catch (error) {
+      console.error("Error al eliminar socio:", error);
+      alert("Error al eliminar el socio.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Manejar Cancelar Edición/Creación
   const handleCancel = () => {
-    setFormData({ ...member });
-    setIsEditing(false);
+    if (isNewMember) {
+      onCancelEdit(); // Si es un nuevo miembro, indicamos al padre que cierre el detalle/formulario
+    } else {
+      setFormData({ ...initialMember }); // Restaurar datos originales
+      setIsEditing(false); // Volver al modo vista
+    }
   };
 
-  // Eliminar miembro
-  const handleDelete = () => {
-    onDeleteMember(member.id);
-  };
+  // Función para renderizar un campo de Form.Control
+  const renderField = (name, label, type = "text", disabled = !isEditing) => (
+    <Form.Group as={Col} md="6" className="mb-3">
+      <Form.Label>{label}</Form.Label>
+      <Form.Control
+        type={type}
+        name={name}
+        value={formData[name] || (type === 'number' ? 0 : '')}
+        onChange={handleInputChange}
+        disabled={disabled || loading}
+      />
+    </Form.Group>
+  );
 
-  // Cambiar avatar (simulado)
-  const handleChangeAvatar = () => {
-    const newAvatar = `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`;
-    setFormData((prev) => ({
-      ...prev,
-      avatar: newAvatar,
-    }));
-  };
-
-  const availableSports = ["Fútbol", "Tenis", "Básquetbol", "Natación", "Vóleibol"];
+  // Mensaje si no hay socio seleccionado (solo en modo vista)
+  if (!initialMember && !isNewMember) {
+    return (
+      <div className="member-detail-container text-center p-5">
+        <p className="text-muted">Seleccione un socio de la lista para ver los detalles, o presione "Agregar Nuevo Miembro" para crear uno.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="member-detail-container">
-      {/* Header con avatar y botones */}
+      {/* Header del miembro */}
       <div className="member-header">
         <div className="member-header-left">
           <div className="avatar-wrapper">
@@ -76,132 +166,119 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
               className="member-detail-avatar"
             />
             {isEditing && (
-              <button
+              <Button
+                variant="primary"
+                size="sm"
                 className="change-avatar-btn"
-                onClick={handleChangeAvatar}
-                title="Cambiar foto"
+                onClick={() =>
+                  alert(
+                    "Funcionalidad para cambiar avatar aún no implementada."
+                  )
+                }
               >
-                <i className="bi bi-camera-fill"></i>
-              </button>
+                <i className="bi bi-camera"></i>
+              </Button>
             )}
           </div>
-          <div className="member-header-info">
-            <h2 className="member-detail-name">{formData.fullName}</h2>
-            <p className="member-since">Miembro desde: {member.memberSince}</p>
+          <div className="member-info">
+            <h4 className="member-name-title">
+              {isNewMember ? "Nuevo Socio" : formData.fullName}
+            </h4>
+            <span
+              className={`member-status badge bg-${
+                formData.status === "Activo" ? "success" : "danger"
+              }`}
+            >
+              {formData.status}
+            </span>
           </div>
         </div>
-        <div className="member-header-actions">
-          {!isEditing ? (
-            <>
-              <Button
-                variant="outline-primary"
-                className="edit-btn"
-                onClick={() => setIsEditing(true)}
-              >
-                Editar
-              </Button>
-              <Button
-                variant="outline-danger"
-                className="delete-btn"
-                onClick={handleDelete}
-              >
-                Eliminar
-              </Button>
-            </>
-          ) : null}
-        </div>
+        
+        {/* Botones de acción general */}
+        {!isEditing && !isNewMember && (
+          <div className="action-buttons">
+            <Button
+              variant="outline-secondary"
+              className="delete-member-btn"
+              onClick={handleDeleteMember}
+              disabled={loading}
+            >
+              <i className="bi bi-trash me-2"></i>
+              Eliminar
+            </Button>
+            <Button
+              variant="primary"
+              className="edit-member-btn"
+              onClick={() => setIsEditing(true)}
+              disabled={loading}
+            >
+              <i className="bi bi-pencil-square me-2"></i>
+              Editar
+            </Button>
+          </div>
+        )}
       </div>
 
-      {/* Tabs de navegación */}
-      <Nav variant="tabs" className="member-tabs">
+      {/* Navegación de pestañas */}
+      <Nav variant="tabs" defaultActiveKey="personal" onSelect={setActiveTab}>
         <Nav.Item>
-          <Nav.Link
-            active={activeTab === "personal"}
-            onClick={() => setActiveTab("personal")}
-          >
-            Datos Personales
-          </Nav.Link>
+          <Nav.Link eventKey="personal">Datos Personales</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link
-            active={activeTab === "sports"}
-            onClick={() => setActiveTab("sports")}
-          >
-            Deportes
-          </Nav.Link>
+          <Nav.Link eventKey="sports">Deportes</Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link
-            active={activeTab === "payment"}
-            onClick={() => setActiveTab("payment")}
-          >
-            Historial de Pagos
+          <Nav.Link eventKey="payment" disabled>
+            Pagos (Próximamente)
           </Nav.Link>
         </Nav.Item>
       </Nav>
 
-      {/* Contenido de las tabs */}
-      <div className="tab-content">
+      {/* Contenido de las pestañas */}
+      <div className="member-details-body pt-4">
         {activeTab === "personal" && (
-          <div className="personal-details-tab">
-            <div className="form-row">
-              <div className="form-group-member">
-                <label>Nombre Completo</label>
+          <Form>
+            <Row>
+              {renderField("fullName", "Nombre Completo")}
+              {renderField("email", "Correo Electrónico", "email")}
+              {renderField("phone", "Teléfono")}
+              {renderField("dateOfBirth", "Fecha de Nacimiento", "date")}
+            </Row>
+            <Row>
+              <Form.Group as={Col} md="6" className="mb-3">
+                <Form.Label>Miembro Desde</Form.Label>
                 <Form.Control
                   type="text"
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className="member-input"
+                  name="memberSince"
+                  value={formData.memberSince}
+                  disabled
                 />
-              </div>
-              <div className="form-group-member">
-                <label>Correo Electrónico</label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  value={formData.email}
+              </Form.Group>
+              <Form.Group as={Col} md="6" className="mb-3">
+                <Form.Label>Estado</Form.Label>
+                <Form.Select
+                  name="status"
+                  value={formData.status}
                   onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className="member-input"
-                />
-              </div>
-            </div>
+                  disabled={!isEditing || loading}
+                >
+                  <option value="Activo">Activo</option>
+                  <option value="Inactivo">Inactivo</option>
+                </Form.Select>
+              </Form.Group>
+            </Row>
+          </Form>
+        )}
 
-            <div className="form-row">
-              <div className="form-group-member">
-                <label>Número de Teléfono</label>
-                <Form.Control
-                  type="text"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className="member-input"
-                />
-              </div>
-              <div className="form-group-member">
-                <label>Fecha de Nacimiento</label>
-                <Form.Control
-                  type="date"
-                  name="dateOfBirth"
-                  value={formData.dateOfBirth}
-                  onChange={handleInputChange}
-                  disabled={!isEditing}
-                  className="member-input"
-                />
-              </div>
-            </div>
-
-            {/* Associated Sports Section */}
-            <div className="sports-section">
-              <label className="sports-label">Deportes Asociados</label>
+        {activeTab === "sports" && (
+          <div className="sports-tab">
+            <h5 className="mb-3">Deportes Asociados</h5>
+            <div className="sports-checkboxes-container">
               <div className="sports-checkboxes">
                 {availableSports.map((sport) => (
                   <div
                     key={sport}
-                    className={`sport-checkbox-card ${
+                    className={`sport-checkbox-wrapper ${
                       formData.associatedSports?.includes(sport) ? "checked" : ""
                     }`}
                   >
@@ -211,19 +288,13 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
                       label={sport}
                       checked={formData.associatedSports?.includes(sport)}
                       onChange={() => handleSportChange(sport)}
-                      disabled={!isEditing}
+                      disabled={!isEditing || loading}
                       className="sport-checkbox"
                     />
                   </div>
                 ))}
               </div>
             </div>
-          </div>
-        )}
-
-        {activeTab === "sports" && (
-          <div className="sports-tab">
-            <p className="coming-soon">Información de deportes próximamente...</p>
           </div>
         )}
 
@@ -234,14 +305,24 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
         )}
       </div>
 
-      {/* Botones de acción al editar */}
-      {isEditing && (
+      {/* Botones de acción al editar/crear */}
+      {(isEditing || isNewMember) && (
         <div className="form-actions">
-          <Button variant="secondary" className="cancel-btn" onClick={handleCancel}>
+          <Button 
+            variant="secondary" 
+            className="cancel-btn" 
+            onClick={handleCancel}
+            disabled={loading}
+          >
             Cancelar
           </Button>
-          <Button variant="primary" className="save-btn" onClick={handleSaveChanges}>
-            Guardar Cambios
+          <Button 
+            variant="primary" 
+            className="save-btn" 
+            onClick={handleSaveChanges}
+            disabled={loading}
+          >
+            {loading ? 'Guardando...' : 'Guardar Cambios'}
           </Button>
         </div>
       )}
