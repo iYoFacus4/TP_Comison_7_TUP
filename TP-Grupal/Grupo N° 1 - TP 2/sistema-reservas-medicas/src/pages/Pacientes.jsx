@@ -33,7 +33,7 @@ const Pacientes = () => {
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    searchPatients(value);
+    searchPatients(value, patients);
   };
 
   const handleClearSearch = () => {
@@ -132,7 +132,7 @@ const Pacientes = () => {
                   <InputGroup>
                     <Form.Control
                       type="text"
-                      placeholder="Buscar por nombre, apellido, DNI o email..."
+                      placeholder="Buscar por nombre o apellido"
                       value={searchTerm}
                       onChange={handleSearch}
                     />

@@ -60,19 +60,14 @@ const MOCK_PATIENTS = [
 
 class PatientService {
   constructor() {
-    this.initializeMockData();
+    this.pacientes = this.getAll()
   }
 
-  initializeMockData() {
-    const stored = localStorage.getItem("patients");
-    if (!stored) {
-      localStorage.setItem("patients", JSON.stringify(MOCK_PATIENTS));
-    }
-  }
+
 
   async getAll() {
     try {
-      const response = await fetch("http://localhost:3000/pacientes");
+      const response = await fetch("http://localhost:3001/pacientes");
     const data = await response.json();
       if (data.success) {
         return {
@@ -120,7 +115,7 @@ class PatientService {
   async create(patientData) {
     try {
       
-      const response = await fetch(`http://localhost:3000/pacientes`,
+      const response = await fetch(`http://localhost:3001/pacientes`,
       {
         method: "POST", // o "PUT" si tu backend lo espera así
         headers: {
@@ -160,7 +155,7 @@ console.log(data)
 
   async update(id, patientData) {
     try {
-      const response = await fetch(`http://localhost:3000/pacientes/${id}`,
+      const response = await fetch(`http://localhost:3001/pacientes/${id}`,
       {
         method: "PUT", 
         headers: {
@@ -200,7 +195,7 @@ console.log(data)
 
   async delete(id) {
     try {
-      const response = await fetch(`http://localhost:3000/pacientes/${id}`, {
+      const response = await fetch(`http://localhost:3001/pacientes/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -228,32 +223,21 @@ console.log(data)
     }
   }
 
-  async search(query) {
-    try {
-      if (!query || query.trim() === "") {
-        return this.getAll();
-      }
-
-      const response = await httpClient.get(`/api/patients?search=${query}`);
-
-      if (response.ok && response.data.success) {
-        return {
-          success: true,
-          data: response.data.data,
-          total: response.data.total,
-        };
-      } else {
-        return {
-          success: false,
-          error: response.error || "Error al buscar pacientes",
-        };
-      }
-    } catch (error) {
-      return {
-        success: false,
-        error: error.message || "Error de conexión",
-      };
+  async search(query, pacientes) {
+    if (!query || query.trim() === "") {
+      return this.pacientes
     }
+    const searchTerm = query.toLowerCase();
+    const filtered = pacientes.filter(
+      (p) =>
+        p.apellido.toLowerCase().includes(searchTerm) ||
+        p.nombre.toLowerCase().includes(searchTerm)
+    );
+    return {
+      success: true,
+      data: filtered,
+      total: filtered.length,
+    };
   }
 }
 
