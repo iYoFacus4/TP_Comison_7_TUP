@@ -32,3 +32,42 @@ Describir brevemente lo encontrado al abrir el proyecto:
 
 ## Observaciones finales (opcional)
 - Comentarios sobre el flujo de trabajo, dificultades o acuerdos del equipo.
+
+> Estructura final de FRONT
+TP7/
+ ├─ src/
+ │   ├─ App.jsx
+ │   ├─ main.jsx
+ │   ├─ components/
+ │   │   ├─ Card.jsx
+ │   │   ├─ LogoutButton.jsx
+ │   │   ├─ ProtectedRoute.jsx
+ │   │   ├─ Sidebar.jsx
+ │   │   └─ TablaUser.jsx
+ │   ├─ hooks/
+ │   │   └─ useFetch.js     
+ │   ├─ layout/
+ │   │   ├─ MainLayout.jsx
+ │   │   ├─ Navbar.jsx
+ │   │   └─ Sidebar.css
+ │   ├─ pages/
+ │   │   ├─ dashboard/Dashboard.jsx
+ │   │   ├─ LoginPage.jsx
+ │   │   ├─ MiembrosPage.jsx
+ │   │   └─ ReportesPage.jsx
+ │   ├─ router/
+ │   │   └─ AppRouter.jsx
+ │   ├─ services/
+ │   │   ├─ http.js
+ │   │   ├─ auth.js
+ │   │   ├─ miembrosService.js
+ │   │   ├─ actividadesService.js
+ │   │   └─ reportesService.js
+ │   ├─ store/
+ │   │   └─ auth.js
+ │   └─ styles/custom.css
+ ├─ .env
+ ├─ vite.config.js
+ ├─ package.json
+ └─ index.html
+
