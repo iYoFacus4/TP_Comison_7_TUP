@@ -39,18 +39,6 @@
       "titulo": "Estudio B",
       "descripcion": "Descripcion del Estudio B",
       "fecha": "2023-02-01"
-    },
-    {
-      "id": "3",
-      "titulo": "Estudio C",
-      "descripcion": "Descripcion del Estudio C",
-      "fecha": "2023-03-01"
-    },
-    {
-      "id": "4",
-      "titulo": "Estudio D",
-      "descripcion": "Descripcion del Estudio D",
-      "fecha": "2023-04-01"
     }
   ]
 }

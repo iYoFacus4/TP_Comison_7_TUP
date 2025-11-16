@@ -1,0 +1,150 @@
+{
+  "members": [
+    {
+      "id": "1",
+      "fullName": "Martín Fernández",
+      "email": "martin.fernandez@example.com",
+      "phone": "11-2345-6789",
+      "dateOfBirth": "1990-05-15",
+      "memberSince": "1 Ene 2023",
+      "avatar": "https://randomuser.me/api/portraits/men/1.jpg",
+      "associatedSports": [
+        "Fútbol",
+        "Básquetbol"
+      ],
+      "status": "Activo"
+    },
+    {
+      "id": "2",
+      "fullName": "Lucía Giménez",
+      "email": "lucia.gimenez@example.com",
+      "phone": "11-9876-5432",
+      "dateOfBirth": "1995-10-20",
+      "memberSince": "1 Abr 2023",
+      "avatar": "https://randomuser.me/api/portraits/women/2.jpg",
+      "associatedSports": [
+        "Tenis",
+        "Natación"
+      ],
+      "status": "Activo"
+    },
+    {
+      "id": "3",
+      "fullName": "Santiago Rodríguez",
+      "email": "santiago.rodriguez@example.com",
+      "phone": "11-1111-2222",
+      "dateOfBirth": "1988-03-01",
+      "memberSince": "1 Jul 2022",
+      "avatar": "https://randomuser.me/api/portraits/men/3.jpg",
+      "associatedSports": [
+        "Fútbol"
+      ],
+      "status": "Activo"
+    },
+    {
+      "id": "4",
+      "fullName": "Sofía Álvarez",
+      "email": "sofia.alvarez@example.com",
+      "phone": "11-3333-4444",
+      "dateOfBirth": "2000-07-25",
+      "memberSince": "1 Oct 2023",
+      "avatar": "https://randomuser.me/api/portraits/women/4.jpg",
+      "associatedSports": [
+        "Vóleibol"
+      ],
+      "status": "Inactivo"
+    }
+  ],
+  "sports": [
+    {
+      "id": "1",
+      "nombre": "Tenis",
+      "miembros": 32,
+      "estado": "Activo"
+    },
+    {
+      "id": "2",
+      "nombre": "Natación",
+      "miembros": 45,
+      "estado": "Activo"
+    },
+    {
+      "id": "3",
+      "nombre": "Básquet",
+      "miembros": 28,
+      "estado": "Activo"
+    },
+    {
+      "id": "4",
+      "nombre": "Yoga",
+      "miembros": 15,
+      "estado": "Inactivo"
+    },
+    {
+      "id": "5",
+      "nombre": "Karate",
+      "miembros": 22,
+      "estado": "Activo"
+    },
+    {
+      "id": "6",
+      "nombre": "Fútbol",
+      "miembros": 50,
+      "estado": "Activo"
+    },
+    {
+      "id": "7",
+      "nombre": "Voleibol",
+      "miembros": 18,
+      "estado": "Activo"
+    },
+    {
+      "id": "8",
+      "nombre": "Gimnasia",
+      "miembros": 25,
+      "estado": "Inactivo"
+    }
+  ],
+  "payments": [
+    {
+      "id": "1",
+      "miembro": "Juan Pérez",
+      "membresia": "Premium",
+      "cuota": 50,
+      "estado": "Pagado",
+      "fechaVencimiento": "01 Mar 2024"
+    },
+    {
+      "id": "2",
+      "miembro": "María González",
+      "membresia": "Estándar",
+      "cuota": 35,
+      "estado": "Pagado",
+      "fechaVencimiento": "01 Feb 2024"
+    },
+    {
+      "id": "3",
+      "miembro": "Pedro Martínez",
+      "membresia": "Premium",
+      "cuota": 50,
+      "estado": "Pagado",
+      "fechaVencimiento": "20 Mar 2024"
+    },
+    {
+      "id": "4",
+      "miembro": "Ana López",
+      "membresia": "Estudiante",
+      "cuota": 25,
+      "estado": "Pagado",
+      "fechaVencimiento": "01 Ene 2024"
+    },
+    {
+      "id": "5",
+      "miembro": "Carlos Rodríguez",
+      "membresia": "Estándar",
+      "cuota": 35,
+      "estado": "Pagado",
+      "fechaVencimiento": "15 Mar 2024"
+    }
+  ]
+}

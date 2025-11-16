@@ -1,0 +1,87 @@
+{
+  "clientes": [
+    {
+      "nombre": "Fabricio Toranzo",
+      "telefono": "3816367973",
+      "id": 1
+    },
+    {
+      "nombre": "Benjamin Ibañez",
+      "telefono": "3816626552",
+      "id": 2
+    },
+    {
+      "nombre": "Exequiel Rodriguez",
+      "telefono": "3817891234",
+      "id": 3
+    },
+    {
+      "nombre": "Leandro Quilpidor",
+      "telefono": "3814567415",
+      "id": 4
+    }
+  ],
+  "productos": [
+    {
+      "nombre": "Pantalon Jeans",
+      "precio": "20000",
+      "id": "1"
+    },
+    {
+      "nombre": "Camisa Lino",
+      "precio": "15000",
+      "id": "2"
+    },
+    {
+      "nombre": "Short Jeans",
+      "precio": "10000",
+      "id": "3"
+    },
+    {
+      "id": 4,
+      "nombre": "Remera Mom",
+      "precio": "22000"
+    }
+  ],
+  "ventas": [
+    {
+      "clienteId": 1,
+      "fecha": "2025-10-29",
+      "productos": [
+        {
+          "productoId": "1",
+          "nombre": "Pantalon Jeans",
+          "precio": "20000"
+        }
+      ],
+      "total": 20000,
+      "id": 1
+    },
+    {
+      "clienteId": 2,
+      "fecha": "2025-10-29",
+      "productos": [
+        {
+          "productoId": "2",
+          "nombre": "Camisa Lino",
+          "precio": "15000"
+        }
+      ],
+      "total": 15000,
+      "id": 2
+    },
+    {
+      "clienteId": 4,
+      "fecha": "2025-10-29",
+      "productos": [
+        {
+          "productoId": "1",
+          "nombre": "Pantalon Jeans",
+          "precio": "20000"
+        }
+      ],
+      "total": 20000,
+      "id": 3
+    }
+  ]
+}

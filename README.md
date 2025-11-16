@@ -1,94 +1,185 @@
-# 📌 TP — Semana 2  
-Tecnicatura Universitaria en Programación — Comisión 7  
-Profesor: Chocobar Matías  
-**Fecha límite:** Domingo 02 — 18:00 hs
+📌 TP — Semana 3
 
+Tecnicatura Universitaria en Programación — Comisión 7
+Profesor: Chocobar Matías
+📅 Fecha límite: Viernes 14 — 18:00 hs
+
+🎯 Objetivo Semana 3
+
+Migrar el proyecto de la Semana 2 hacia un entorno Full Stack real, reemplazando el uso de json-server y localStorage por un backend Node.js conectado a una base de datos MySQL.
+
+⚙️ Requerimientos Generales
+
+Crear una carpeta /backend dentro de la carpeta del grupo (paralela al /frontend).
+
+Configurar un servidor Node.js + Express + MySQL.
+
+Reemplazar el endpoint del json-server por el del backend local (localhost).
+
+Conectar el backend a una base de datos MySQL (crear y adjuntar el script .sql dentro del backend).
+
+Implementar Zustand en el frontend para manejar el login real (capturar nombre y rol del usuario).
+
+Eliminar totalmente el uso de localStorage y json-server.
+
+🧱 Estructura básica del backend
+
+Dentro de la carpeta del grupo:
+
+ 
+
+![Estructura del proyecto](./carpeta%20back.jpg)
+
+ 🔐 Ejemplo de .env
+
+PORT=3001
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=tu_password
+DB_NAME=nombre_de_tu_db
+JWT_SECRET=clave_secreta_segura
+
+
+💻 Instalación y configuración del backend
+
+1️⃣ Inicializar el proyecto
+
+npm init -y
+
+2️⃣ Instalar dependencias necesarias
+
+npm install express mysql2 dotenv cors helmet morgan jsonwebtoken
+
+3️⃣ Instalar nodemon (modo desarrollo)
+
+npm install --save-dev nodemon
+
+4️⃣ Agregar script en package.json
+
+"scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+}
+
+5️⃣ Levantar el servidor
+
+npm run dev
+
+
+Si todo está correcto, verás en consola:
+Servidor corriendo en http://localhost:3001
+Base de datos conectada exitosamente
+
+🧠 Diferencia entre CommonJS y ES6 Modules
+
+Concepto	            CommonJS	                            ES6 Modules
+
+Sintaxis	            require() y module.exports	          import y export
+
+Soporte	              Nativo en Node.js (por defecto	      Estándar moderno de JavaScript
+                       en versiones previas)
+
+Carga de módulos	    Dinámica (en tiempo de ejecución)	    Estática (analizada antes de ejecutar)
+
+Archivo principal	    No necesita "type": "module"	         Debe incluir "type": "module" en package.json
+
+🔎 Ejemplo rápido:
+CommonJS:
+
+const express = require('express');
+module.exports = router;
+
+
+ES6:
+
+import express from 'express';
+export default router;
+
+
+🔁 Sincronización del repositorio
+
+No crear un nuevo fork.
+
+El líder debe ir a su GitHub y presionar “Sync Fork”
+para obtener los nuevos cambios del profesor.
+
+Luego, en su clon local:
 ---
+git pull origin main
 
-## 🎯 Objetivo Semana 2
+🧩 Requerimientos técnicos específicos
 
-Extender el proyecto React ya iniciado en Semana 1 incorporando:
+Backend en Node.js + Express.
 
-- ✅ `react-router-dom` instalado y ruteo funcional
-- ✅ Creación de **rutas privadas** usando el login simulado (localStorage)
-- ✅ Creación de **custom hooks** para manejo simulado de peticiones HTTP
-- ✅ Configuración de **json-server** para API fake
-- ✅ Carpeta `services/` configurada con archivos para peticiones HTTP simuladas
-- ✅ Proyecto **no debe reiniciarse desde cero** — se continua sobre lo ya entregado
+Conexión estable a MySQL mediante archivo db.js.
 
----
+CRUD funcional.
 
-## 🔁 Sobre el FORK y la actualización
+Implementar Zustand en el frontend para el manejo del usuario logueado.
 
-- **No deben volver a hacer FORK** si ya lo hicieron en Semana 1
-- El profesor ya cargó en el repositorio original nuevas carpetas y estructura
-- Cada grupo debe **traer los nuevos cambios desde el repo del profesor**  
-  (actualizando su fork y luego su clon local)
-- Si encuentran carpetas vacías en su propio proyecto:
-  - Deben reconstruirlas con lo hecho en Semana 1
-  - Y luego agregar lo nuevo de Semana 2
+Sustituir completamente json-server y localStorage.
 
----
+Backend operativo con npm run dev.
 
-## 🧩 Requerimientos técnicos esta semana
+📋 Archivo obligatorio de auditoría
 
-- `react-router-dom` instalado y en uso
-- Rutas públicas y **rutas privadas protegidas**
-- Hook personalizado para manejo simulado de API (`useFetch` / `useService` / similar)
-- `json-server` agregado al proyecto con data fake
-- Scripts en package.json para levantar json-server
-- Peticiones HTTP simuladas desde carpeta `services/`
+Cada grupo debe incluir dentro de su carpeta:
 
----
+Auditoria_Semana_3.md (OBLIGATORIO)
 
-## 🧮 Flujo GIT — Semana 2
+Secciones:
 
-**LÍDER**
-- Actualiza el repo con los cambios del profesor
-- Integra ramas de integrantes en `dev`
-- Hace `merge dev → main` al final
-- Realiza el Pull Request final al profesor
+1️⃣ ANTES DE TRABAJAR:
 
-**INTEGRANTES**
-- NO hacen fork nuevo
-- Trabajan en su rama `Nombre_Legajo`
-- Push a su rama
-- Avisan al líder para integrar
+Qué encontraron del TP anterior (errores, faltantes, bugs).
 
----
+2️⃣ DESPUÉS DE TRABAJAR:
 
-## 📘 Contenido obligatorio NUEVO esta semana
+Qué corrigieron y qué agregaron (Zustand, backend, conexión DB, etc.).
 
-Dentro de la carpeta del grupo debe existir un archivo separado:
+Este documento demuestra la capacidad de revisión, diagnóstico y mejora continua del equipo.
 
-**`Auditoria_Semana_2.md` (OBLIGATORIO Y DESTACADO)**  
-Con dos secciones:
+🧮 Flujo GIT — Semana 3
 
-1) **REPORTE ANTES DE TRABAJAR**  
-   - Qué encontraron: errores, bugs, omisiones, faltantes de la semana pasada
+LÍDER
 
-2) **REPORTE DE SOLUCIONES + NUEVO AGREGADO**  
-   - Qué corrigieron + qué añadieron de esta semana
+Sincroniza el fork con el repo del profesor.
 
-> Este tipo de auditoría mejora:  
-> lectura de código ajeno, reducción de deuda técnica, colaboración real y capacidad de detectar fallos antes de desarrollar
+Integra ramas de los integrantes en dev.
 
----
+Hace merge dev → main.
 
-## 📬 Entrega
+Envía el Pull Request final.
 
-- Solo el líder realiza Pull Request al repo del profesor  
-- **Título PR:** `TP Semana 2 — Grupo X — Comisión 7`  
-- **Fecha límite:** Domingo 02 — 18:00 hs
+INTEGRANTES
 
----
+Trabajan en su rama Nombre_Legajo.
 
-## ✅ Checklist antes de enviar
+Hacen push de sus cambios.
 
-- Router configurado + rutas privadas
-- Hook custom para API simulada
-- json-server configurado y funcionando
-- Carpeta `services` operativa con funciones HTTP fake
-- Auditoria_Semana_2.md creado dentro del grupo
-- `dev` mergeado a `main` sin conflictos
-- PR enviado por el líder
+Avisan al líder para integrar.
+
+🚀 Entrega
+
+Solo el líder del grupo realiza el Pull Request.
+
+Título del PR:
+TP Semana 3 — Grupo X — Comisión 7
+
+Fecha límite: Domingo 09 — 18:00 hs
+
+✅ Checklist antes de enviar
+
+ Backend creado y funcional
+
+ Base de datos MySQL conectada
+
+ Frontend conectado al backend
+
+ Zustand implementado
+
+ Auditoria_Semana_3.md completada
+
+ Merge dev → main sin conflictos
+
+ PR enviado por el líder

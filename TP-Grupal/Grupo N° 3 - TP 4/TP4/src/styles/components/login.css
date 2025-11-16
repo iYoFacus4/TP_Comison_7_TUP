@@ -1,0 +1,25 @@
+/* Login oscuro sobrio */
+.login-card{
+  background: rgba(10, 12, 16, .92);
+  border: 1px solid rgba(255,255,255,.06);
+  backdrop-filter: blur(3px);
+  color: #e8eaed;
+  border-radius: 14px;
+}
+.shadow-xl{ box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+.form-dark .form-label{ color:#cbd5e1; }
+.form-dark .form-control{
+  background:#161922;
+  color:#e8eaed;
+  border:1px solid #2b3242;
+}
+.form-dark .form-control::placeholder{ color:#93a0b2; }
+.form-dark .form-control:focus{
+  border-color:#6fb6ff;
+  box-shadow: 0 0 0 .18rem rgba(111,182,255,.20);
+}
+.btn-hl2{
+  background: linear-gradient(180deg, var(--bs-primary), color-mix(in srgb, var(--bs-primary) 60%, #ffb94b));
+  border: 0;
+}
+.btn-hl2:hover{ filter: brightness(1.05); }

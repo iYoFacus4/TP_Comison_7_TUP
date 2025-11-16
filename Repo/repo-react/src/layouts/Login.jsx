@@ -1,12 +1,15 @@
 import {useState} from 'react'
 import { Container,Form,Button,Alert } from 'react-bootstrap';
 import {useAuth} from "../hook/useAuth";
+import {useAuthStore} from "../store/zunstand";
 
 const Login = () => {
 const [loading,setLoading] = useState (false);
 const [email,setEmail] = useState ("");
 const [password,setPassword] = useState ("");
 const { handleLogin, error} = useAuth();
+// const user = useAuthStore((state) => state.user);
+const setUser = useAuthStore((state) => state.setUser);
 
 const handleSumbit = async (e) => {
   e.preventDefault();

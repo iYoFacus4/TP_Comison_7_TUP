@@ -1,0 +1,19 @@
+/* Punto de entrada de estilos del proyecto */
+@import "./base/variables.css";
+@import "./components/cards.css";
+@import "./components/charts.css";
+@import "./components/login.css";
+
+/* Ajustes base para Bootstrap + fondo general */
+body { background: var(--color-bg); color: var(--color-text); }
+.card, .list-group-item { background: var(--color-surface); color: var(--color-text); }
+.text-muted, .small, .bar-label { color: var(--color-muted) !important; }
+
+/* Glass utilitario (navbar, etc.) */
+.glass {
+  background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid color-mix(in srgb, var(--color-muted) 18%, transparent);
+}
+
+.hover-bg:hover { background: rgba(13, 110, 253, .06); cursor: pointer; }

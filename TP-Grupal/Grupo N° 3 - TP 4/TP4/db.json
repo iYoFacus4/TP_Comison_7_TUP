@@ -1,0 +1,107 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@escuela.edu",
+      "password": "1234",
+      "role": "admin",
+      "name": "Demo Admin"
+    },
+    {
+      "id": 2,
+      "email": "ana@escuela.edu",
+      "password": "1234",
+      "role": "user",
+      "name": "Usuario"
+    }
+  ],
+  "books": [
+    {
+      "id": 1,
+      "titulo": "Rayuela",
+      "autor": "Julio Cortázar",
+      "categoria": "Novela",
+      "cantidad": 5,
+      "cantidadDisponible": 3
+    },
+    {
+      "id": 2,
+      "titulo": "El Principito",
+      "autor": "A. de Saint-Exupéry",
+      "categoria": "Infantil",
+      "cantidad": 4,
+      "cantidadDisponible": 4
+    },
+    {
+      "titulo": "Martin Fierro",
+      "autor": "Jose Hernandez",
+      "categoria": "Gauchesco",
+      "cantidad": 10,
+      "cantidadDisponible": 10,
+      "id": 3
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "nombre": "Ana",
+      "apellido": "Pérez",
+      "email": "ana@escuela.edu",
+      "dni": "40111222",
+      "telefono": "381-555-1234"
+    },
+    {
+      "id": 2,
+      "nombre": "Luis",
+      "apellido": "Gómez",
+      "email": "luis@escuela.edu",
+      "dni": "39222333",
+      "telefono": "381-555-2222"
+    },
+    {
+      "nombre": "Luis Agustin",
+      "apellido": "Correa",
+      "dni": "40828071",
+      "email": "gustin_correa@hotmail.com",
+      "telefono": "3816650301",
+      "id": 3
+    }
+  ],
+  "loans": [
+    {
+      "id": 1,
+      "studentId": 1,
+      "bookId": 1,
+      "fechaPrestamo": "2025-10-31",
+      "fechaDevolucion": "2025-11-07",
+      "fechaRealDevolucion": "",
+      "devuelto": false
+    }
+  ],
+  "audit": [
+    {
+      "id": 1,
+      "actor": "admin@escuela.edu",
+      "accion": "SEED",
+      "entidad": "system",
+      "entidadId": 0,
+      "timestamp": "2025-10-31T10:00:00Z"
+    },
+    {
+      "actor": "admin@escuela.edu",
+      "accion": "CREATE",
+      "entity": "books",
+      "entityId": 3,
+      "timestamp": "2025-11-02T22:21:55.673Z",
+      "id": 2
+    },
+    {
+      "actor": "admin@escuela.edu",
+      "accion": "CREATE",
+      "entity": "students",
+      "entityId": 3,
+      "timestamp": "2025-11-02T22:22:33.666Z",
+      "id": 3
+    }
+  ]
+}
