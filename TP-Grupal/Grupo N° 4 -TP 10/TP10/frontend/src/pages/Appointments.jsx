@@ -40,9 +40,9 @@ const handleSave = async (formData, id) => {
     if (!clients || !services) return [];
 
     return appointments.map((t) => {
-      const clientName = clients.find((c) => c.id == t.clientId)?.name || "N/A";
+      const clientName = clients.find((c) => c.id == t.client_id)?.name || "N/A";
       const serviceName =
-        services.find((s) => s.id == t.serviceId)?.name || "N/A";
+        services.find((s) => s.id == t.service_id)?.name || "N/A";
 
       return [
         clientName,

@@ -23,8 +23,8 @@ export default function AppointmentForm({
  useEffect(() => {
  if (editingAppointment) {
  setFormData({
- clientId: editingAppointment.clientId || "", 
-serviceId: editingAppointment.serviceId || "",
+ clientId: editingAppointment.client_id || "", 
+serviceId: editingAppointment.service_id || "",
  date: editingAppointment.date || "",
  time: editingAppointment.time || "",
  });

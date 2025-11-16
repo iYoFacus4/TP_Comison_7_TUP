@@ -28,10 +28,10 @@ const addAppointment = async (appointmentData) => {
  try {
       setError(null);
  const dataToSave = {
-...appointmentData,
-      
- clientId: appointmentData.clientId,
- serviceId: appointmentData.serviceId,
+ client_id: appointmentData.clientId,
+ service_id: appointmentData.serviceId,
+ date: appointmentData.date,
+ time: appointmentData.time,
  };
 
 const newAppointment = await appointmentService.createAppointment(dataToSave);
@@ -58,10 +58,10 @@ setAppointments((prev) => prev.filter((appt) => appt.id !== id));
  try {
       setError(null);
 const dataToSave = {
- ...appointmentData,
-     
- clientId: appointmentData.clientId,
- serviceId: appointmentData.serviceId,
+ client_id: appointmentData.clientId,
+ service_id: appointmentData.serviceId,
+ date: appointmentData.date,
+ time: appointmentData.time,
  };
 
 const updatedAppointment = await appointmentService.updateAppointment(
