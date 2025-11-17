@@ -1,4 +1,4 @@
-import pool from '../db.js';
+import pool from '../config/db.js';
 
 // GET /api/deportes
 export const getAllDeportes = async (req, res) => {

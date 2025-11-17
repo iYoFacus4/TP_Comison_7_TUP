@@ -1,24 +1,34 @@
 import { httpClient } from "./httpClient";
 
 class AuthService {
-  async login(credentials) {
+ 
+async login(credentials) {
     try {
-      const response = await httpClient.post("/api/auth/login", credentials);
-
-      if (response.ok && response.data.success) {
-        this.setUserData(response.data.user);
+      const response = await fetch("http://localhost:3001/usuarios/obtenerPorMail", {
+        method: "POST", // o "PUT" si tu backend lo espera así
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          contraseña: credentials.password // el contenido que querés enviar
+        }),
+      });
+      const data = await response.json();   
+      if (data.success) {
+        this.setUserData(data.data);
         localStorage.setItem("isAuthenticated", "true");
         window.dispatchEvent(new Event("authChange"));
 
         return {
           success: true,
-          user: response.data.user,
-          message: response.data.message || "Login exitoso",
+          user: data,
+          message: "Login exitoso",
         };
       } else {
         return {
           success: false,
-          error: response.error || "Error en login",
+          error: "Error en login",
         };
       }
     } catch (error) {

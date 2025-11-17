@@ -115,12 +115,12 @@ export const usePatients = () => {
     }
   }, []);
 
-  const searchPatients = useCallback(async (query) => {
+  const searchPatients = useCallback(async (query, pacientes) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const result = await patientService.search(query);
+      const result = await patientService.search(query, pacientes);
 
       if (result.success) {
         setPatients(result.data);

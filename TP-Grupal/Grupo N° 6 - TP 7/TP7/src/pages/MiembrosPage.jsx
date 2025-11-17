@@ -3,9 +3,10 @@ import { Container, Row, Col, Table, Badge, Form, InputGroup, Spinner, Button, M
 import { Search, Pencil, Calendar3 } from 'react-bootstrap-icons';
 import { useFetch, useMutation } from '../hooks/useFetch';
 import { getMiembros, updateMiembro } from '../services/miembrosService';
-import { getActividades, updateActividad } from '../services/actividadesService';
+import { updateActividad } from '../services/actividadesService';
 import CardComponent from '../components/Card';
 import { PeopleFill, PersonCheckFill, PersonXFill, Activity } from 'react-bootstrap-icons';
+import { getActividadesConCupos } from '../services/actividadesService';
 
 const MiembrosPage = () => {
   // Estados de filtros
@@ -23,7 +24,13 @@ const MiembrosPage = () => {
 
   // Hooks para datos
   const { data: miembros, loading: loadingMiembros, error: errorMiembros, refetch: refetchMiembros } = useFetch(getMiembros);
-  const { data: actividades, loading: loadingActividades, error: errorActividades, refetch: refetchActividades } = useFetch(getActividades);
+  const {
+  data: actividades,
+  loading: loadingActividades,
+  error: errorActividades,
+  refetch: refetchActividades
+} = useFetch(getActividadesConCupos);
+
   const { mutate: mutateMiembro, loading: savingMiembro } = useMutation();
   const { mutate: mutateActividad, loading: savingActividad } = useMutation();
 
@@ -259,38 +266,40 @@ const MiembrosPage = () => {
                   <th>Acción</th>
                 </tr>
               </thead>
-              <tbody>
-                {actividades.map((actividad) => {
-                  const disponibles = actividad.cupoMaximo - actividad.inscritos;
-                  const porcentajeOcupado = ((actividad.inscritos / actividad.cupoMaximo) * 100).toFixed(0);
-                  
-                  return (
-                    <tr key={actividad.id}>
-                      <td>{actividad.id}</td>
-                      <td><strong>{actividad.nombre}</strong></td>
-                      <td>{actividad.instructor}</td>
-                      <td>{actividad.horario}</td>
-                      <td>{actividad.dias}</td>
-                      <td>{actividad.inscritos}</td>
-                      <td>{actividad.cupoMaximo}</td>
-                      <td>
-                        <Badge bg={disponibles > 5 ? 'success' : disponibles > 0 ? 'warning' : 'danger'}>
-                          {disponibles} disponibles ({porcentajeOcupado}% ocupado)
-                        </Badge>
-                      </td>
-                      <td>
-                        <Button
-                          variant="outline-primary"
-                          size="sm"
-                          onClick={() => handleEditarActividad(actividad)}
-                        >
-                          <Pencil /> Editar
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
+      <tbody>
+  {actividades.map((actividad) => {
+    const disponibles = actividad.disponibles;
+    const porcentajeOcupado = actividad.porcentaje;
+
+    return (
+      <tr key={actividad.id}>
+        <td>{actividad.id}</td>
+        <td><strong>{actividad.nombre}</strong></td>
+        <td>{actividad.instructor}</td>
+        <td>{actividad.horario}</td>
+        <td>{actividad.dias}</td>
+        <td>{actividad.inscritos}</td>
+        <td>{actividad.cupoMaximo}</td>
+        <td>
+          <Badge bg={disponibles > 5 ? 'success' : disponibles > 0 ? 'warning' : 'danger'}>
+            {disponibles} disponibles ({porcentajeOcupado}% ocupado)
+          </Badge>
+        </td>
+        <td>
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={() => handleEditarActividad(actividad)}
+          >
+            <Pencil /> Editar
+          </Button>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
+
             </Table>
           </div>
         </Col>

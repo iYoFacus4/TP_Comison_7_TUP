@@ -325,7 +325,7 @@ const Dashboard = () => {
                     <InputGroup>
                       <Form.Control
                         type="text"
-                        placeholder="Buscar por paciente, médico o especialidad..."
+                        placeholder="Buscar por paciente, médico o especialidad.."
                         value={filtros.busqueda}
                         onChange={(e) =>
                           handleFiltroChange("busqueda", e.target.value)

@@ -1,16 +1,25 @@
+// FrontEnd/src/pages/Login.jsx (CORREGIDO Y COMPLETO)
 import { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
-import apiService from '../services/apiService'; 
+// 1. IMPORTAMOS ZUSTAND
+import { useAuthStore } from '../store/useAuthStore.js';
+// (Ya no necesitamos 'apiService' aquí)
 
 const Login = () => {
   const navigate = useNavigate();
+  // 2. OBTENEMOS LA ACCIÓN 'login' DE ZUSTAND
+  const login = useAuthStore((state) => state.login);
+
   const [formData, setFormData] = useState({
     usuario: '',
     password: ''
   });
+  
+  // 3. AÑADIMOS OTRA VEZ 'rememberMe' PORQUE EL JSX LO NECESITA
   const [rememberMe, setRememberMe] = useState(false);
+  
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -23,44 +32,34 @@ const Login = () => {
     if (error) setError('');
   };
 
-  const handleSubmit = async (e) => {
+  // 4. NUEVA LÓGICA 'handleSubmit' (CON ZUSTAND)
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    if (!formData.usuario.trim() || !formData.password.trim()) {
-      setError('Por favor, complete todos los campos');
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      //  USAMOS EL SERVICIO DE API PARA EL LOGIN SIMULADO 
-      const response = await apiService.login(formData.usuario, formData.password);
+    // 5. SIMULAMOS LA LÓGICA DE LOGIN (como pide la S3)
+    // Verificamos contra el usuario de prueba
+    if (formData.usuario === 'Niconeta97' && formData.password === '12345') {
       
-      if (response.success) {
-        // Login exitoso: Guardar la bandera de autenticación en localStorage
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('usuario', response.user.username);
-        
-        // Si "Recordarme" está activado, guardar para próximas sesiones
-        if (rememberMe) {
-          localStorage.setItem('rememberMe', 'true');
-          localStorage.setItem('savedUsuario', formData.usuario);
-        }
-        
-        navigate(ROUTES.DASHBOARD, { replace: true });
-      } else {
-        setError('Usuario o contraseña incorrectos');
-      }
+      const userData = {
+        username: formData.usuario,
+        rol: 'admin' // Simulamos un rol
+      };
 
-    } catch (err) {
-      setError(err.message || 'Error de conexión. Intente más tarde.');
-    } finally {
-      setIsLoading(false);
+      // 6. ¡AQUÍ USAMOS ZUSTAND! (y borramos localStorage)
+      login(userData);
+
+      navigate(ROUTES.DASHBOARD, { replace: true });
+
+    } else {
+      setError('Usuario o contraseña incorrectos');
     }
+    
+    setIsLoading(false);
   };
 
+  // 7. PEGADO TODO EL 'return' DEL ARCHIVO 'Login(antes).jsx'
   return (
     <Container fluid className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
       <Row className="w-100 justify-content-center">

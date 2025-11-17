@@ -1,20 +1,27 @@
-const API_URL = 'http://localhost:3001';
+import { http } from './http';
 
-// Obtener datos de reportes
-export const getReportes = async () => {
-  const response = await fetch(`${API_URL}/reportes`);
-  if (!response.ok) {
-    throw new Error('Error al obtener reportes');
-  }
-  return response.json();
-};
-
-// Obtener dataCards (métricas)
+// Calcula métricas a partir de socios reales (sin json-server)
 export const getDataCards = async () => {
-  const response = await fetch(`${API_URL}/dataCards`);
-  if (!response.ok) {
-    throw new Error('Error al obtener métricas');
-  }
-  return response.json();
+  const socios = await http('/socios');
+  const totalSocios = socios.length;
+  const sociosActivos = socios.filter(s => s.status === 'Activo').length;
+  const sociosInactivos = totalSocios - sociosActivos;
+  return { totalSocios, sociosActivos, sociosInactivos };
 };
 
+// Reporte extendido para ReportesPage
+export const getReportes = async () => {
+  const socios = await http('/socios');
+  const total = socios.length;
+  const basico = socios.filter(s => s.plan === 'Básico').length;
+  const full = socios.filter(s => s.plan === 'Full').length;
+  const activos = socios.filter(s => s.status === 'Activo').length;
+  const inactivos = total - activos;
+
+  return {
+    nuevosEsteMes: 0,  // si no hay endpoint, lo dejamos 0
+    bajasEsteMes: 0,   // idem
+    distribucionPlanes: { basico, full },
+    distribucionEstados: { activos, inactivos },
+  };
+};

@@ -1,0 +1,14 @@
+{
+  "libros": [
+    { "id": 1, "titulo": "El Principito", "autor": "Saint-Exupéry", "disponibles": 5 },
+    { "id": 2, "titulo": "1984", "autor": "George Orwell", "disponibles": 2 },
+    { "id": 3, "titulo": "Fahrenheit 451", "autor": "Ray Bradbury", "disponibles": 0 }
+  ],
+  "alumnos": [
+    { "id": 1, "nombre": "Ana Gómez", "dni": "40222111" },
+    { "id": 2, "nombre": "Luis Núñez", "dni": "40111222" }
+  ],
+  "prestamos": [
+    { "id": 1, "libroId": 1, "alumnoId": 2, "fecha": "2025-10-20", "devolucion": "2025-10-27" }
+  ]
+}

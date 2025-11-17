@@ -76,65 +76,68 @@ const MOCK_DOCTORS = [
 class DoctorService {
   constructor() {
     this.doctors = [...MOCK_DOCTORS];
+    this.doctores = this.getAll()
   }
 
-  async getAll() {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+async getAll() {
+  try {
+    const response = await fetch("http://localhost:3001/doctores");
+    const data = await response.json();
 
+    console.log("Doctores:", data);
+    return data;
+  } catch (error) {
+    console.error("Error al obtener doctores:", error);
     return {
-      success: true,
-      data: this.doctors,
-      total: this.doctors.length,
+      success: false,
+      error: "Error al obtener doctores",
     };
   }
+}
+
 
   async getById(id) {
-    await new Promise((resolve) => setTimeout(resolve, 300));
+  try {
+    const response = await fetch(`http://localhost:3001/doctores/${id}`);
+    const data = await response.json();
 
-    const doctor = this.doctors.find((d) => d.id === id);
-
-    if (!doctor) {
-      return {
-        success: false,
-        error: "Doctor no encontrado",
-      };
-    }
-
+    console.log("Doctores:", data);
+    return data;
+  } catch (error) {
+    console.error("Error al obtener doctores:", error);
     return {
-      success: true,
-      data: doctor,
+      success: false,
+      error: "Error al obtener doctores",
     };
+  }
   }
 
   async getByEspecialidad(especialidad) {
-    await new Promise((resolve) => setTimeout(resolve, 400));
+      try {
+    const response = await fetch(`http://localhost:3001/doctores/${especialidad}`);
+    const data = await response.json();
 
-    const filtered = this.doctors.filter(
-      (d) => d.especialidad.toLowerCase() === especialidad.toLowerCase()
-    );
-
+    console.log("Doctores:", data);
+    return data;
+  } catch (error) {
+    console.error("Error al obtener doctores:", error);
     return {
-      success: true,
-      data: filtered,
-      total: filtered.length,
+      success: false,
+      error: "Error al obtener doctores",
     };
   }
+  }
 
-  async search(query) {
-    await new Promise((resolve) => setTimeout(resolve, 400));
-
+  async search(query, doctores) {
     if (!query || query.trim() === "") {
-      return this.getAll();
+      return this.doctores
     }
-
     const searchTerm = query.toLowerCase();
-    const filtered = this.doctors.filter(
+    const filtered = doctores.filter(
       (d) =>
-        d.nombre.toLowerCase().includes(searchTerm) ||
-        d.especialidad.toLowerCase().includes(searchTerm) ||
-        d.matricula.toLowerCase().includes(searchTerm)
+        d.apellido.toLowerCase().includes(searchTerm) ||
+        d.nombre.toLowerCase().includes(searchTerm)
     );
-
     return {
       success: true,
       data: filtered,
@@ -142,17 +145,21 @@ class DoctorService {
     };
   }
 
-  async getEspecialidades() {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    const especialidades = [
-      ...new Set(this.doctors.map((d) => d.especialidad)),
-    ];
-
+async getEspecialidades() {
+      try {
+    const response = await fetch("http://localhost:3001/especialidades");
+    const data = await response.json();
+    const nombres = data.data.map(e => e.nombre);
+    console.log(nombres);
+    return {success: true,
+      data: nombres.sort()};
+  } catch (error) {
+    console.error("Error al obtener las especialidades:", error);
     return {
-      success: true,
-      data: especialidades.sort(),
+      success: false,
+      error: "Error al obtener las especialidades",
     };
+  }
   }
 }
 

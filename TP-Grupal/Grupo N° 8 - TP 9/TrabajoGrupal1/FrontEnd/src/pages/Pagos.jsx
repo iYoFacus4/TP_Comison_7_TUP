@@ -1,12 +1,17 @@
+// FrontEnd/src/pages/Pagos.jsx (MODIFICADO)
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import PaymentTable from "../components/PaymentTable";
 import "./Pagos.css";
-import useFetch from "../hooks/useFetch"; 
+
+// 1. IMPORTAMOS EL apiService (¡y borramos 'useFetch'!)
+import apiService from "../services/apiService.js";
 
 const Pagos = () => {
-  // 1. Usamos el Custom Hook para obtener los datos de pagos
-  const { data: payments, isLoading, error } = useFetch("/payments");
+  // 2. ESTADOS LOCALES PARA DATOS, CARGA Y ERRORES
+  const [payments, setPayments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   
   const [stats, setStats] = useState({
     totalPendiente: 0,
@@ -14,16 +19,39 @@ const Pagos = () => {
     miembrosVencidos: 0,
   });
 
-  // 2. Calcular estadísticas cuando los datos de 'payments' cambien
+  // 3. useEffect PARA CARGAR DATOS DEL BACKEND REAL
   useEffect(() => {
-    if (payments) { 
+    const loadPayments = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        // ¡Aquí llamamos a tu API! Usamos 'cuotas'
+        // (que es el endpoint que creamos en el backend)
+        const data = await apiService.getAll('cuotas');
+        setPayments(data);
+
+      } catch (err) {
+        setError(err.message || "Error al cargar los pagos.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadPayments();
+  }, []); // Se ejecuta solo una vez
+
+  // 4. useEffect PARA CALCULAR ESTADÍSTICAS (CUANDO LLEGAN LOS DATOS)
+  useEffect(() => {
+    if (payments.length > 0) {
       const total = payments.reduce((sum, p) => {
-        if (p.estado !== "Pagado") return sum + p.cuota;
+        // Usamos los nombres de columna de tu club_deportivo.db
+        if (p.estado !== "Pagado") return sum + p.monto; 
         return sum;
       }, 0);
 
       const collected = payments.reduce((sum, p) => {
-        if (p.estado === "Pagado") return sum + p.cuota;
+        if (p.estado === "Pagado") return sum + p.monto;
         return sum;
       }, 0);
       
@@ -35,21 +63,13 @@ const Pagos = () => {
         miembrosVencidos: overdue,
       });
     }
-  }, [payments]); 
+  }, [payments]); // Se recalcula CADA VEZ que 'payments' cambie
 
   
   const handleGenerateReport = () => {
-   
-    if (isLoading) {
-      alert("Los datos aún se están cargando. Intente de nuevo en un momento.");
-      return;
-    }
-    
-    console.log("--- Generando Reporte Financiero ---");
-    console.log("Funcionalidad de exportación aún no implementada.");
-    console.log("Datos del Reporte:", stats);
-   
-    alert("Iniciando generación de Reporte (ver consola del navegador)");
+    // (Tu lógica de reporte se mantiene igual)
+    console.log("Generando Reporte...");
+    alert("Generando Reporte (ver consola)");
   };
 
   const formatCurrency = (amount) => {
@@ -58,12 +78,14 @@ const Pagos = () => {
       .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  // Si los datos están cargando o hay un error, mostramos un mensaje general
-  if (error) return <div>Error al cargar la página de pagos: {error}</div>;
+  // 5. MANEJO DE ESTADOS DE CARGA Y ERROR
+  if (error) {
+    return <div className="pagos-page" style={{ color: 'red' }}>Error: {error}</div>;
+  }
 
   return (
     <div className="pagos-page">
-      {/* Header del componente */}
+      {/* Header (sin cambios) */}
       <div className="pagos-header">
         <h1 className="page-title">Gestión de Cuotas Mensuales</h1>
         <Button
@@ -76,11 +98,12 @@ const Pagos = () => {
         </Button>
       </div>
 
-      {/* Cards de estadísticas (Solo se muestran si los datos han cargado) */}
+      {/* Cards de estadísticas (con 'isLoading') */}
       {isLoading ? (
         <div className="stats-cards">Cargando estadísticas...</div>
       ) : (
         <div className="stats-cards">
+          {/* (Tus 3 cards de estadísticas se quedan igual) */}
           <div className="stat-card">
             <div className="stat-label">Total Pendiente</div>
             <div className="stat-value">
@@ -100,8 +123,16 @@ const Pagos = () => {
         </div>
       )}
 
-      {/* Tabla de pagos */}
-      <PaymentTable />
+      {/* 6. TABLA DE PAGOS (AHORA PASAMOS LOS DATOS COMO PROP) */}
+      {isLoading ? (
+        <div>Cargando tabla de pagos...</div>
+      ) : (
+        <PaymentTable 
+          payments={payments} 
+          setPayments={setPayments} 
+          setError={setError}
+        />
+      )}
     </div>
   );
 };

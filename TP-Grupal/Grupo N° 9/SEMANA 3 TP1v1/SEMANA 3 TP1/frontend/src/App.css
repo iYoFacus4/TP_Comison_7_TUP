@@ -1,0 +1,365 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+/* ===========================
+   LOGIN PAGE CON FONDO ANIMADO
+   =========================== */
+
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f9fafb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Fondo con 3 capas que van apareciendo/desapareciendo */
+.login-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bg-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  animation: bgFade 24s infinite ease-in-out;
+  transform: scale(1.03);
+}
+
+/* Cada slide usa una imagen distinta y tiene un delay distinto */
+.bg-slide.slide1 {
+  background-image: url("./img/bg1.jpeg");
+  animation-delay: 0s;
+}
+
+.bg-slide.slide2 {
+  background-image: url("./img/bg1.webp");
+  animation-delay: 8s;
+}
+
+.bg-slide.slide3 {
+  background-image: url("./img/bg2.jpg");
+  animation-delay: 16s;
+}
+
+/* Animación suave: cada imagen aparece, se queda un rato y se va */
+@keyframes bgFade {
+  0% {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  5% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  35% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+}
+
+/* Capa oscura encima del fondo para leer bien el formulario */
+.login-overlay {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+}
+
+/* Tarjeta del login */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(15, 23, 42, 0.88);
+  border-radius: 1.5rem;
+  padding: 2.5rem 2.75rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: cardIn 0.7s ease forwards;
+}
+
+@keyframes cardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.login-card-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+
+.login-card-header p {
+  font-size: 0.95rem;
+  color: #e5e7eb;
+  opacity: 0.9;
+}
+
+/* Contenedor del componente <Login /> */
+.login-card-body {
+  padding-top: 0.5rem;
+}
+
+/* Hint pequeñito debajo del formulario */
+.login-hint {
+  font-size: 0.8rem;
+  color: #cbd5f5;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+}
+
+/* Efecto sutil al pasar el mouse por la tarjeta */
+.login-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .login-card {
+    padding: 2rem 1.75rem;
+    border-radius: 1.2rem;
+    background: rgba(15, 23, 42, 0.92);
+  }
+
+  .login-card-header h1 {
+    font-size: 1.5rem;
+  }
+}
+/* ===========================
+   DASHBOARD PAGE MÁS BONITO
+   =========================== */
+
+.dashboard-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #0f172a, #020617 60%);
+  color: #e5e7eb;
+  padding: 1.5rem 1.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.dashboard-header {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.dashboard-header p {
+  margin-top: 0.35rem;
+  font-size: 0.95rem;
+  color: #cbd5f5;
+  opacity: 0.9;
+}
+
+.dashboard-main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard-shell {
+  width: 100%;
+  max-width: 1200px;
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.16), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.16), transparent 55%),
+    rgba(15, 23, 42, 0.96);
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  overflow: hidden;
+  animation: shellIn 0.6s ease forwards;
+}
+
+@keyframes shellIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 1rem;
+  }
+
+  .dashboard-shell {
+    padding: 1.25rem;
+    border-radius: 1.2rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.6rem;
+  }
+}
+/* ===== Login con fondo animado ===== */
+
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #020617; /* color de respaldo */
+}
+
+.login-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Cada capa es una imagen distinta */
+.login-bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1.05); /* un pelín de zoom para que se vea más suave */
+  transition: opacity 1.6s ease-in-out, transform 7s ease-out;
+}
+
+/* La imagen activa se ve, las demás quedan ocultas */
+.login-bg-layer.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Capa oscura encima de las imágenes para que el texto sea legible */
+.login-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(15, 23, 42, 0.45), transparent 55%),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95));
+  z-index: 1;
+}
+
+/* Caja del formulario */
+.login-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 430px;
+  background-color: rgba(15, 23, 42, 0.9);
+  border-radius: 16px;
+  padding: 2.5rem 2rem 2.25rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(14px);
+}
+
+/* Título */
+.login-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #e5e7eb;
+  margin-bottom: 1.75rem;
+}
+
+/* Formulario más prolijo */
+.login-form .form-label {
+  font-size: 0.95rem;
+}
+
+.login-form .form-control {
+  border-radius: 999px;
+  padding: 0.6rem 0.9rem;
+}
+
+/* Botón con hover suave */
+.login-form .btn-primary {
+  border-radius: 999px;
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.login-form .btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
+}

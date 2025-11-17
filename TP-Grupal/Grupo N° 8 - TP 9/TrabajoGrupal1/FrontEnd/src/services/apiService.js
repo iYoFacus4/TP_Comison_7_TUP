@@ -1,8 +1,10 @@
-const API_BASE_URL = 'http://localhost:3001'; // Nuevo puerto base
+// 1. ¡LA RUTA BASE DEBE INCLUIR /api!
+const API_BASE_URL = 'http://localhost:3001/api'; // <--- CORREGIDO
 
 const apiService = {
-  // Función genérica para obtener todos los items de un endpoint
+  // Función genérica para obtener todos los items (socios, deportes, etc.)
   getAll: async (endpoint) => {
+    // endpoint será 'socios', 'deportes', etc.
     const response = await fetch(`${API_BASE_URL}/${endpoint}`);
     if (!response.ok) {
       throw new Error(`Error al obtener datos de ${endpoint}`);
@@ -10,10 +12,10 @@ const apiService = {
     return response.json();
   },
 
-  // Función genérica para actualizar un item por ID (útil para el registro de pagos)
+  // Función genérica para actualizar
   updateItem: async (endpoint, id, data) => {
     const response = await fetch(`${API_BASE_URL}/${endpoint}/${id}`, {
-      method: 'PATCH', // Usamos PATCH para actualizar parcialmente
+      method: 'PUT', // Usamos PUT para actualizar completo
       headers: {
         'Content-Type': 'application/json',
       },
@@ -25,7 +27,7 @@ const apiService = {
     return response.json();
   },
 
-  // Función genérica para crear un nuevo item (útil para agregar deporte/socio)
+  // Función genérica para crear un nuevo item
   createItem: async (endpoint, data) => {
     const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
       method: 'POST',
@@ -40,34 +42,19 @@ const apiService = {
     return response.json();
   },
 
-  // 🔑 Función específica para el login (REAL)
-  login: async (usuario, password) => {
-    // 1. Envía la solicitud al endpoint de autenticación. Asumo la ruta '/auth/login'.
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // 2. Envía el usuario y la contraseña en el cuerpo de la solicitud.
-      body: JSON.stringify({ usuario, password }) 
+  // Función genérica para eliminar
+  deleteItem: async (endpoint, id) => {
+    const response = await fetch(`${API_BASE_URL}/${endpoint}/${id}`, {
+      method: 'DELETE',
     });
-
-    // 3. Verifica si la respuesta HTTP es exitosa (código 200-299)
     if (!response.ok) {
-      // Intenta obtener el mensaje de error del backend
-      let errorMessage = 'Error al iniciar sesión';
-      try {
-        const errorData = await response.json();
-        errorMessage = errorData.message || errorMessage;
-      } catch (e) {
-        // Si no se puede leer el JSON de error, usa el mensaje por defecto
-      }
-      throw new Error(errorMessage);
+        throw new Error(`Error al eliminar item en ${endpoint}`);
     }
-
-    // 4. Si es exitoso, devuelve la respuesta del servidor (que podría incluir un token).
     return response.json();
   }
+
+  // La función de login real la quitamos por ahora,
+  // ya que la simulamos en el frontend (Paso 3)
 };
 
 export default apiService;
