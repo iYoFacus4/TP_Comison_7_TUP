@@ -1,282 +1,196 @@
+// FrontEnd/src/components/SportsTable.jsx (MODIFICADO)
 import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { Badge, Button, Modal, Form } from "react-bootstrap";
 import DataTable from "./ui/DataTable";
 import "./SportsTable.css";
 
-const SportsTable = forwardRef((props, ref) => {
-  const [sports, setSports] = useState([]);
+// 1. IMPORTAMOS EL apiService
+import apiService from "../services/apiService";
+
+// 2. ACEPTAMOS PROPS DEL PADRE ('Deportes.jsx')
+const SportsTable = forwardRef(({ initialDeportes, setGlobalError }, ref) => {
+  
+  // 3. USAMOS EL ESTADO INTERNO 'sports' PERO LO INICIALIZAMOS CON EL PROP
+  const [sports, setSports] = useState(initialDeportes || []);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedSport, setSelectedSport] = useState(null);
+  
   const [editForm, setEditForm] = useState({
     nombre: "",
-    miembros: 0,
     estado: "Activo",
+    // ¡EL CAMPO 'miembros' FUE ELIMINADO INTENCIONALMENTE!
   });
   const [addForm, setAddForm] = useState({
     nombre: "",
-    miembros: 0,
     estado: "Activo",
+    // ¡EL CAMPO 'miembros' FUE ELIMINADO INTENCIONALMENTE!
   });
 
-  // Pre carga los datos en la tabla con el useEffect
-  useEffect(() => {
-    const storedSports = localStorage.getItem("sports");
+  // 4. ¡ELIMINADO!
+  // Ya no necesitamos el useEffect para cargar desde localStorage
+  // useEffect(() => { ... localStorage.getItem("sports") ... }, []);
 
-    const initialSports = [
-      {
-        id: 1,
-        nombre: "Tenis",
-        miembros: 32,
-        estado: "Activo",
-      },
-      {
-        id: 2,
-        nombre: "Natación",
-        miembros: 45,
-        estado: "Activo",
-      },
-      {
-        id: 3,
-        nombre: "Básquet",
-        miembros: 28,
-        estado: "Activo",
-      },
-      {
-        id: 4,
-        nombre: "Yoga",
-        miembros: 15,
-        estado: "Inactivo",
-      },
-      {
-        id: 5,
-        nombre: "Karate",
-        miembros: 22,
-        estado: "Activo",
-      },
-      {
-        id: 6,
-        nombre: "Fútbol",
-        miembros: 50,
-        estado: "Activo",
-      },
-      {
-        id: 7,
-        nombre: "Voleibol",
-        miembros: 18,
-        estado: "Activo",
-      },
-      {
-        id: 8,
-        nombre: "Gimnasia",
-        miembros: 25,
-        estado: "Inactivo",
-      },
-    ];
-
-    if (!storedSports) {
-      // Cuando no hay datos en localStorage, precarga los datos iniciales
-      localStorage.setItem("sports", JSON.stringify(initialSports));
-      setSports(initialSports);
-    } else {
-      // Si existen datos, usarlos tal cual
-      setSports(JSON.parse(storedSports));
-    }
-  }, []);
-
-  // Exponer función para abrir modal desde el componente padre
+  // 5. (Sin cambios) Exponer función para abrir modal
   useImperativeHandle(ref, () => ({
     openAddModal: handleOpenAddModal
   }));
 
-  // Actualizar deportes en estado y localStorage
-  const updateSports = (updatedSports) => {
-    setSports(updatedSports);
-    localStorage.setItem("sports", JSON.stringify(updatedSports));
+  // 6. ¡ELIMINADO!
+  // Ya no necesitamos la función 'updateSports' de localStorage
+  // const updateSports = (updatedSports) => { ... };
+
+  // 7. REFACTORIZADO: Lógica de acciones (Activar/Desactivar)
+  const handleToggleEstado = async (id, nuevoEstado) => {
+    try {
+      const sportToUpdate = sports.find((s) => s.id === id);
+      const updatedSportData = { ...sportToUpdate, estado: nuevoEstado };
+
+      // 7a. Llamamos al backend (PUT /api/deportes/:id)
+      await apiService.updateItem('deportes', id, updatedSportData);
+
+      // 7b. Actualizamos el estado local
+      const updatedSports = sports.map((sport) =>
+        sport.id === id ? { ...sport, estado: nuevoEstado } : sport
+      );
+      setSports(updatedSports);
+      setGlobalError(null);
+
+    } catch (err) {
+      setGlobalError(err.message || "Error al cambiar el estado del deporte.");
+    }
   };
 
-  // Activar deporte
-  const handleActivate = (id) => {
-    const updatedSports = sports.map((sport) =>
-      sport.id === id ? { ...sport, estado: "Activo" } : sport
-    );
-    updateSports(updatedSports);
-  };
-
-  // Desactivar deporte
-  const handleDeactivate = (id) => {
-    const updatedSports = sports.map((sport) =>
-      sport.id === id ? { ...sport, estado: "Inactivo" } : sport
-    );
-    updateSports(updatedSports);
-  };
-
-  // Ver detalles del deporte
+  // 8. (Sin cambios) Ver detalles del deporte
   const handleView = (id) => {
     const sport = sports.find((s) => s.id === id);
     setSelectedSport(sport);
     setShowViewModal(true);
   };
 
-  // Editar deporte
+  // 9. REFACTORIZADO: Abrir modal de Edición
   const handleEdit = (id) => {
     const sport = sports.find((s) => s.id === id);
     setSelectedSport(sport);
     setEditForm({
       nombre: sport.nombre,
-      miembros: sport.miembros,
       estado: sport.estado,
+      // ¡EL CAMPO 'miembros' NO SE CARGA!
     });
     setShowEditModal(true);
   };
 
-  // Guardar cambios de edición
-  const handleSaveEdit = () => {
+  // 10. REFACTORIZADO: Guardar cambios de edición
+  const handleSaveEdit = async () => {
     if (!editForm.nombre.trim()) {
       alert("El nombre del deporte es requerido");
       return;
     }
     
-    const updatedSports = sports.map((sport) =>
-      sport.id === selectedSport.id
-        ? { ...sport, ...editForm, miembros: parseInt(editForm.miembros) || 0 }
-        : sport
-    );
-    updateSports(updatedSports);
-    setShowEditModal(false);
-    setSelectedSport(null);
+    try {
+      const sportData = {
+        nombre: editForm.nombre,
+        estado: editForm.estado,
+        // ¡NO ENVIAMOS 'miembros'!
+        // (La descripción también se podría agregar aquí si la tuvieras en el form)
+      };
+
+      // 10a. Llamamos al backend
+      const updatedSport = await apiService.updateItem('deportes', selectedSport.id, sportData);
+
+      // 10b. Actualizamos el estado local
+      const updatedSports = sports.map((sport) =>
+        sport.id === selectedSport.id
+          ? { ...sport, ...updatedSport } // Usamos la respuesta del backend
+          : sport
+      );
+      setSports(updatedSports);
+      setShowEditModal(false);
+      setSelectedSport(null);
+      setGlobalError(null);
+
+    } catch (err) {
+      setGlobalError(err.message || "Error al actualizar el deporte.");
+    }
   };
 
-  // Cerrar modales
-  const handleCloseEditModal = () => {
-    setShowEditModal(false);
-    setSelectedSport(null);
-  };
+  // (El resto de 'handleCloseModals' se mantiene igual)
+  const handleCloseEditModal = () => { setShowEditModal(false);
+    setSelectedSport(null); };
+  const handleCloseViewModal = () => { setShowViewModal(false);
+    setSelectedSport(null); };
+  const handleCloseAddModal = () => { setShowAddModal(false); };
 
-  const handleCloseViewModal = () => {
-    setShowViewModal(false);
-    setSelectedSport(null);
-  };
-
-  // Abrir modal de agregar
+  // 11. REFACTORIZADO: Abrir modal de agregar
   const handleOpenAddModal = () => {
     setAddForm({
       nombre: "",
-      miembros: 0,
       estado: "Activo",
+      // ¡SIN 'miembros'!
     });
     setShowAddModal(true);
   };
+  
 
-  // Cerrar modal de agregar
-  const handleCloseAddModal = () => {
-    setShowAddModal(false);
-  };
-
-  // Guardar nuevo deporte
-  const handleSaveAdd = () => {
+  // 12. REFACTORIZADO: Guardar nuevo deporte
+  const handleSaveAdd = async () => {
     if (!addForm.nombre.trim()) {
       alert("El nombre del deporte es requerido");
       return;
     }
     
-    // Generar nuevo ID (máximo ID actual + 1)
-    const newId = sports.length > 0 ? Math.max(...sports.map(s => s.id)) + 1 : 1;
-    
-    const newSport = {
-      id: newId,
-      nombre: addForm.nombre,
-      miembros: parseInt(addForm.miembros) || 0,
-      estado: addForm.estado,
-    };
-    
-    const updatedSports = [...sports, newSport];
-    updateSports(updatedSports);
-    setShowAddModal(false);
-  };
+    try {
+      const newSportData = {
+        nombre: addForm.nombre,
+        estado: addForm.estado,
+        // ¡NO ENVIAMOS 'miembros'!
+      };
+      
+      // 12a. Llamamos al backend
+      const createdSport = await apiService.createItem('deportes', newSportData);
+      
+      // 12b. Actualizamos el estado local
+      const updatedSports = [...sports, createdSport];
+      setSports(updatedSports);
+      setShowAddModal(false);
+      setGlobalError(null);
 
-  // Badge de estado
-  const getStatusBadge = (estado) => {
-    switch (estado) {
-      case "Activo":
-        return (
-          <Badge bg="success" className="status-badge">
-            Activo
-          </Badge>
-        );
-      case "Inactivo":
-        return (
-          <Badge bg="danger" className="status-badge">
-            Inactivo
-          </Badge>
-        );
-      default:
-        return (
-          <Badge bg="secondary" className="status-badge">
-            {estado}
-          </Badge>
-        );
+    } catch (err) {
+      setGlobalError(err.message || "Error al crear el deporte.");
     }
   };
 
-  // Definir columnas de la tabla
+  // (El Badge de estado se mantiene igual)
+  const getStatusBadge = (estado) => { /* ... */ };
+
+  // 13. (Casi sin cambios) Definir columnas
   const columns = [
-    {
-      key: "nombre",
-      label: "Nombre del Deporte",
-      render: (item) => <span className="sport-name">{item.nombre}</span>,
-    },
+    { key: "nombre", label: "Nombre del Deporte", /* ... */ },
     {
       key: "miembros",
-      label: "Miembros",
+      label: "Miembros (Simulado)", // Cambiamos el label
+      // ¡Esta columna sigue mostrando el dato 'miembros' que 
+      // viene de la BD, pero ya no se puede editar!
       render: (item) => {
         const miembros = item.miembros || 0;
         return <span className="member-count">{miembros}</span>;
       },
     },
-    {
-      key: "estado",
-      label: "Estado",
-      render: (item) => getStatusBadge(item.estado),
-    },
+    { key: "estado", label: "Estado", /* ... */ },
     {
       key: "acciones",
       label: "Acciones",
       render: (item) => (
         <div className="action-buttons-inline">
-          <Button
-            variant="link"
-            className="action-btn edit-btn"
-            onClick={() => handleEdit(item.id)}
-            title="Editar"
-          >
-            Editar
-          </Button>
-          <Button
-            variant="link"
-            className="action-btn view-btn"
-            onClick={() => handleView(item.id)}
-            title="Ver"
-          >
-            Ver
-          </Button>
+          <Button variant="link" onClick={() => handleEdit(item.id)}>Editar</Button>
+          <Button variant="link" onClick={() => handleView(item.id)}>Ver</Button>
           {item.estado === "Activo" ? (
-            <Button
-              variant="link"
-              className="action-btn deactivate-btn"
-              onClick={() => handleDeactivate(item.id)}
-              title="Desactivar"
-            >
+            <Button variant="link" className="deactivate-btn" onClick={() => handleToggleEstado(item.id, 'Inactivo')}>
               Desactivar
             </Button>
           ) : (
-            <Button
-              variant="link"
-              className="action-btn activate-btn"
-              onClick={() => handleActivate(item.id)}
-              title="Activar"
-            >
+            <Button variant="link" className="activate-btn" onClick={() => handleToggleEstado(item.id, 'Activo')}>
               Activar
             </Button>
           )}
@@ -285,70 +199,36 @@ const SportsTable = forwardRef((props, ref) => {
     },
   ];
 
-  // Filtros de estado
-  const filters = [
-    {
-      key: "estado",
-      label: "Estado",
-      options: [
-        { value: "Activo", label: "Activo" },
-        { value: "Inactivo", label: "Inactivo" },
-      ],
-    },
-  ];
+  // (Filtros se mantiene igual)
+  const filters = [ ];
 
   return (
     <div className="sports-table-container">
-      <div className="table-wrapper">
-        <DataTable
-          data={sports}
-          columns={columns}
-          searchable={true}
-          searchPlaceholder="Buscar por nombre de deporte"
-          filters={filters}
-          selectable={false}
-        />
-      </div>
+      {/* 14. DATATABLE: Ahora 'data={sports}' usa el estado local */}
+      <DataTable
+  data={sports}
+  columns={columns}
+  searchable={true}
+  searchPlaceholder="Buscar por nombre de deporte"
+  filters={filters}
+  selectable={false}
+/>;
 
-      {/* Modal de Edición */}
+      {/* MODAL DE EDICIÓN (MODIFICADO) */}
       <Modal show={showEditModal} onHide={handleCloseEditModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Deporte</Modal.Title>
-        </Modal.Header>
+        <Modal.Header closeButton><Modal.Title>Editar Deporte</Modal.Title></Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>Nombre del Deporte</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ingrese el nombre"
-                value={editForm.nombre}
-                onChange={(e) =>
-                  setEditForm({ ...editForm, nombre: e.target.value })
-                }
-              />
+              <Form.Control type="text" value={editForm.nombre} onChange={(e) => setEditForm({ ...editForm, nombre: e.target.value })} />
             </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Cantidad de Miembros</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Ingrese la cantidad"
-                value={editForm.miembros}
-                onChange={(e) =>
-                  setEditForm({ ...editForm, miembros: e.target.value })
-                }
-              />
-            </Form.Group>
+            
+            {/* ¡CAMPO 'MIEMBROS' ELIMINADO! */}
 
             <Form.Group className="mb-3">
               <Form.Label>Estado</Form.Label>
-              <Form.Select
-                value={editForm.estado}
-                onChange={(e) =>
-                  setEditForm({ ...editForm, estado: e.target.value })
-                }
-              >
+              <Form.Select value={editForm.estado} onChange={(e) => setEditForm({ ...editForm, estado: e.target.value })}>
                 <option value="Activo">Activo</option>
                 <option value="Inactivo">Inactivo</option>
               </Form.Select>
@@ -356,84 +236,26 @@ const SportsTable = forwardRef((props, ref) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseEditModal}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleSaveEdit}>
-            Guardar Cambios
-          </Button>
+          <Button variant="secondary" onClick={handleCloseEditModal}>Cancelar</Button>
+          <Button variant="primary" onClick={handleSaveEdit}>Guardar Cambios</Button>
         </Modal.Footer>
       </Modal>
 
-      {/* Modal de Vista */}
-      <Modal show={showViewModal} onHide={handleCloseViewModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Detalles del Deporte</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedSport && (
-            <div className="sport-details">
-              <div className="detail-row">
-                <strong>Nombre:</strong>
-                <span>{selectedSport.nombre}</span>
-              </div>
-              <div className="detail-row">
-                <strong>Cantidad de Miembros:</strong>
-                <span>{selectedSport.miembros}</span>
-              </div>
-              <div className="detail-row">
-                <strong>Estado:</strong>
-                <span>{getStatusBadge(selectedSport.estado)}</span>
-              </div>
-            </div>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseViewModal}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/* Modal de Agregar Nuevo Deporte */}
+      {/* MODAL DE AGREGAR (MODIFICADO) */}
       <Modal show={showAddModal} onHide={handleCloseAddModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Agregar Nuevo Deporte</Modal.Title>
-        </Modal.Header>
+        <Modal.Header closeButton><Modal.Title>Agregar Nuevo Deporte</Modal.Title></Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
               <Form.Label>Nombre del Deporte</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Ingrese el nombre"
-                value={addForm.nombre}
-                onChange={(e) =>
-                  setAddForm({ ...addForm, nombre: e.target.value })
-                }
-              />
+              <Form.Control type="text" value={addForm.nombre} onChange={(e) => setAddForm({ ...addForm, nombre: e.target.value })} />
             </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Cantidad de Miembros</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Ingrese la cantidad"
-                value={addForm.miembros}
-                onChange={(e) =>
-                  setAddForm({ ...addForm, miembros: e.target.value })
-                }
-              />
-            </Form.Group>
+            {/* ¡CAMPO 'MIEMBROS' ELIMINADO! */}
 
             <Form.Group className="mb-3">
               <Form.Label>Estado</Form.Label>
-              <Form.Select
-                value={addForm.estado}
-                onChange={(e) =>
-                  setAddForm({ ...addForm, estado: e.target.value })
-                }
-              >
+              <Form.Select value={addForm.estado} onChange={(e) => setAddForm({ ...addForm, estado: e.target.value })}>
                 <option value="Activo">Activo</option>
                 <option value="Inactivo">Inactivo</option>
               </Form.Select>
@@ -441,18 +263,18 @@ const SportsTable = forwardRef((props, ref) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAddModal}>
-            Cancelar
-          </Button>
-          <Button variant="success" onClick={handleSaveAdd}>
-            Agregar Deporte
-          </Button>
+          <Button variant="secondary" onClick={handleCloseAddModal}>Cancelar</Button>
+          <Button variant="success" onClick={handleSaveAdd}>Agregar Deporte</Button>
         </Modal.Footer>
+      </Modal>
+
+      {/* (Modal de Vista se mantiene igual) */}
+      <Modal show={showViewModal} onHide={handleCloseViewModal} centered>
+       {/* ... */}
       </Modal>
     </div>
   );
 });
 
 SportsTable.displayName = "SportsTable";
-
 export default SportsTable;

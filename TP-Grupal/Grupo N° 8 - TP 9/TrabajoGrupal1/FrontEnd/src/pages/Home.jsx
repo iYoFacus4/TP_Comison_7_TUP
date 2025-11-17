@@ -1,13 +1,14 @@
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
+import { useAuthStore } from '../store/useAuthStore.js';
 
 const Home = () => {
   return (
     <Container className="mt-5">
       <Row className="mb-4">
         <Col>
-          <h1 className="text-center">Club Social-Deportivo</h1>
+          <h1 className="text-center">Club Social Deportivo</h1>
           <p className="text-center text-muted">
             Sistema de Gestión de Socios, Deportes y Pagos
           </p>

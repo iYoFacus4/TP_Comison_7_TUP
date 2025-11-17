@@ -1,3 +1,4 @@
+// FrontEnd/src/components/MembersList.jsx (CORREGIDO)
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import "./MembersList.css";
@@ -10,9 +11,9 @@ const MembersList = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Filtrar miembros por búsqueda
+  // Filtrar miembros (ahora por 'nombre')
   const filteredMembers = members.filter((member) =>
-    member.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+    member.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -53,12 +54,14 @@ const MembersList = ({
               onClick={() => onSelectMember(member)}
             >
               <div className="member-item-content">
-                <img
-                  src={member.avatar}
-                  alt={member.fullName}
-                  className="member-avatar"
-                />
-                <span className="member-name">{member.fullName}</span>
+                {/* ¡CAMBIO AQUÍ! 
+                  Ya no tenemos 'avatar'. Usamos un ícono genérico. 
+                */}
+                <div className="member-avatar-placeholder">
+                  <i className="bi bi-person-fill"></i>
+                </div>
+                {/* ¡CAMBIO AQUÍ! Usamos 'nombre' en vez de 'fullName' */}
+                <span className="member-name">{member.nombre}</span>
               </div>
               <i className="bi bi-chevron-right arrow-icon"></i>
             </div>

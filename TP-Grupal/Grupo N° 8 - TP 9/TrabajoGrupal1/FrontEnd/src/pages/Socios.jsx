@@ -1,139 +1,135 @@
+// FrontEnd/src/pages/Socios.jsx (MODIFICADO)
 import { useState, useEffect } from "react";
 import MembersList from "../components/MembersList";
 import MemberDetail from "../components/MemberDetail";
 import "./Socios.css";
 
+// 1. IMPORTAMOS EL apiService
+import apiService from "../services/apiService.js";
+
 const Socios = () => {
-  const [members, setMembers] = useState([]);
-  const [selectedMember, setSelectedMember] = useState(null);
+  // 2. RENOMBRAMOS A 'socios' Y AGREGAMOS ESTADOS DE CARGA Y ERROR
+  const [socios, setSocios] = useState([]);
+  const [selectedSocio, setSelectedSocio] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Pre cargar datos de miembros desde localStorage
+  // 3. useEffect TOTALMENTE NUEVO: Carga datos desde el Backend
   useEffect(() => {
-    const storedMembers = localStorage.getItem("members");
-
-    const initialMembers = [
-      {
-        id: 1,
-        fullName: "Martín Fernández",
-        email: "martin.fernandez@example.com",
-        phone: "11-2345-6789",
-        dateOfBirth: "1990-05-15",
-        memberSince: "1 Ene 2023",
-        avatar: "https://i.pravatar.cc/150?img=12",
-        associatedSports: ["Fútbol", "Básquetbol"],
-      },
-      {
-        id: 2,
-        fullName: "Lucía Giménez",
-        email: "lucia.gimenez@example.com",
-        phone: "11-3456-7890",
-        dateOfBirth: "1988-08-22",
-        memberSince: "15 Feb 2023",
-        avatar: "https://i.pravatar.cc/150?img=5",
-        associatedSports: ["Tenis", "Natación"],
-      },
-      {
-        id: 3,
-        fullName: "Santiago Rodríguez",
-        email: "santiago.rodriguez@example.com",
-        phone: "11-4567-8901",
-        dateOfBirth: "1995-03-10",
-        memberSince: "20 Mar 2023",
-        avatar: "https://i.pravatar.cc/150?img=13",
-        associatedSports: ["Básquetbol", "Vóleibol"],
-      },
-      {
-        id: 4,
-        fullName: "Sofía Álvarez",
-        email: "sofia.alvarez@example.com",
-        phone: "11-5678-9012",
-        dateOfBirth: "1992-11-30",
-        memberSince: "5 Abr 2023",
-        avatar: "https://i.pravatar.cc/150?img=9",
-        associatedSports: ["Fútbol", "Tenis"],
-      },
-    ];
-
-    if (!storedMembers) {
-      localStorage.setItem("members", JSON.stringify(initialMembers));
-      setMembers(initialMembers);
-      setSelectedMember(initialMembers[0]);
-    } else {
-      const parsedMembers = JSON.parse(storedMembers);
-      setMembers(parsedMembers);
-      setSelectedMember(parsedMembers[0]);
-    }
-  }, []);
-
-  // Actualizar miembros en estado y localStorage
-  const updateMembers = (updatedMembers) => {
-    setMembers(updatedMembers);
-    localStorage.setItem("members", JSON.stringify(updatedMembers));
-  };
-
-  // Seleccionar un miembro
-  const handleSelectMember = (member) => {
-    setSelectedMember(member);
-  };
-
-  // Agregar nuevo miembro
-  const handleAddMember = () => {
-    const newMember = {
-      id: Date.now(),
-      fullName: "Nuevo Miembro",
-      email: "nuevo@example.com",
-      phone: "000-000-0000",
-      dateOfBirth: "2000-01-01",
-      memberSince: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      }),
-      avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`,
-      associatedSports: [],
+    const loadSocios = async () => {
+      try {
+        setIsLoading(true);
+        // ¡Aquí llamamos a tu API!
+        const data = await apiService.getAll('socios');
+        setSocios(data);
+        // Seleccionamos el primer socio si la lista no está vacía
+        if (data.length > 0) {
+          setSelectedSocio(data[0]);
+        }
+      } catch (err) {
+        setError(err.message || "Error al cargar los socios.");
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    const updatedMembers = [...members, newMember];
-    updateMembers(updatedMembers);
-    setSelectedMember(newMember);
+    loadSocios();
+    // Toda la lógica de localStorage ha sido eliminada
+  }, []); // El array vacío [] asegura que se ejecute solo una vez al cargar
+
+  // Seleccionar un miembro (sin cambios)
+  const handleSelectSocio = (socio) => {
+    setSelectedSocio(socio);
   };
 
-  // Actualizar miembro
-  const handleUpdateMember = (updatedMember) => {
-    const updatedMembers = members.map((member) =>
-      member.id === updatedMember.id ? updatedMember : member
-    );
-    updateMembers(updatedMembers);
-    setSelectedMember(updatedMember);
+  // 4. CRUD: Agregar nuevo miembro (CONECTADO AL BACKEND)
+  const handleAddMember = async () => {
+    // Datos de ejemplo para un nuevo socio
+    const newSocioData = {
+      nombre: "Nuevo Socio",
+      email: `nuevo${Date.now()}@example.com`,
+      dni: `${Date.now()}`,
+      telefono: "123-456-7890",
+      fecha_nacimiento: "2000-01-01",
+    };
+
+    try {
+      // Llamamos a la API para CREAR el socio
+      const createdSocio = await apiService.createItem('socios', newSocioData);
+      
+      // Actualizamos el estado local
+      const updatedSocios = [...socios, createdSocio];
+      setSocios(updatedSocios);
+      setSelectedSocio(createdSocio);
+
+    } catch (err) {
+      setError(err.message || "Error al agregar el socio.");
+    }
   };
 
-  // Eliminar miembro
-  const handleDeleteMember = (memberId) => {
+  // 5. CRUD: Actualizar miembro (CONECTADO AL BACKEND)
+  const handleUpdateMember = async (updatedSocio) => {
+    try {
+      // Llamamos a la API para ACTUALIZAR
+      await apiService.updateItem('socios', updatedSocio.id, updatedSocio);
+      
+      // Actualizamos el estado local
+      const updatedSocios = socios.map((socio) =>
+        socio.id === updatedSocio.id ? updatedSocio : socio
+      );
+      setSocios(updatedSocios);
+      setSelectedSocio(updatedSocio);
+
+    } catch (err) {
+      setError(err.message || "Error al actualizar el socio.");
+    }
+  };
+
+  // 6. CRUD: Eliminar miembro (CONECTADO AL BACKEND)
+  const handleDeleteMember = async (socioId) => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que deseas eliminar este miembro?"
     );
     if (confirmDelete) {
-      const updatedMembers = members.filter((member) => member.id !== memberId);
-      updateMembers(updatedMembers);
-      setSelectedMember(updatedMembers[0] || null);
+      try {
+        // Llamamos a la API para ELIMINAR
+        await apiService.deleteItem('socios', socioId);
+        
+        // Actualizamos el estado local
+        const updatedSocios = socios.filter((socio) => socio.id !== socioId);
+        setSocios(updatedSocios);
+        setSelectedSocio(updatedSocios[0] || null);
+
+      } catch (err) {
+        setError(err.message || "Error al eliminar el socio.");
+      }
     }
   };
+
+  // 7. RENDERIZADO CON ESTADOS DE CARGA Y ERROR
+  if (isLoading) {
+    return <div className="socios-page">Cargando socios...</div>;
+  }
+
+  if (error) {
+    return <div className="socios-page" style={{ color: 'red' }}>Error: {error}</div>;
+  }
 
   return (
     <div className="socios-page">
       <div className="socios-content">
         {/* Lista de miembros (Panel izquierdo) */}
         <MembersList
-          members={members}
-          selectedMember={selectedMember}
-          onSelectMember={handleSelectMember}
+          members={socios} // Pasamos los socios del backend
+          selectedMember={selectedSocio}
+          onSelectMember={handleSelectSocio}
           onAddMember={handleAddMember}
         />
 
         {/* Detalle del miembro (Panel derecho) */}
-        {selectedMember && (
+        {selectedSocio && (
           <MemberDetail
-            member={selectedMember}
+            member={selectedSocio}
             onUpdateMember={handleUpdateMember}
             onDeleteMember={handleDeleteMember}
           />

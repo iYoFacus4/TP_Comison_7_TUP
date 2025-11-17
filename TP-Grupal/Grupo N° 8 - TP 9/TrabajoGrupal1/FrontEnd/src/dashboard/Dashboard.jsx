@@ -1,41 +1,71 @@
+// FrontEnd/src/dashboard/Dashboard.jsx (CON LAYOUT CORREGIDO)
 import { useEffect, useState } from 'react';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card, Spinner } from 'react-bootstrap'; // Importa Spinner
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
+// 1. IMPORTAMOS EL apiService
+import apiService from '../services/apiService.js';
+
 const Dashboard = () => {
+  // 2. (Sin cambios) Estados de datos, carga y error
   const [stats, setStats] = useState({
     totalSocios: 0,
     totalDeportes: 0,
-    totalAsociaciones: 0,
     pagosDelMes: 0,
     deudaPendiente: 0
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // 3. (Sin cambios) useEffect conectado al backend
   useEffect(() => {
-    // Simulación de carga de datos
-    setTimeout(() => {
-      setStats({
-        totalSocios: 150,
-        totalDeportes: 8,
-        totalAsociaciones: 230,
-        pagosDelMes: 120,
-        deudaPendiente: 35000
-      });
-    }, 500);
+    const fetchStats = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await apiService.getAll('dashboard/stats');
+        setStats(data);
+      } catch (err) {
+        setError(err.message || "Error al cargar estadísticas.");
+      } finally {
+        setIsLoading(false);
+      }
+    };    
+    fetchStats();
   }, []);
 
+  // 4. (Sin cambios) Función para formatear moneda
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('es-AR', {
       style: 'currency',
       currency: 'ARS'
-    }).format(amount);
+    }).format(amount || 0); 
   };
 
+  // 5. (Sin cambios) Estados de carga y error
+  if (isLoading) {
+    return (
+      <div className='p-5 text-center'>
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Cargando...</span>
+        </Spinner>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="p-5 text-center" style={{ color: 'red' }}>Error: {error}</div>;
+  }
+
+  // 6. ¡AQUÍ ESTÁ LA CORRECCIÓN!
+  // Volvemos a poner la estructura original de 'Dashboard.jsx'
   return (
     <>
       <div className='p-5 text-center'>
         <h1 className="mb-4 ">Dashboard - Panel de Control</h1>
+        
+        {/* 6a. ¡ESTE <Row> ES EL QUE FALTABA! */}
         <Row className="g-4 mb-4 d-flex justify-content-center">
           <Col md={6} lg={3}>
             <Card className="h-100 shadow-sm border-primary">
@@ -74,6 +104,7 @@ const Dashboard = () => {
           </Col>
         </Row>
 
+        {/* 6b. Esta segunda fila ya estaba bien */}
         <Row className="g-4">
           <Col lg={6}>
             <Card className="shadow-sm">
