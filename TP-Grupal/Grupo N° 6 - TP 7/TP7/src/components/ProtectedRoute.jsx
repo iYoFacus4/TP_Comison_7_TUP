@@ -1,14 +1,10 @@
+// TP7/src/components/ProtectedRoute.jsx
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '../store/auth';
 
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-
-  if (!isAuthenticated) {
-    
-    return <Navigate to="/login" replace />;
-  }
-
+  const token = useAuthStore(s => s.token);
+  if (!token) return <Navigate to="/login" replace />;
   return children;
 };
 

@@ -12,13 +12,13 @@
 
 Describir brevemente lo encontrado al abrir el proyecto:
 
-- Errores detectados (bugs, warnings, import fallidos, rutas rotas, etc.)
-- Faltantes respecto a Semana 1 (carpetas vacías, componentes incompletos, etc.)
-- Problemas de estructura, naming, uso de git o dependencias
+Dashboard no anda, no usa endpoints, solo usa un mock creado en el archivo que no tiene nada que ver con los servicios que simula la Base de Datos.
 
-> Este apartado debe completarse **ANTES** de modificar el código.
+El login registra cualquier usuario y contraseña, pero la guarda en el localStorage (no revisa que el usuario exista desde antes en los services, aparentemente la opcion de login estaba repetida en registrar y login usuario)
 
----
+Los services utilizan sus propios mocks en vez de usar los del db.json
+
+Los services tampoco utilizan los endpoints establecidos
 
 ## 2) SOLUCIONES IMPLEMENTADAS + NUEVO AGREGADO
 

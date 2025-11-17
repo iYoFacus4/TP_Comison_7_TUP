@@ -74,7 +74,6 @@ const Login = () => {
       setShowAlert(true);
       return;
     }
-
     // Intentar login
     const result = await login(formData);
 
@@ -107,7 +106,7 @@ const Login = () => {
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
-        <Col md={6}>
+        <Col md={100}>
           <Card>
             <Card.Header className="bg-primary text-white">
               <h3 className="mb-0">Iniciar Sesión</h3>
@@ -124,7 +123,7 @@ const Login = () => {
               )}
 
               <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-5">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
                     type="email"
@@ -137,7 +136,7 @@ const Login = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-5">
                   <Form.Label>Contraseña</Form.Label>
                   <Form.Control
                     type="password"

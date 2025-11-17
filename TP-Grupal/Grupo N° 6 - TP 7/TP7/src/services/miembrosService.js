@@ -1,61 +1,26 @@
-const API_URL = 'http://localhost:3001';
+import { http } from './http';
 
-// Obtener todos los miembros
+// GET /api/socios
 export const getMiembros = async () => {
-  const response = await fetch(`${API_URL}/miembros`);
-  if (!response.ok) {
-    throw new Error('Error al obtener miembros');
-  }
-  return response.json();
+  return http('/socios');
 };
 
-// Obtener un miembro por ID
-export const getMiembroById = async (id) => {
-  const response = await fetch(`${API_URL}/miembros/${id}`);
-  if (!response.ok) {
-    throw new Error('Error al obtener el miembro');
-  }
-  return response.json();
-};
-
-// Crear un nuevo miembro
-export const createMiembro = async (miembro) => {
-  const response = await fetch(`${API_URL}/miembros`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(miembro),
-  });
-  if (!response.ok) {
-    throw new Error('Error al crear el miembro');
-  }
-  return response.json();
-};
-
-// Actualizar un miembro
+// PUT /api/socios/:id
 export const updateMiembro = async (id, miembro) => {
-  const response = await fetch(`${API_URL}/miembros/${id}`, {
+  return http(`/socios/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify(miembro),
   });
-  if (!response.ok) {
-    throw new Error('Error al actualizar el miembro');
-  }
-  return response.json();
 };
 
-// Eliminar un miembro
-export const deleteMiembro = async (id) => {
-  const response = await fetch(`${API_URL}/miembros/${id}`, {
-    method: 'DELETE',
+// Si necesitás crear/eliminar:
+export const createMiembro = async (miembro) => {
+  return http('/socios', {
+    method: 'POST',
+    body: JSON.stringify(miembro),
   });
-  if (!response.ok) {
-    throw new Error('Error al eliminar el miembro');
-  }
-  return response.json();
 };
 
+export const deleteMiembro = async (id) => {
+  return http(`/socios/${id}`, { method: 'DELETE' });
+};

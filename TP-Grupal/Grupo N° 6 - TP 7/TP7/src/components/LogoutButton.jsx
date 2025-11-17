@@ -1,10 +1,11 @@
+// TP7/src/components/LogoutButton.jsx
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuthStore } from '../store/auth';
 
 const LogoutButton = () => {
-  const { logout } = useAuth();
+  const logout = useAuthStore(s => s.logout);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -13,8 +14,8 @@ const LogoutButton = () => {
   };
 
   return (
-    <Button 
-      variant="outline-danger" 
+    <Button
+      variant="outline-danger"
       onClick={handleLogout}
       className="d-flex align-items-center gap-2"
     >
