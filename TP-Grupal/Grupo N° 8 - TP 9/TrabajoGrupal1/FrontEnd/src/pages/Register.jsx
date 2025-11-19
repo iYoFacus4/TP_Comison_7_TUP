@@ -1,7 +1,7 @@
 // FrontEnd/src/pages/Register.jsx
 import { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import apiService from '../services/apiService'; 
 

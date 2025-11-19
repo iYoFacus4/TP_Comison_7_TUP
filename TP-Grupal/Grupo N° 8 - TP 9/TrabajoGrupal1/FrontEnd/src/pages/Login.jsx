@@ -1,7 +1,7 @@
-// FrontEnd/src/pages/Login.jsx (FINAL CORREGIDO)
+// FrontEnd/src/pages/Login.jsx (FINAL DISEÑO CORREGIDO)
 import { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; 
 import { ROUTES } from '../constants/routes';
 import { useAuthStore } from '../store/useAuthStore.js';
 import apiService from '../services/apiService'; 
@@ -30,36 +30,29 @@ const Login = () => {
     if (error) setError('');
   };
 
-  // 4. LÓGICA FINAL 'handleSubmit' (SOLO API)
   const handleSubmit = async (e) => { 
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     try {
-      // 1. Llamamos al Backend Real
       const response = await apiService.login(formData.usuario, formData.password);
       
-      // 2. Si no hay error, guardamos el usuario que nos devolvió la BD
       const userData = {
         username: response.user.email, 
         rol: response.user.rol
       };
 
-      login(userData); // Guardar en Zustand
+      login(userData); 
       navigate(ROUTES.DASHBOARD, { replace: true });
 
     } catch (err) {
-      // 3. Muestra el error real
-      setError("Usuario o contraseña incorrectos");
+      setError(err.message || "Error desconocido al intentar iniciar sesión.");
     } finally {
-      // 4. Finaliza aquí
       setIsLoading(false);
     }
-    // ¡LA LÓGICA DE SIMULACIÓN FUE ELIMINADA DE AQUÍ!
   };
 
-  // 7. PEGADO TODO EL 'return' (Visual)
   return (
     <Container fluid className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
       <Row className="w-100 justify-content-center">
@@ -140,9 +133,25 @@ const Login = () => {
                 <small className="text-muted">
                   Sistema de Gestión - Panel de Administración
                 </small>
+                {/* ENLACE DE REGISTRO */}
+                <div className="mt-2">
+                  <Link to={ROUTES.REGISTER} className="text-decoration-none small">
+                    ¿No tienes cuenta? Regístrate aquí
+                  </Link>
+                </div>
               </div>
             </Card.Body>
           </Card>
+          
+          {/* TARJETA DE CREDENCIALES DE PRUEBA (DENTRO DEL MISMO COL) */}
+          <Card className="mt-3 border-info">
+            <Card.Body className="py-2 text-center">
+              <small className="text-muted">
+                <strong>Prueba:</strong> Usuario: <code>admin@test.com</code> | Contraseña: <code>12345</code>
+              </small>
+            </Card.Body>
+          </Card>
+
         </Col>
       </Row>
     </Container>
