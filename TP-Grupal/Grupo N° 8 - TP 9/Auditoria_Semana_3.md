@@ -3,8 +3,8 @@
 ### Tema asignado: ___  
 ### Integrantes (Nombre completo + Legajo):
 - … Benitez Gabriel (61682)
-- … Diaz Vega Facudo   
-- … Ruiz Franco
+- … Diaz Vega Facudo (61760)
+- … Ruiz Franco (61454)
 
 ---
 

@@ -13,6 +13,7 @@ import Pagos from "../pages/Pagos";
 import Deportes from "../pages/Deportes";
 import Socios from "../pages/Socios";
 import RouterProtect from "./RouterProtect"; 
+import Register from '../pages/Register.jsx';
 
 const AppRouter = () => {
   return (
@@ -21,7 +22,7 @@ const AppRouter = () => {
         {/* Rutas Públicas */}
         <Route path={ROUTES.HOME} element={<Home />} />
         <Route path={ROUTES.LOGIN} element={<Login />} />
-
+        <Route path={ROUTES.REGISTER} element={<Register />} />
         {/* Rutas del dashboard (PROTEGIDAS) */}
         <Route path={ROUTES.DASHBOARD} element={<RouterProtect><DashboardLayout /></RouterProtect>}>
           <Route index element={<Dashboard />} />
@@ -37,6 +38,5 @@ const AppRouter = () => {
     </BrowserRouter>
   );
 };
-
 export default AppRouter;
 

@@ -10,6 +10,7 @@ import sociosRouter from './routers/sociosRouter.js';
 import deportesRouter from './routers/deportesRouter.js';
 import cuotasRouter from './routers/cuotasRouter.js';
 import dashboardRouter from './routers/dashboardRouter.js'; 
+import usuariosRouter from './routers/usuariosRouter.js';
 
 // 2. Configuraciones
 dotenv.config();
@@ -20,11 +21,11 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// --- RUTAS DE LA API (Esto estaba bien) ---
 app.use('/api/socios', sociosRouter);
 app.use('/api/deportes', deportesRouter);
 app.use('/api/cuotas', cuotasRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/auth', usuariosRouter);
 
 // 4. Ruta de prueba
 app.get('/', (req, res) => {

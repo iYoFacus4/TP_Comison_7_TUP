@@ -1,15 +1,14 @@
-// FrontEnd/src/pages/Login.jsx (CORREGIDO Y COMPLETO)
+// FrontEnd/src/pages/Login.jsx (FINAL CORREGIDO)
 import { useState } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
-// 1. IMPORTAMOS ZUSTAND
 import { useAuthStore } from '../store/useAuthStore.js';
-// (Ya no necesitamos 'apiService' aquí)
+import apiService from '../services/apiService'; 
+
 
 const Login = () => {
   const navigate = useNavigate();
-  // 2. OBTENEMOS LA ACCIÓN 'login' DE ZUSTAND
   const login = useAuthStore((state) => state.login);
 
   const [formData, setFormData] = useState({
@@ -17,7 +16,6 @@ const Login = () => {
     password: ''
   });
   
-  // 3. AÑADIMOS OTRA VEZ 'rememberMe' PORQUE EL JSX LO NECESITA
   const [rememberMe, setRememberMe] = useState(false);
   
   const [error, setError] = useState('');
@@ -32,34 +30,36 @@ const Login = () => {
     if (error) setError('');
   };
 
-  // 4. NUEVA LÓGICA 'handleSubmit' (CON ZUSTAND)
-  const handleSubmit = (e) => {
+  // 4. LÓGICA FINAL 'handleSubmit' (SOLO API)
+  const handleSubmit = async (e) => { 
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    // 5. SIMULAMOS LA LÓGICA DE LOGIN (como pide la S3)
-    // Verificamos contra el usuario de prueba
-    if (formData.usuario === 'Niconeta97' && formData.password === '12345') {
+    try {
+      // 1. Llamamos al Backend Real
+      const response = await apiService.login(formData.usuario, formData.password);
       
+      // 2. Si no hay error, guardamos el usuario que nos devolvió la BD
       const userData = {
-        username: formData.usuario,
-        rol: 'admin' // Simulamos un rol
+        username: response.user.email, 
+        rol: response.user.rol
       };
 
-      // 6. ¡AQUÍ USAMOS ZUSTAND! (y borramos localStorage)
-      login(userData);
-
+      login(userData); // Guardar en Zustand
       navigate(ROUTES.DASHBOARD, { replace: true });
 
-    } else {
-      setError('Usuario o contraseña incorrectos');
+    } catch (err) {
+      // 3. Muestra el error real
+      setError("Usuario o contraseña incorrectos");
+    } finally {
+      // 4. Finaliza aquí
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
+    // ¡LA LÓGICA DE SIMULACIÓN FUE ELIMINADA DE AQUÍ!
   };
 
-  // 7. PEGADO TODO EL 'return' DEL ARCHIVO 'Login(antes).jsx'
+  // 7. PEGADO TODO EL 'return' (Visual)
   return (
     <Container fluid className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
       <Row className="w-100 justify-content-center">
@@ -141,15 +141,6 @@ const Login = () => {
                   Sistema de Gestión - Panel de Administración
                 </small>
               </div>
-            </Card.Body>
-          </Card>
-
-          {/* Credenciales de prueba */}
-          <Card className="mt-3 border-info">
-            <Card.Body className="py-2 text-center">
-              <small className="text-muted">
-                <strong>Prueba:</strong> Usuario: <code>Niconeta97</code> | Contraseña: <code>12345</code>
-              </small>
             </Card.Body>
           </Card>
         </Col>

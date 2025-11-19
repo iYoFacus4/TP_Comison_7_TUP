@@ -11,7 +11,21 @@ const apiService = {
     }
     return response.json();
   },
+  // Función para registrarse
+  login: async (email, password) => {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al iniciar sesión');
+    }
+    
+    return response.json(); // Devuelve { message, user: {...} }
+  },
   // Función genérica para actualizar
   updateItem: async (endpoint, id, data) => {
     const response = await fetch(`${API_BASE_URL}/${endpoint}/${id}`, {
@@ -51,10 +65,25 @@ const apiService = {
         throw new Error(`Error al eliminar item en ${endpoint}`);
     }
     return response.json();
+  },
+  register: async (userData) => {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      // El backend devuelve 'El email ya está registrado'
+      throw new Error(errorData.message || 'Error al registrar usuario'); 
+    }
+    
+    return response.json();
   }
+};
 
   // La función de login real la quitamos por ahora,
   // ya que la simulamos en el frontend (Paso 3)
-};
 
 export default apiService;
