@@ -80,6 +80,19 @@ const apiService = {
     }
     
     return response.json();
+  },
+  registerPaymentByDni: async (dni, monto, meses) => {
+    const response = await fetch(`${API_BASE_URL}/cuotas/registrar-pago`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ dni, monto, meses })
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al registrar el pago.');
+    }
+    return response.json();
   }
 };
 

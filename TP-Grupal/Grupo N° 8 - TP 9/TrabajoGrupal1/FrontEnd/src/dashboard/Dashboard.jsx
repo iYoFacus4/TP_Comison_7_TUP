@@ -1,14 +1,14 @@
-// FrontEnd/src/dashboard/Dashboard.jsx (CON LAYOUT CORREGIDO)
-import { useEffect, useState } from 'react';
-import { Row, Col, Card, Spinner } from 'react-bootstrap'; // Importa Spinner
+import { useEffect, useState, useCallback } from 'react';
+import { Row, Col, Card, Spinner, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
-// 1. IMPORTAMOS EL apiService
+// 1. IMPORTAMOS EL MODAL Y EL apiService
+import RegisterPaymentModal from '../components/RegisterPaymentModal';
 import apiService from '../services/apiService.js';
 
 const Dashboard = () => {
-  // 2. (Sin cambios) Estados de datos, carga y error
+  // 2. Estados de datos y modal
   const [stats, setStats] = useState({
     totalSocios: 0,
     totalDeportes: 0,
@@ -17,25 +17,29 @@ const Dashboard = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false); // <-- ESTADO PARA MOSTRAR EL MODAL
 
-  // 3. (Sin cambios) useEffect conectado al backend
+  // 3. LÓGICA DE CARGA DE DATOS: encapsulada con useCallback para recargar
+  const fetchStats = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      // Llama al endpoint de estadísticas que creamos
+      const data = await apiService.getAll('dashboard/stats');
+      setStats(data);
+    } catch (err) {
+      setError(err.message || "Error al cargar estadísticas.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []); // El array vacío asegura que la función solo se crea una vez
+
+  // 4. Se ejecuta al cargar (y cuando se llama a fetchStats indirectamente)
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const data = await apiService.getAll('dashboard/stats');
-        setStats(data);
-      } catch (err) {
-        setError(err.message || "Error al cargar estadísticas.");
-      } finally {
-        setIsLoading(false);
-      }
-    };    
     fetchStats();
-  }, []);
+  }, [fetchStats]); // Se ejecuta cuando el componente se monta
 
-  // 4. (Sin cambios) Función para formatear moneda
+  // 5. Función para formatear moneda
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('es-AR', {
       style: 'currency',
@@ -43,7 +47,7 @@ const Dashboard = () => {
     }).format(amount || 0); 
   };
 
-  // 5. (Sin cambios) Estados de carga y error
+  // 6. Renderizado condicional de carga/error
   if (isLoading) {
     return (
       <div className='p-5 text-center'>
@@ -58,14 +62,12 @@ const Dashboard = () => {
     return <div className="p-5 text-center" style={{ color: 'red' }}>Error: {error}</div>;
   }
 
-  // 6. ¡AQUÍ ESTÁ LA CORRECCIÓN!
-  // Volvemos a poner la estructura original de 'Dashboard.jsx'
   return (
     <>
       <div className='p-5 text-center'>
         <h1 className="mb-4 ">Dashboard - Panel de Control</h1>
         
-        {/* 6a. ¡ESTE <Row> ES EL QUE FALTABA! */}
+        {/* 6a. Fila de Tarjetas de Estadísticas */}
         <Row className="g-4 mb-4 d-flex justify-content-center">
           <Col md={6} lg={3}>
             <Card className="h-100 shadow-sm border-primary">
@@ -104,7 +106,7 @@ const Dashboard = () => {
           </Col>
         </Row>
 
-        {/* 6b. Esta segunda fila ya estaba bien */}
+        {/* 6b. Fila de Resumen Financiero y Accesos Rápidos */}
         <Row className="g-4">
           <Col lg={6}>
             <Card className="shadow-sm">
@@ -145,15 +147,26 @@ const Dashboard = () => {
                   <Link to={ROUTES.DEPORTES} className="btn btn-outline-success">
                     ➕ Agregar Deporte
                   </Link>
-                  <Link to={ROUTES.PAGOS} className="btn btn-outline-warning">
+                  <Button 
+                    variant="warning" 
+                    onClick={() => setShowPaymentModal(true)} // <-- ABRIR MODAL AL CLIC
+                    className="btn btn-outline-warning"
+                  >
                     💵 Registrar Pago
-                  </Link>
+                  </Button>
                 </div>
               </Card.Body>
             </Card>
           </Col>
         </Row>
       </div>
+      
+      {/* 7. INVOCACIÓN DEL MODAL DE PAGO GLOBAL */}
+      <RegisterPaymentModal
+        show={showPaymentModal}
+        handleClose={() => setShowPaymentModal(false)}
+        onPaymentRegistered={fetchStats} // <-- RECÁRGALE LOS DATOS AL CERRAR EL MODAL
+      />
     </>
   );
 };

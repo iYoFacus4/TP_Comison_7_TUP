@@ -9,18 +9,6 @@ import apiService from "../services/apiService";
 // 2. Aceptamos los props que nos pasa 'Pagos.jsx'
 const PaymentTable = ({ payments, setPayments, setError }) => {
   
-  // 3. ¡ELIMINADO!
-  // Ya no necesitamos el useState interno para 'payments'
-  // const [payments, setPayments] = useState([]);
-
-  // 4. ¡ELIMINADO!
-  // Ya no necesitamos el useEffect para cargar desde localStorage
-  // useEffect(() => { ... localStorage.getItem("payments") ... }, []);
-
-  // 5. ¡ELIMINADO!
-  // Ya no necesitamos la función 'updatePayments' de localStorage
-  // const updatePayments = (updatedPayments) => { ... };
-
   // 6. REFACTORIZADO: Registrar pago individual
   const handleRegisterPayment = async (id) => {
     try {
@@ -108,7 +96,8 @@ const PaymentTable = ({ payments, setPayments, setError }) => {
       key: "cuota", // Tu API debe devolver 'cuota' o debes cambiar esto
       label: "Cuota",
       render: (item) => {
-        const cuota = item.cuota || 0;
+        // Convertimos explícitamente a Número antes de formatear
+        const cuota = Number(item.cuota || 0); 
         return `$${cuota.toFixed(2)}`;
       },
     },

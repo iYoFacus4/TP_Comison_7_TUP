@@ -1,10 +1,10 @@
-// FrontEnd/src/pages/Pagos.jsx (MODIFICADO)
+// FrontEnd/src/pages/Pagos.jsx (CÓDIGO COMPLETO Y FINAL)
 import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import PaymentTable from "../components/PaymentTable";
 import "./Pagos.css";
 
-// 1. IMPORTAMOS EL apiService (¡y borramos 'useFetch'!)
+// 1. IMPORTAMOS EL apiService
 import apiService from "../services/apiService.js";
 
 const Pagos = () => {
@@ -26,8 +26,7 @@ const Pagos = () => {
         setIsLoading(true);
         setError(null);
 
-        // ¡Aquí llamamos a tu API! Usamos 'cuotas'
-        // (que es el endpoint que creamos en el backend)
+        // Llama a la API
         const data = await apiService.getAll('cuotas');
         setPayments(data);
 
@@ -41,17 +40,21 @@ const Pagos = () => {
     loadPayments();
   }, []); // Se ejecuta solo una vez
 
-  // 4. useEffect PARA CALCULAR ESTADÍSTICAS (CUANDO LLEGAN LOS DATOS)
+  // 4. useEffect PARA CALCULAR ESTADÍSTICAS
   useEffect(() => {
     if (payments.length > 0) {
+      
       const total = payments.reduce((sum, p) => {
-        // Usamos los nombres de columna de tu club_deportivo.db
-        if (p.estado !== "Pagado") return sum + p.monto; 
+        // CORRECCIÓN: Usamos parseFloat para asegurar que sea un número ANTES de sumar
+        const montoNumerico = parseFloat(p.monto);
+        if (p.estado !== "Pagado") return sum + montoNumerico; 
         return sum;
       }, 0);
 
       const collected = payments.reduce((sum, p) => {
-        if (p.estado === "Pagado") return sum + p.monto;
+        // CORRECCIÓN: Usamos parseFloat para asegurar que sea un número ANTES de sumar
+        const montoNumerico = parseFloat(p.monto);
+        if (p.estado === "Pagado") return sum + montoNumerico;
         return sum;
       }, 0);
       
@@ -67,28 +70,28 @@ const Pagos = () => {
 
   
   const handleGenerateReport = () => {
-    // (Tu lógica de reporte se mantiene igual)
     console.log("Generando Reporte...");
     alert("Generando Reporte (ver consola)");
   };
 
+  // 5. Función para formatear moneda (corregida)
   const formatCurrency = (amount) => {
-    return amount
+    return Number(amount || 0)
       .toFixed(2)
       .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  // 5. MANEJO DE ESTADOS DE CARGA Y ERROR
+  // 6. MANEJO DE ESTADOS DE CARGA Y ERROR
   if (error) {
     return <div className="pagos-page" style={{ color: 'red' }}>Error: {error}</div>;
   }
 
   return (
     <div className="pagos-page">
-      {/* Header (sin cambios) */}
+      {/* 7. ENCABEZADO CORREGIDO Y COMPLETO */}
       <div className="pagos-header">
         <h1 className="page-title">Gestión de Cuotas Mensuales</h1>
-        <Button
+        <Button 
           variant="primary"
           className="generate-report-btn"
           onClick={handleGenerateReport}
@@ -103,19 +106,21 @@ const Pagos = () => {
         <div className="stats-cards">Cargando estadísticas...</div>
       ) : (
         <div className="stats-cards">
-          {/* (Tus 3 cards de estadísticas se quedan igual) */}
+          {/* Total Pendiente */}
           <div className="stat-card">
             <div className="stat-label">Total Pendiente</div>
             <div className="stat-value">
               ${formatCurrency(stats.totalPendiente)}
             </div>
           </div>
+          {/* Cobrado Este Mes */}
           <div className="stat-card collected">
             <div className="stat-label">Cobrado Este Mes</div>
             <div className="stat-value green">
               ${formatCurrency(stats.cobradoEsteMes)}
             </div>
           </div>
+          {/* Miembros con Deuda */}
           <div className="stat-card overdue">
             <div className="stat-label">Miembros con Deuda</div>
             <div className="stat-value red">{stats.miembrosVencidos}</div>
@@ -123,7 +128,7 @@ const Pagos = () => {
         </div>
       )}
 
-      {/* 6. TABLA DE PAGOS (AHORA PASAMOS LOS DATOS COMO PROP) */}
+      {/* 8. TABLA DE PAGOS */}
       {isLoading ? (
         <div>Cargando tabla de pagos...</div>
       ) : (

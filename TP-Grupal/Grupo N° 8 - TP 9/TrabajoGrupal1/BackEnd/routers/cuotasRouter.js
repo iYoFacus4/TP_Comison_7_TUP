@@ -19,5 +19,7 @@ router.put('/:id', cuotasController.updateCuotaEstado);
 // DELETE /api/cuotas/:id (Elimina una cuota)
 router.delete('/:id', cuotasController.deleteCuota);
 
+router.post('/registrar-pago', cuotasController.registerPaymentByDni);
+
 // --- Exportamos el router ---
 export default router;

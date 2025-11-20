@@ -1,6 +1,6 @@
-// FrontEnd/src/components/MemberDetail.jsx (CÓDIGO COMPLETO)
+// FrontEnd/src/components/MemberDetail.jsx (CÓDIGO COMPLETO Y FINAL)
 import { useState, useEffect } from "react";
-import { Form, Button, Nav, Spinner } from "react-bootstrap";
+import { Form, Button, Nav, Spinner, Table, Alert } from "react-bootstrap";
 import "./MemberDetail.css";
 
 // 1. Importamos el apiService
@@ -28,24 +28,31 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
   const [availableSports, setAvailableSports] = useState([]); 
   const [selectedSportIds, setSelectedSportIds] = useState([]); 
   const [isLoadingSports, setIsLoadingSports] = useState(false);
+  
+  // ESTADOS PARA EL HISTORIAL DE PAGOS
+  const [paymentHistory, setPaymentHistory] = useState([]); 
+  const [historyLoading, setHistoryLoading] = useState(false); 
+  const [historyError, setHistoryError] = useState(null); 
 
   // 3. useEffect MODIFICADO: Carga datos del socio Y sus deportes
   useEffect(() => {
+    // 3a. Resetea el formulario con los datos del socio
     setFormData({ 
       ...member,
       fecha_nacimiento: formatISODate(member.fecha_nacimiento)
     });
     setIsEditing(false);
     setActiveTab("personal");
-
+    
     const loadSportsData = async () => {
-      if (!member || !member.id) return; // Asegurarse de que 'member' exista
+      if (!member || !member.id) return; 
       
       setIsLoadingSports(true);
       try {
+        // 4. Hacemos DOS llamadas a la API en paralelo
         const [allSportsData, socioSportsData] = await Promise.all([
-          apiService.getAll('deportes?estado=Activo'), 
-          apiService.getAll(`socios/${member.id}/deportes`) 
+          apiService.getAll('deportes?estado=Activo'), // Deportes disponibles
+          apiService.getAll(`socios/${member.id}/deportes`) // Deportes del socio
         ]);
         
         setAvailableSports(allSportsData); 
@@ -61,7 +68,27 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
     loadSportsData();
   }, [member]); // Se ejecuta cada vez que 'member' cambia
 
-  // 4. Manejadores de cambios
+  // 4. useEffect para cargar el historial de pagos
+  useEffect(() => {
+    if (member && member.id && activeTab === "payment") {
+      const fetchHistory = async () => {
+        setHistoryLoading(true);
+        setHistoryError(null);
+        try {
+          const history = await apiService.getAll(`socios/${member.id}/cuotas`);
+          setPaymentHistory(history);
+        } catch (err) {
+          setHistoryError("No se pudo cargar el historial de pagos.");
+          console.error(err);
+        } finally {
+          setHistoryLoading(false);
+        }
+      };
+      fetchHistory();
+    }
+  }, [member, activeTab]); // Recarga si cambia el socio o la pestaña
+
+  // 5. Manejadores de cambios
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value, }));
@@ -75,10 +102,11 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
     );
   };
 
-  // 5. Manejadores de acciones
+  // 6. Manejadores de acciones
   const handleSaveChanges = () => {
     const dataParaEnviar = {
       ...formData,
+      // ¡Enviamos el array de IDs de deportes!
       associatedSports: selectedSportIds 
     };
     onUpdateMember(dataParaEnviar);
@@ -95,10 +123,10 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
   
   const handleDelete = () => onDeleteMember(member.id);
 
-  // 6. ¡AQUÍ ESTÁ EL JSX QUE FALTABA!
+  // 7. Renderizado final
   return (
     <div className="member-detail-container">
-      {/* --- HEADER (FALTABA) --- */}
+      {/* --- HEADER --- */}
       <div className="member-header">
         <div className="member-header-left">
           <div className="avatar-wrapper">
@@ -125,7 +153,7 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
         </div>
       </div>
 
-      {/* --- TABS (FALTABAN) --- */}
+      {/* --- TABS --- */}
       <Nav variant="tabs" className="member-tabs">
         <Nav.Item>
           <Nav.Link active={activeTab === "personal"} onClick={() => setActiveTab("personal")}>
@@ -139,12 +167,12 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
         </Nav.Item>
       </Nav>
 
-      {/* --- CONTENIDO DE TABS (FALTABA) --- */}
+      {/* --- CONTENIDO DE TABS --- */}
       <div className="tab-content">
         {activeTab === "personal" && (
           <div className="personal-details-tab">
             
-            {/* --- CAMPOS DE DATOS PERSONALES (FALTABAN) --- */}
+            {/* --- CAMPOS DE DATOS PERSONALES --- */}
             <div className="form-row">
               <div className="form-group-member">
                 <label>Nombre Completo</label>
@@ -155,6 +183,7 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
                 <Form.Control type="text" name="dni" value={formData.dni || ''} onChange={handleInputChange} disabled={!isEditing} className="member-input" />
               </div>
             </div>
+
             <div className="form-row">
               <div className="form-group-member">
                 <label>Correo Electrónico</label>
@@ -165,6 +194,7 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
                 <Form.Control type="text" name="telefono" value={formData.telefono || ''} onChange={handleInputChange} disabled={!isEditing} className="member-input" />
               </div>
             </div>
+
             <div className="form-row">
               <div className="form-group-member">
                 <label>Fecha de Nacimiento</label>
@@ -172,7 +202,7 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
               </div>
             </div>
 
-            {/* --- SECCIÓN DE DEPORTES (Esto era lo único que veías) --- */}
+            {/* --- SECCIÓN DE DEPORTES ASOCIADOS --- */}
             <div className="sports-section">
               <label className="sports-label">Deportes Asociados</label>
               <div className="sports-checkboxes">
@@ -203,14 +233,43 @@ const MemberDetail = ({ member, onUpdateMember, onDeleteMember }) => {
           </div>
         )}
 
+        {/* TAB DE HISTORIAL DE PAGOS */}
         {activeTab === "payment" && (
           <div className="payment-tab">
-            <p className="coming-soon">Historial de pagos próximamente...</p>
+            {historyError && <Alert variant="danger">{historyError}</Alert>}
+            
+            {historyLoading ? (
+              <Spinner animation="border" />
+            ) : paymentHistory.length === 0 ? (
+              <p>Este socio no tiene cuotas registradas.</p>
+            ) : (
+              <Table striped bordered hover size="sm" className="mt-3">
+                <thead>
+                  <tr>
+                    <th>Fecha Venc.</th>
+                    <th>Monto</th>
+                    <th>Membresía</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paymentHistory.map((p) => (
+                    <tr key={p.id}>
+                      <td>{p.fecha_vencimiento}</td>
+                      {/* CORRECCIÓN: Convertimos a Number antes de usar toFixed */}
+                      <td>${Number(p.monto || 0).toFixed(2)}</td>
+                      <td>{p.membresia}</td>
+                      <td>{p.estado}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )}
           </div>
         )}
       </div>
 
-      {/* --- BOTONES DE GUARDAR (FALTABAN) --- */}
+      {/* --- BOTONES DE GUARDAR --- */}
       {isEditing && (
         <div className="form-actions">
           <Button variant="secondary" className="cancel-btn" onClick={handleCancel}>
