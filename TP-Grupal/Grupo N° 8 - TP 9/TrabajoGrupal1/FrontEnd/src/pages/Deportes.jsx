@@ -100,7 +100,7 @@ const Deportes = () => {
             <div className="stat-value green">{stats.deportesActivos}</div>
           </div>
           <div className="stat-card overdue">
-            <div className="stat-label">Total de Miembros (Simulado)</div>
+            <div className="stat-label">Total de Miembros</div>
             <div className="stat-value red">{stats.totalMiembros}</div>
           </div>
         </div>

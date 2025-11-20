@@ -6,20 +6,32 @@ const deportesController = {
     /**
      * @description Obtiene todos los deportes (con filtro opcional por estado).
      * @route GET /api/deportes
+     * * @modifies SQL: Agrega LEFT JOIN y COUNT para calcular 'miembros'.
      */
+    
     getAllDeportes: async (req, res) => {
         try {
             const { estado } = req.query; 
 
-            let sql = 'SELECT * FROM deportes';
+            // 1. Consulta SQL con JOIN y COUNT
+            let sql = `
+                SELECT 
+                    d.*, 
+                    COUNT(sd.socio_id) AS miembros 
+                FROM deportes d
+                LEFT JOIN socios_deportes sd ON d.id = sd.deporte_id
+            `;
             const params = [];
 
+            // 2. Agrega el filtro por estado si se proporciona
             if (estado) {
-                sql += ' WHERE estado = ?';
+                sql += ' WHERE d.estado = ?';
                 params.push(estado);
             }
             
-            // 2. Usamos la sintaxis de pool.query()
+            // 3. Agrupa por deporte y ordena
+            sql += ' GROUP BY d.id ORDER BY d.nombre';
+
             const [rows] = await pool.query(sql, params); 
             
             res.status(200).json(rows);
@@ -102,13 +114,21 @@ const deportesController = {
             
             const [result] = await pool.query(sql, [nombre, descripcion, estado, id]);
 
-            if (result.affectedRows === 0) { // <-- 6. Usamos 'affectedRows'
+            if (result.affectedRows === 0) {
                 return res.status(404).json({ message: 'Deporte no encontrado' });
             }
-            res.status(200).json({ message: 'Deporte actualizado exitosamente' });
+
+            // 1. Obtener el deporte actualizado (con el campo 'miembros' calculado)
+            const [updatedRows] = await pool.query('SELECT * FROM deportes WHERE id = ?', [id]);
+
+            // 2. Devolver el objeto actualizado y DETENER LA FUNCIÓN
+            // La sintaxis era { message: '...' } y el frontend espera el objeto en la raíz
+            return res.status(200).json(updatedRows[0]); 
+            
         } catch (err) {
             console.error('Error al actualizar deporte:', err.message);
-            res.status(500).json({ error: 'Error interno del servidor' });
+            // 3. ¡CORRECCIÓN! Usamos RETURN aquí para evitar el ERR_HTTP_HEADERS_SENT
+            return res.status(500).json({ error: 'Error interno del servidor' });
         }
     },
 
@@ -130,12 +150,36 @@ const deportesController = {
         } catch (err) {
             // 8. Código de error de MySQL para llave foránea
             if (err.code === 'ER_ROW_IS_REFERENCED_2') {
-                 return res.status(409).json({ error: 'No se puede eliminar el deporte porque tiene socios inscritos.' });
+                return res.status(409).json({ error: 'No se puede eliminar el deporte porque tiene socios inscritos.' });
             }
             console.error('Error al eliminar deporte:', err.message);
             res.status(500).json({ error: 'Error interno del servidor' });
         }
-    }
+    },
+    getMembersBySportId: async (req, res) => {
+        try {
+            const { id: deporteId } = req.params;
+            
+            const sql = `
+                SELECT 
+                    s.nombre, 
+                    s.dni, 
+                    s.email,
+                    s.id AS socio_id
+                FROM socios s
+                JOIN socios_deportes sd ON s.id = sd.socio_id
+                WHERE sd.deporte_id = ?
+                ORDER BY s.nombre;
+            `;
+            
+            const [rows] = await pool.query(sql, [deporteId]); 
+            
+            res.status(200).json(rows);
+        } catch (err) {
+            console.error('Error al obtener socios por deporte:', err.message);
+            return res.status(500).json({ error: 'Error interno del servidor.' });
+        }
+    },
 };
 
 export default deportesController;

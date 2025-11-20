@@ -11,6 +11,7 @@ router.get('/', deportesController.getAllDeportes);
 
 // GET /api/deportes/:id (Obtiene uno por ID)
 router.get('/:id', deportesController.getDeporteById);
+router.get('/:id/socios', deportesController.getMembersBySportId);
 
 // POST /api/deportes (Crea uno nuevo)
 router.post('/', deportesController.createDeporte);

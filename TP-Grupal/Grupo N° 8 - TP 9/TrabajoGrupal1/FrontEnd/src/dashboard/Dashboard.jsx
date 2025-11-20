@@ -65,7 +65,7 @@ const Dashboard = () => {
   return (
     <>
       <div className='p-5 text-center'>
-        <h1 className="mb-4 ">Dashboard - Panel de Control</h1>
+        <h1 className="mb-4 "> Panel de Control</h1>
         
         {/* 6a. Fila de Tarjetas de Estadísticas */}
         <Row className="g-4 mb-4 d-flex justify-content-center">

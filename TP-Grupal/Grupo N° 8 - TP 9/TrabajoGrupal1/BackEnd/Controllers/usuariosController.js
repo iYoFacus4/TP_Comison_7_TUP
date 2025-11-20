@@ -1,4 +1,5 @@
 import pool from '../config/db.js';
+import jwt from 'jsonwebtoken';
 
 const usuariosController = {
 
@@ -45,6 +46,8 @@ const usuariosController = {
      * @route POST /api/usuarios/login
      */
     login: async (req, res) => {
+        // La variable 'token' no necesita ser declarada aquí
+
         try {
             const { email, password } = req.body;
 
@@ -52,7 +55,14 @@ const usuariosController = {
                 return res.status(400).json({ message: 'Faltan credenciales' });
             }
 
-            // 1. Buscar el usuario por email
+            // 1. VERIFICACIÓN CRÍTICA DEL JWT_SECRET
+            if (!process.env.JWT_SECRET) {
+                console.error("🛑 JWT_SECRET NO DEFINIDO. Revisar archivo .env");
+                // Devolvemos 500 aquí para detener el proceso
+                return res.status(500).json({ error: 'Fallo de configuración: Clave secreta faltante.' });
+            }
+
+            // 2. Buscar usuario en DB
             const sql = 'SELECT * FROM usuarios WHERE email = ?';
             const [rows] = await pool.query(sql, [email]);
 
@@ -62,14 +72,22 @@ const usuariosController = {
 
             const usuario = rows[0];
 
-            // 2. Verificar contraseña (comparación directa por ahora)
+            // 3. Verificar contraseña
             if (usuario.contrasena !== password) {
                 return res.status(401).json({ message: 'Contraseña incorrecta' });
             }
 
-            // 3. Login exitoso: Devolvemos los datos del usuario (sin la contraseña)
-            res.status(200).json({
+            // 4. CREAR Y FIRMAR EL TOKEN (Ahora seguro)
+            const token = jwt.sign( 
+                { id: usuario.id, email: usuario.email, rol: usuario.rol },
+                process.env.JWT_SECRET,
+                { expiresIn: '1h' }
+            );
+
+            // 5. Login exitoso
+            return res.status(200).json({
                 message: 'Login exitoso',
+                token: token,
                 user: {
                     id: usuario.id,
                     email: usuario.email,
@@ -79,8 +97,9 @@ const usuariosController = {
             });
 
         } catch (err) {
-            console.error('Error en login:', err.message);
-            res.status(500).json({ error: 'Error interno del servidor' });
+            console.error('Error FATAL en el proceso de login:', err.message);
+            // Este return maneja cualquier error de DB que pueda ocurrir
+            return res.status(500).json({ error: 'Fallo interno del servidor.' });
         }
     }
 };
