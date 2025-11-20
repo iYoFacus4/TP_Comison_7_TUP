@@ -60,25 +60,20 @@ const MOCK_PATIENTS = [
 
 class PatientService {
   constructor() {
-    this.initializeMockData();
+    this.pacientes = this.getAll()
   }
 
-  initializeMockData() {
-    const stored = localStorage.getItem("patients");
-    if (!stored) {
-      localStorage.setItem("patients", JSON.stringify(MOCK_PATIENTS));
-    }
-  }
+
 
   async getAll() {
     try {
-      const response = await httpClient.get("/api/patients");
-
-      if (response.ok && response.data.success) {
+      const response = await fetch("http://localhost:3001/pacientes");
+    const data = await response.json();
+      if (data.success) {
         return {
           success: true,
-          data: response.data.data,
-          total: response.data.total,
+          data: data.data,
+          total: data.total,
         };
       } else {
         return {
@@ -119,18 +114,35 @@ class PatientService {
 
   async create(patientData) {
     try {
-      const response = await httpClient.post("/api/patients", patientData);
-
-      if (response.ok && response.data.success) {
+      
+      const response = await fetch(`http://localhost:3001/pacientes`,
+      {
+        method: "POST", // o "PUT" si tu backend lo espera así
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre: patientData.nombre,// el contenido que querés enviar
+          apellido: patientData.apellido,
+          dni: patientData.dni,
+          fecha_nacimiento: patientData.fechaNacimiento,
+          telefono: patientData.telefono,
+          email: patientData.email,
+          direccion: patientData.direccion
+        }),
+      });
+    const data = await response.json();
+console.log(data)
+      if (data.success) {
         return {
           success: true,
-          data: response.data.data,
-          message: response.data.message || "Paciente creado exitosamente",
+          data: data.data,
+          message:  "Paciente creado exitosamente",
         };
       } else {
         return {
           success: false,
-          error: response.error || "Error al crear paciente",
+          error:  "Error al crear paciente",
         };
       }
     } catch (error) {
@@ -143,13 +155,29 @@ class PatientService {
 
   async update(id, patientData) {
     try {
-      const response = await httpClient.put(`/api/patients/${id}`, patientData);
+      const response = await fetch(`http://localhost:3001/pacientes/${id}`,
+      {
+        method: "PUT", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre: patientData.nombre,
+          apellido: patientData.apellido,
+          dni: patientData.dni,
+          fecha_nacimiento: patientData.fechaNacimiento,
+          telefono: patientData.telefono,
+          email: patientData.email,
+          direccion: patientData.direccion
+        }),
+      });
+    const data = await response.json();
 
-      if (response.ok && response.data.success) {
+      if (data.success) {
         return {
           success: true,
-          data: response.data.data,
-          message: response.data.message || "Paciente actualizado exitosamente",
+          data: data.data,
+          message: data.message || "Paciente actualizado exitosamente",
         };
       } else {
         return {
@@ -167,18 +195,24 @@ class PatientService {
 
   async delete(id) {
     try {
-      const response = await httpClient.delete(`/api/patients/${id}`);
-
-      if (response.ok && response.data.success) {
+      const response = await fetch(`http://localhost:3001/pacientes/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+console.log(data)
+      if (data.success) {
         return {
           success: true,
-          data: response.data.data,
-          message: response.data.message || "Paciente eliminado exitosamente",
+          data: data.data,
+          message: "Paciente eliminado exitosamente",
         };
       } else {
         return {
           success: false,
-          error: response.error || "Error al eliminar paciente",
+          error: "Error al eliminar paciente",
         };
       }
     } catch (error) {
@@ -189,32 +223,21 @@ class PatientService {
     }
   }
 
-  async search(query) {
-    try {
-      if (!query || query.trim() === "") {
-        return this.getAll();
-      }
-
-      const response = await httpClient.get(`/api/patients?search=${query}`);
-
-      if (response.ok && response.data.success) {
-        return {
-          success: true,
-          data: response.data.data,
-          total: response.data.total,
-        };
-      } else {
-        return {
-          success: false,
-          error: response.error || "Error al buscar pacientes",
-        };
-      }
-    } catch (error) {
-      return {
-        success: false,
-        error: error.message || "Error de conexión",
-      };
+  async search(query, pacientes) {
+    if (!query || query.trim() === "") {
+      return this.pacientes
     }
+    const searchTerm = query.toLowerCase();
+    const filtered = pacientes.filter(
+      (p) =>
+        p.apellido.toLowerCase().includes(searchTerm) ||
+        p.nombre.toLowerCase().includes(searchTerm)
+    );
+    return {
+      success: true,
+      data: filtered,
+      total: filtered.length,
+    };
   }
 }
 

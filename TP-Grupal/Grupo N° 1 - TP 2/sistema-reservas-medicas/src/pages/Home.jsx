@@ -3,14 +3,14 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 
 const Home = () => {
   return (
-    <Container className="mt-4">
+    <Container className="mt-5">
       <Row>
         <Col>
           <Card>
             <Card.Header>
               <h2>Sistema de Reservas Médicas</h2>
             </Card.Header>
-            <Card.Body>
+            <Card.Body className='mt-3'>
               <p>Bienvenido al sistema de gestión de turnos médicos.</p>
             </Card.Body>
           </Card>

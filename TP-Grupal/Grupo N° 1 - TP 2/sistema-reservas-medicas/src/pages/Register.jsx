@@ -89,7 +89,7 @@ const Register = () => {
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
-        <Col md={6}>
+        <Col md={100}>
           <Card>
             <Card.Header className="bg-primary text-white">
               <h3 className="mb-0">Crear Cuenta</h3>

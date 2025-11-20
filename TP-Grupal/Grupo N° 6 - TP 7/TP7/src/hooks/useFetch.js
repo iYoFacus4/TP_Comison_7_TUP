@@ -1,60 +1,45 @@
-import { useState, useEffect } from 'react';
+// TP7/src/hooks/useFetch.js
+import { useState, useEffect, useCallback } from "react";
 
-/**
- * Hook personalizado para manejo de peticiones HTTP
- * @param {Function} fetchFunction - Función que realiza la petición HTTP
- * @param {Array} dependencies - Dependencias para re-ejecutar la petición
- * @returns {Object} - { data, loading, error, refetch }
- */
-export const useFetch = (fetchFunction, dependencies = []) => {
+export function useFetch(asyncFunction, deps = []) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     try {
-      setLoading(true);
-      setError(null);
-      const result = await fetchFunction();
+      const result = await asyncFunction();
       setData(result);
     } catch (err) {
-      setError(err.message || 'Error al cargar los datos');
-      setData(null);
+      setError(err.message || "Error al cargar los datos");
     } finally {
       setLoading(false);
     }
-  };
+  }, deps);
 
   useEffect(() => {
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, dependencies);
+  }, [fetchData]);
 
   return { data, loading, error, refetch: fetchData };
-};
+}
 
-/**
- * Hook para operaciones de mutación (POST, PUT, DELETE)
- * @returns {Object} - { mutate, loading, error }
- */
-export const useMutation = () => {
+export function useMutation() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
 
-  const mutate = async (mutationFunction) => {
+  const mutate = async (mutationFn) => {
+    setLoading(true);
     try {
-      setLoading(true);
-      setError(null);
-      const result = await mutationFunction();
-      return result;
+      await mutationFn();
     } catch (err) {
-      setError(err.message || 'Error en la operación');
+      console.error("Error en mutación:", err);
       throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  return { mutate, loading, error };
-};
-
+  return { mutate, loading };
+}

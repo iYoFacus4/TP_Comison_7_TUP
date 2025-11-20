@@ -31,7 +31,7 @@ const DoctorsExample = () => {
     const value = e.target.value;
     setSearchTerm(value);
     setSelectedEspecialidad("");
-    searchDoctors(value);
+    searchDoctors(value, doctors);
   };
 
   const handleFilterEspecialidad = (e) => {
@@ -56,7 +56,7 @@ const DoctorsExample = () => {
             <Card.Body>
               <Row>
                 <Col md={6} className="mb-3 mb-md-0">
-                  <Form.Label>Buscar por nombre o matrícula</Form.Label>
+                  <Form.Label>Buscar por nombre o apellido</Form.Label>
                   <InputGroup>
                     <Form.Control
                       type="text"
@@ -106,14 +106,11 @@ const DoctorsExample = () => {
                   <Col key={doctor.id} md={6} lg={4} className="mb-3">
                     <Card>
                       <Card.Body>
-                        <Card.Title>{doctor.nombre}</Card.Title>
+                        <Card.Title>{doctor.titulo + " " + doctor.apellido + " " + doctor.nombre }</Card.Title> 
                         <ListGroup variant="flush">
                           <ListGroup.Item>
                             <strong>Especialidad:</strong>{" "}
                             <Badge bg="primary">{doctor.especialidad}</Badge>
-                          </ListGroup.Item>
-                          <ListGroup.Item>
-                            <strong>Matrícula:</strong> {doctor.matricula}
                           </ListGroup.Item>
                           <ListGroup.Item>
                             <strong>Teléfono:</strong> {doctor.telefono}

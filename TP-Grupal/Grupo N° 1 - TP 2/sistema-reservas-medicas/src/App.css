@@ -40,3 +40,104 @@
 .read-the-docs {
   color: #888;
 }
+
+/* --- ESTILOS PARA LA BARRA LATERAL PERSONALIZADA --- */
+
+/* 1. Contenedor principal de la barra lateral */
+.sidebar-vertical {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px; /* Ancho de la barra lateral */
+  height: 100vh; /* Ocupa toda la altura */
+  background-color: #2c3e50; /* Un azul oscuro/grisáceo más moderno */
+  color: white;
+  box-shadow: 4px 0px 12px rgba(0, 0, 0, 0.15); /* Sombra sutil a la derecha */
+  overflow-y: auto; /* Permite scroll si hay muchos enlaces */
+}
+
+/* 2. Contenedor interno para padding y flexbox */
+.sidebar-content {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ocupa el 100% de la barra */
+}
+
+/* 3. Título del sistema */
+.sidebar-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #4a637c; /* Línea divisoria sutil */
+}
+.sidebar-title:hover {
+  color: #e0e0e0; /* Aclara un poco en hover */
+}
+
+
+/* 4. Estilos de los enlaces de navegación (Nav.Link) */
+.sidebar-vertical .nav-link {
+  color: #bdc3c7; /* Un gris claro para el texto */
+  padding: 0.75rem 1rem; /* Espaciado interno */
+  margin-bottom: 0.3rem; /* Espacio entre enlaces */
+  border-radius: 8px; /* Bordes redondeados */
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+/* 5. Efecto Hover: Qué pasa al pasar el mouse por encima */
+.sidebar-vertical .nav-link:hover {
+  background-color: #34495e; /* Un fondo más oscuro */
+  color: #ffffff; /* Texto blanco */
+  transform: translateX(5px); /* Pequeño movimiento */
+}
+
+/* 6. Enlace Activo: El enlace de la página actual */
+.sidebar-vertical .nav-link.active {
+  background-color: #0d6efd; /* Color primario de Bootstrap (azul) */
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+}
+
+/* 7. Menú de usuario (al final) */
+.sidebar-user-menu {
+  margin-top: auto; /* ¡Esta es la magia! Empuja el menú al fondo */
+  border-top: 1px solid #4a637c;
+  padding-top: 1rem;
+}
+
+.user-dropdown-toggle {
+  background-color: #34495e;
+  border: none;
+  color: white !important; /* Importante para sobreescribir Bootstrap */
+  width: 100%;
+  text-align: left;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.user-dropdown-toggle:hover,
+.user-dropdown-toggle:focus {
+  background-color: #4a637c;
+  border: none;
+  box-shadow: none;
+}
+
+
+/* --- ESTILO DEL CONTENIDO PRINCIPAL --- */
+
+/* 8. Área de contenido (a la derecha de la barra) */
+.content-area {
+  margin-left: 260px; /* DEBE coincidir con el ancho de .sidebar-vertical */
+  padding: 3rem;
+  width: calc(100% - 260px); /* Ocupa el resto del ancho */
+  background-color: #f8f9fa; /* Un fondo gris claro para el contenido */
+  min-height: 100vh;
+}
